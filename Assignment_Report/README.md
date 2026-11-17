@@ -1,12 +1,11 @@
-# 中文研究论文
+# 药物溶解度预测研究报告
 
-正文采用论文结构，包含摘要、引言、相关工作、数据预处理与探索性分析、提出方法、实验设置、结果与分析、讨论及结论。没有附录或独立补充材料。图内为英文，正文和图注为中文。
+主方法为TabPFN＋ExtraTrees，SOLAR系列、通用回归器与其他融合作为对比。报告使用当前演示应用的实拍截图，展示预测、同条件对照及评价指标。
 
+- PDF：`Assignment-main.pdf`
 - 主文件：`Assignment-main.tex`
-- 编译输出：`Assignment-main.pdf`
-- 当前科学图：`figures/revision_v2/`
-- 正文源码：`sections/`
-- 实验与完整记录：仓库 `artifacts/revision_v2/`
-- 文献与核验记录：仓库 `bibliography/`
+- 正文：`sections/`
+- 应用截图：`figures/revision_v4/`
+- 实验结果：`../artifacts/combination_v3/`
 
-在仓库根目录运行 `bash scripts/build_report.sh` 编译；需要 XeLaTeX、BibTeX、latexmk。中文字体及许可证已保存在仓库。历史版本保存在 `artifacts/revision_v2/previous_report/`，通用模板另存为 `template_example.tex`。
+根目录运行 `bash scripts/build_report.sh` 编译。误差排序为探索性证据，正文保留区间与选择偏差说明。
