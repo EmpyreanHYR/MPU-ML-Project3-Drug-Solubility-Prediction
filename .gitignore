@@ -1,21 +1,111 @@
+# Repository allowlist: local work may exist beside these deliverables.
+/*
+!/.gitignore
+!/.python-version
+!/README.md
+!/pyproject.toml
+!/uv.lock
+!/datasets/
+!/src/
+!/scripts/
+!/tests/
+!/webapp/
+!/plotting/
+!/tools/
+!/configs/
+!/assets/
+!/Assignment_Report/
+!/Question/
+!/bibliography/
+!/models/
+!/output/
+!/启动Studio.bat
+!/启动Studio.command
+
+# Local environments and generated intermediates anywhere in allowed directories.
 .DS_Store
 .cache/
 .venv/
 __pycache__/
-*.pyc
+*.py[cod]
 .pytest_cache/
-Assignment_Report/*.aux
-Assignment_Report/*.log
-Assignment_Report/*.out
-Assignment_Report/*.toc
-Assignment_Report/*.fls
-Assignment_Report/*.fdb_latexmk
-Assignment_Report/*.synctex.gz
+*.log
+*.tmp
+*.aux
+*.out
+*.toc
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.bbl
+*.blg
+*.xdv
 
-# Rebuildable LaTeX intermediates
-Assignment_Report/*.bbl
-Assignment_Report/*.blg
-Assignment_Report/*.xdv
+# Model weights have exactly one home.
+*.joblib
+*.ckpt
+*.pt
+*.pth
+*.safetensors
+!/models/**/*.joblib
+!/models/**/*.ckpt
+!/models/**/*.pt
+!/models/**/*.pth
+!/models/**/*.safetensors
 
-# Local browser automation session state
-.playwright-cli/
+# Results contain tabular/numeric evidence and documentation only.
+/output/**
+!/output/**/
+!/output/**/*.csv
+!/output/**/*.json
+!/output/**/README.md
+/output/playwright/
+/output/**/figure_qa/
+/output/**/figure_source/
+/output/**/report_qa/
+/output/**/previous_report/
+/output/**/consistency/
+/output/**/web_tests/
+/output/**/provenance/
+/output/**/manuscript_draft/
+/output/**/tmp/
+/output/**/tests/
+
+# Report sources, current figures, and the final PDF only.
+/Assignment_Report/*
+!/Assignment_Report/.latexmkrc
+!/Assignment_Report/Assignment-main.tex
+!/Assignment_Report/Assignment-main.pdf
+!/Assignment_Report/assignment.cls
+!/Assignment_Report/README.md
+!/Assignment_Report/assets/
+!/Assignment_Report/sections/
+!/Assignment_Report/figures/
+/Assignment_Report/sections/*
+!/Assignment_Report/sections/*.tex
+/Assignment_Report/figures/*
+!/Assignment_Report/figures/revision_v2/
+!/Assignment_Report/figures/revision_v4/
+/Assignment_Report/figures/revision_v2/*
+!/Assignment_Report/figures/revision_v2/*.pdf
+!/Assignment_Report/figures/revision_v2/*.svg
+!/Assignment_Report/figures/revision_v2/*.drawio
+/Assignment_Report/figures/revision_v4/*
+!/Assignment_Report/figures/revision_v4/*.jpg
+
+# Unused variable font; the static font and its license are sufficient.
+/assets/fonts/NotoSansSC-VF.ttf
+
+# Retired tools remain local; do not reintroduce them with git add -A.
+/app.py
+/src/inference.py
+/tests/test_app.py
+/scripts/polish_manuscript_nature.py
+/scripts/refine_paper_methods_results.py
+/scripts/revise_presentation.py
+/scripts/update_paper_solar.py
+/scripts/write_revision_results.py
+/scripts/audit_artifacts.py
+/scripts/audit_revision.py
+/scripts/check_restored_consistency.py
+/scripts/build_app_report_figures.py
