@@ -1,0 +1,18 @@
+.DS_Store
+.cache/
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+Assignment_Report/*.aux
+Assignment_Report/*.log
+Assignment_Report/*.out
+Assignment_Report/*.toc
+Assignment_Report/*.fls
+Assignment_Report/*.fdb_latexmk
+Assignment_Report/*.synctex.gz
+
+# Rebuildable LaTeX intermediates
+Assignment_Report/*.bbl
+Assignment_Report/*.blg
+Assignment_Report/*.xdv
