@@ -1,0 +1,135 @@
+{
+  "format": 1,
+  "files": [
+    {
+      "path": "models/combination_v3/deployment/model.joblib",
+      "bytes": 20329475,
+      "sha256": "22a219f569d8f554be618a79516651b2c242c4623301167b2995356d6c524cc9"
+    },
+    {
+      "path": "models/combination_v3/deployment/two_tree_model.joblib",
+      "bytes": 9236335,
+      "sha256": "51607539801c691d0e78473cb7ee7c5f96dae7371d333542170c664b6c3e9ac7"
+    },
+    {
+      "path": "models/combination_v3/tabpfn_nested/deployment/TabPFN_ExtraTreesBlend.joblib",
+      "bytes": 9113470,
+      "sha256": "a3536da9c9261e57f7b18270ec348af17262391ea7a19ec4a9ca2c41bf77bc05"
+    },
+    {
+      "path": "models/combination_v3/tabpfn_nested/deployment/TabPFN_TwoTreeBlend.joblib",
+      "bytes": 9265750,
+      "sha256": "78528f12329d450a9d44c2f3c33df345eca50600dd785ac11e0de6f13f9e5636"
+    },
+    {
+      "path": "models/combination_v3/tabpfn_probe/tabpfn-v2-regressor.ckpt",
+      "bytes": 44390977,
+      "sha256": "2ab5a07d5c41dfe6db9aa7ae106fc6de898326c2765be66505a07e2868c10736"
+    },
+    {
+      "path": "models/deployment/model.joblib",
+      "bytes": 2300918,
+      "sha256": "2575df0f4ddb02a1b6152a6318d4acda1a2db4e6dc04028daf29e9e7805058a3"
+    },
+    {
+      "path": "models/final_models/Dummy_base.joblib",
+      "bytes": 318,
+      "sha256": "9fd21e1112d6ff6d0ed07eda339047846909dc083c5a9ea4d26328faed1c16e8"
+    },
+    {
+      "path": "models/final_models/ExtraTrees_base.joblib",
+      "bytes": 5303822,
+      "sha256": "3701b0811b1c6f13c3596cfb1a6b514fd3990f01215b7da77fd673dad76fc805"
+    },
+    {
+      "path": "models/final_models/ExtraTrees_tune_05.joblib",
+      "bytes": 2300918,
+      "sha256": "2575df0f4ddb02a1b6152a6318d4acda1a2db4e6dc04028daf29e9e7805058a3"
+    },
+    {
+      "path": "models/final_models/HistGradientBoosting_base.joblib",
+      "bytes": 129897,
+      "sha256": "92e238e56fc625eb14e5aa4eb2ec14cbf16fcf3b9b3fcccefa060d466ece0202"
+    },
+    {
+      "path": "models/final_models/RandomForest_base.joblib",
+      "bytes": 3978944,
+      "sha256": "0157cb04ec4800cf333785dbca8e6ae652f109a887d2775cfac3bcd25dc141e2"
+    },
+    {
+      "path": "models/final_models/RealMLP_base.joblib",
+      "bytes": 187564,
+      "sha256": "d67c750f638c5a9f98a088f1511e5ea6af5ec0775ca7cd5b5e36176d3432ceef"
+    },
+    {
+      "path": "models/final_models/Ridge_base.joblib",
+      "bytes": 1315,
+      "sha256": "c86c136d0a6acda4265c11f0c2a57b6dfc7522a6d5fe4ca9286d6ebfe745356a"
+    },
+    {
+      "path": "models/final_models/TabM_base.joblib",
+      "bytes": 123304,
+      "sha256": "55247240ca5b75836362251d438584b9006358b6a6ca721121746171b2f9f00b"
+    },
+    {
+      "path": "models/revision_v2/deployment/AdaptiveHybrid/model.joblib",
+      "bytes": 1203549,
+      "sha256": "3c2b3ef463e9224f3f794744a43399c394f76abdef03eab2db8737333c797e4c"
+    },
+    {
+      "path": "models/revision_v2/deployment/Dummy/model.joblib",
+      "bytes": 318,
+      "sha256": "9fd21e1112d6ff6d0ed07eda339047846909dc083c5a9ea4d26328faed1c16e8"
+    },
+    {
+      "path": "models/revision_v2/deployment/ExtraTrees/model.joblib",
+      "bytes": 1524741,
+      "sha256": "0fea748e93625b4749ddf42ddf0046ee07e5ee0635ef13a6666f4d6442730fd7"
+    },
+    {
+      "path": "models/revision_v2/deployment/HistGradientBoosting/model.joblib",
+      "bytes": 253514,
+      "sha256": "6f02b5e086e8b12f71124e4e83083ad439c5c66be7409e8a2fe9a0f9b6bf2b08"
+    },
+    {
+      "path": "models/revision_v2/deployment/HybridConditional/model.joblib",
+      "bytes": 801490,
+      "sha256": "92b603fbbace2613b801b86cae0ed4b4e28c64f1b95f0f3af0c91410919c90ce"
+    },
+    {
+      "path": "models/revision_v2/deployment/InteractionConditional/model.joblib",
+      "bytes": 71751,
+      "sha256": "1b741555f853fc6b7f0320efacb818a8c00c54fc014c052b393f25451bfd45f0"
+    },
+    {
+      "path": "models/revision_v2/deployment/PlainMLP/model.joblib",
+      "bytes": 10171,
+      "sha256": "dcc19345f2b3da0017a31d23fcf979792edea925d66b0cc841500d4364cf1df9"
+    },
+    {
+      "path": "models/revision_v2/deployment/RandomForest/model.joblib",
+      "bytes": 1470575,
+      "sha256": "287885ee85b1a8183cfbcc6229e12805483502b9324aabdfa38ebbca55aa348d"
+    },
+    {
+      "path": "models/revision_v2/deployment/RealMLP/model.joblib",
+      "bytes": 363836,
+      "sha256": "08d0b21ff20892691a497ef02978d449388155d23589ac20258f732838a5b111"
+    },
+    {
+      "path": "models/revision_v2/deployment/Ridge/model.joblib",
+      "bytes": 1328,
+      "sha256": "edf38754bff4e5d4abe69c46ac4295759c94d0f13a2518dfa868697a643dbfb4"
+    },
+    {
+      "path": "models/revision_v2/deployment/TabM/model.joblib",
+      "bytes": 49082,
+      "sha256": "3d5f39130d11c4386523fdbfc26939a6077d06af564d62435056a5d00283edb4"
+    },
+    {
+      "path": "models/revision_v2/deployment/TemperatureMLP/model.joblib",
+      "bytes": 10182,
+      "sha256": "571843f9c3da23f62d66ef23550ffa370e1c1accfe06efa8ac764c51a9fc5b5a"
+    }
+  ]
+}

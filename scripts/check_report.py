@@ -9,7 +9,7 @@ from PIL import Image, ImageDraw
 
 ROOT = Path(__file__).resolve().parents[1]
 pdf = ROOT / 'Assignment_Report/Assignment-main.pdf'
-out = ROOT / 'artifacts/revision_v2/report_qa'
+out = ROOT / '.cache/report_qa'
 out.mkdir(parents=True, exist_ok=True)
 doc = pymupdf.open(pdf)
 pages = []

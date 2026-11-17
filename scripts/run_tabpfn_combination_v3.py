@@ -18,11 +18,12 @@ import numpy as np
 import pandas as pd
 from sklearn.model_selection import GroupKFold
 from src.data import ROOT, load_data, development_splits
+from src.paths import normalize_frozen
 from src.metrics import regression_metrics
 from src.experimental_tabpfn_v3.adapter import FrameTabPFNRegressor, CHECKPOINT_SHA256
 from run_combination_nested import choose_weights
 
-FIRST = ROOT/'artifacts/combination_v3'
+FIRST = ROOT/'output/combination_v3'
 OUT = FIRST/'tabpfn_nested'
 SEEDS = [2026,17,42]
 CATALOG = [dict(representation=rep,n_estimators=n) for rep in ['small','full'] for n in [2,4]]
@@ -71,7 +72,7 @@ def freeze():
                   code_sha256=hashes,reused_input_sha256=reused_hashes)
     path=OUT/'protocol.json'
     if path.exists():
-        assert json.loads(path.read_text())==protocol, 'Second-round frozen inputs/code changed'
+        assert normalize_frozen(json.loads(path.read_text()))==protocol, 'Second-round frozen inputs/code changed'
     else:dump(path,protocol)
     print('SECOND-ROUND PROTOCOL FROZEN',flush=True)
 

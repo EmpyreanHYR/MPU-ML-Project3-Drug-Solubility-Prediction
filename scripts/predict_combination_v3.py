@@ -7,6 +7,7 @@ import json
 import joblib
 import pandas as pd
 from src.data import ROOT
+from src.paths import model_path
 
 
 def main():
@@ -14,8 +15,8 @@ def main():
     parser.add_argument('--drug-smiles',required=True)
     parser.add_argument('--solvent-smiles',required=True)
     parser.add_argument('--temperature',required=True,type=float)
-    tabpfn_model=ROOT/'artifacts/combination_v3/tabpfn_nested/deployment/TabPFN_ExtraTreesBlend.joblib'
-    default_model=tabpfn_model if tabpfn_model.exists() else ROOT/'artifacts/combination_v3/deployment/two_tree_model.joblib'
+    tabpfn_model=model_path(ROOT/'output/combination_v3/tabpfn_nested/deployment/TabPFN_ExtraTreesBlend.joblib')
+    default_model=tabpfn_model if tabpfn_model.exists() else model_path(ROOT/'output/combination_v3/deployment/two_tree_model.joblib')
     parser.add_argument('--model',type=Path,default=default_model)
     args=parser.parse_args()
     frame=pd.DataFrame({'Drug SMILES':[args.drug_smiles], 'Solvent SMILES':[args.solvent_smiles], 'Temperature':[args.temperature]})

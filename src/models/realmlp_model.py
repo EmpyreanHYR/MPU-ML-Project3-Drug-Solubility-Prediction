@@ -52,7 +52,7 @@ class RealMLPRegressor(RegressorMixin, BaseEstimator):
         self.n_features_in_ = X.shape[1]
         # Explicit repository path even though current RealMLP does not write
         # temporary model files. Do not use an operating-system temp folder.
-        tmp_folder = Path(__file__).resolve().parents[2] / 'artifacts' / 'tmp' / 'realmlp'
+        tmp_folder = Path(__file__).resolve().parents[2] / '.cache' / 'realmlp'
         self.model_ = RealMLP_TD_Regressor(
             device='cpu',
             random_state=self.seed,

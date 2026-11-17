@@ -20,12 +20,13 @@ import numpy as np
 import pandas as pd
 from sklearn.model_selection import GroupKFold
 from src.data import ROOT, load_data, development_splits
+from src.paths import model_path, normalize_frozen
 from src.metrics import regression_metrics
 from src.experimental_v3.tree_models import RichTreeRegressor, pilot_candidates
 from src.experimental_v3.kernel_models import MultiViewKernelRegressor
 from src.experimental_v3.ensemble import FrameTabMRegressor, FittedConvexEnsemble
 
-OUT = ROOT / "artifacts/combination_v3"
+OUT = ROOT / "output/combination_v3"
 FAMILIES = ["RichExtraTrees", "RichCatBoost", "MultiViewKernel", "TabM"]
 SEEDS = [2026, 17, 42]
 
@@ -89,7 +90,7 @@ def freeze():
     }
     p = OUT/"protocol.json"
     if p.exists():
-        assert json.loads(p.read_text()) == protocol, "Frozen code/protocol changed; use a new experiment version"
+        assert normalize_frozen(json.loads(p.read_text())) == protocol, "Frozen code/protocol changed; use a new experiment version"
     else:
         dump(p, protocol)
     print("PROTOCOL FROZEN", flush=True)
@@ -231,7 +232,7 @@ def collect():
         dump(folder/"summary.json",summary)
         rows.append({k:v for k,v in summary.items() if k != "seed_metrics"})
     for old in ["AdaptiveHybrid", "ExtraTrees"]:
-        previous = json.loads((ROOT/"artifacts/revision_v2/nested"/old/"summary.json").read_text())
+        previous = json.loads((ROOT/"output/revision_v2/nested"/old/"summary.json").read_text())
         rows.append({"model":"Original_"+old, **{k:previous[k] for k in ["MAE","RMSE","R2","parent_macro_MAE"]}})
     table = pd.DataFrame(rows).sort_values("parent_macro_MAE")
     table.to_csv(OUT/"comparison.csv",index=False)
@@ -253,7 +254,7 @@ def deploy():
     dump(OUT/"deployment"/"selection_frozen.json", {"params":params,"weights":weights,"inner_parent_macro_MAE":score})
     models = {name:make(name, params[name],2026).fit(df,df.Solubility_log10,groups=df.parent.to_numpy()) for name in FAMILIES if weights[name] > 0}
     ensemble = FittedConvexEnsemble(models,weights,{"fit_role":"development only","seed":2026,"report_modified":False})
-    path = OUT/"deployment/model.joblib"
+    path = model_path(OUT/"deployment/model.joblib", create=True)
     joblib.dump(ensemble,path,compress=3)
     sample = df.iloc[:20].drop(columns=["Solubility_log10"])
     # Parallel tree reductions can differ in the last bit after a reload.

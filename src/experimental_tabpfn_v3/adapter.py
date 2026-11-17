@@ -1,7 +1,7 @@
 """Isolated local TabPFN-v2 adapter for second-round exploratory experiments.
 
 Built with PriorLabs-TabPFN. Weights use the separately retained Prior Labs
-License 1.1 in artifacts/combination_v3/tabpfn_probe/LICENSE.txt.
+License 1.1 in models/combination_v3/tabpfn_probe/LICENSE.txt.
 """
 from pathlib import Path
 import os
@@ -19,10 +19,11 @@ import torch
 from sklearn.base import BaseEstimator, RegressorMixin
 from tabpfn import TabPFNRegressor
 from tabpfn.constants import ModelVersion
+from src.paths import model_path
 from src.experimental_v3.tree_models import rich_features
 
 ROOT = Path(__file__).resolve().parents[2]
-DEFAULT_CHECKPOINT = ROOT/'artifacts/combination_v3/tabpfn_probe/tabpfn-v2-regressor.ckpt'
+DEFAULT_CHECKPOINT = model_path(ROOT/'output/combination_v3/tabpfn_probe/tabpfn-v2-regressor.ckpt')
 CHECKPOINT_SHA256 = '2ab5a07d5c41dfe6db9aa7ae106fc6de898326c2765be66505a07e2868c10736'
 
 

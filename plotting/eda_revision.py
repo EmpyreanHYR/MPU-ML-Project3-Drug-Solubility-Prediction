@@ -5,7 +5,7 @@ from revision_style import canvas,panel,save_figure
 from matplotlib.patches import PathPatch,Rectangle
 from matplotlib.path import Path as MP
 import pandas as pd,numpy as np
-R=Path(__file__).resolve().parents[1];A=R/'artifacts/revision_v2/analysis'
+R=Path(__file__).resolve().parents[1];A=R/'output/revision_v2/analysis'
 d=pd.read_csv(A/'outlier_values.csv');s=json.loads((A/'outlier_summary.json').read_text());fig,axs=canvas(height_mm=95)
 for ax,col,lab in zip(axs[0],['Solubility_log10','Temperature'],['a','b']):
  ax.boxplot(d[col],widths=.4,patch_artist=True,boxprops={'facecolor':'#DCECF4'},medianprops={'color':'#455469','linewidth':1.4},flierprops={'marker':'.','markersize':3,'markeredgecolor':'#ce7657','alpha':.6});ax.set_xticks([1],['Development records']);ax.set_ylabel('log10 solubility' if lab=='a' else 'Temperature (dataset scale)');panel(ax,lab,'Solubility distribution' if lab=='a' else 'Temperature distribution')

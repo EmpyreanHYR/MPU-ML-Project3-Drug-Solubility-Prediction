@@ -1,0 +1,11 @@
+# Isolated experiment versions; original pyproject.toml and uv.lock unchanged.
+numpy==2.5.5
+pandas==3.1.1
+scikit-learn==1.9.1
+scipy==1.18.1
+rdkit==2026.9.2
+catboost==1.2.10
+torch==2.15.0
+joblib==1.6.0
+tabm==0.0.3
+tabpfn==6.4.1

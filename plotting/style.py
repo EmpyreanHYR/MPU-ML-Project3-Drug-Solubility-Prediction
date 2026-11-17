@@ -35,8 +35,8 @@ mpl.rcParams.update({
 })
 COLORS = {"baseline": "#8A9299", "traditional": "#5D86A6", "modern": "#A48BBB", "selected": "#2E8E8B", "accent": "#CC9165"}
 FIGURES = ROOT / "Assignment_Report/figures"
-QA = ROOT / "artifacts/figure_qa"
-SOURCE = ROOT / "artifacts/figure_source"
+QA = ROOT / ".cache/figure_qa"
+SOURCE = ROOT / ".cache/figure_source"
 for directory in (FIGURES, QA, SOURCE):
     directory.mkdir(parents=True, exist_ok=True)
 
@@ -95,5 +95,5 @@ def save_figure(fig, stem: str, source_paths, notes: dict, **alignment_options):
     (QA/f"{stem}.provenance.json").write_text(json.dumps(provenance,ensure_ascii=False,indent=2)+"\n")
     plt.close(fig)
     if text_result.returncode or collision_result.returncode:
-        raise RuntimeError(f"Figure QA blocked: {stem}; inspect artifacts/figure_qa")
+        raise RuntimeError(f"Figure QA blocked: {stem}; inspect .cache/figure_qa")
     return pdf

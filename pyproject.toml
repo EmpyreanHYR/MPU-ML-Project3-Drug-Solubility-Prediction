@@ -24,6 +24,7 @@ dependencies = [
   "uvicorn>=0.54.0",
   "httpx>=0.28.1",
   "tabpfn==6.4.1",
+  "catboost==1.2.10",
 ]
 
 [tool.pytest.ini_options]

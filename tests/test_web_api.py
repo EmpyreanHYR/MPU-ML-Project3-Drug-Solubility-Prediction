@@ -54,7 +54,7 @@ def test_fusion_inference_and_report_metrics():
     registry=client.get('/api/models').json()
     assert registry['default']==MAIN_MODEL
     assert registry['comparator']=='AdaptiveHybrid'
-    report=pd.read_csv(ROOT/'artifacts/combination_v3/all_nested_comparison.csv').set_index('model')
+    report=pd.read_csv(ROOT/'output/combination_v3/all_nested_comparison.csv').set_index('model')
     record=next(m for m in registry['models'] if m['id']==MAIN_MODEL)
     for k in ['MAE','RMSE','R2','parent_macro_MAE']:
         assert np.isclose(record['metrics'][k],report.loc[MAIN_MODEL,k],atol=1e-12)

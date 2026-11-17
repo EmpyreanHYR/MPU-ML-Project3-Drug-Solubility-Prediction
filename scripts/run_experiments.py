@@ -10,11 +10,12 @@ import pandas as pd
 import joblib
 from sklearn.model_selection import ParameterSampler
 from src.data import ROOT,load_data,development_splits
+from src.paths import model_path
 from src.features import featurize_pairs,feature_names
 from src.models.registry import create_model
 from src.metrics import regression_metrics,macro_bootstrap
 
-OUT=ROOT/'artifacts';SEED=2026
+OUT=ROOT/'output';SEED=2026
 BASE=['Dummy','Ridge','RandomForest','ExtraTrees','HistGradientBoosting','TabM','RealMLP']
 def dump(path,obj):
     path.parent.mkdir(parents=True,exist_ok=True)
@@ -104,14 +105,14 @@ def final_evaluation():
     if selected['exp_id'] not in [c['exp_id'] for c in configs]:configs.append(selected)
     final_records=[]
     for c in configs:
-        exp=c['exp_id'];folder=OUT/'final_results'/exp;model_path=OUT/'final_models'/f'{exp}.joblib';model_path.parent.mkdir(exist_ok=True,parents=True)
+        exp=c['exp_id'];folder=OUT/'final_results'/exp;weight_path=model_path(OUT/'final_models'/f'{exp}.joblib', create=True);weight_path.parent.mkdir(exist_ok=True,parents=True)
         if not (folder/'metrics.json').exists():
             model=create_model(c['model_name'],c['seed'],c['params']);x=matrix(dev,c['representation']);xt=matrix(test,c['representation'])
             start=time.perf_counter();model.fit(x,dev.Solubility_log10.to_numpy());fit_sec=time.perf_counter()-start
             y=test.Solubility_log10.to_numpy();p=model.predict(xt)
             result=dict(exp_id=exp,model_name=c['model_name'],representation=c['representation'],params=c['params'],selected_on_development=(exp==selected['exp_id']),fit_seconds=fit_sec,**regression_metrics(y,p,test.parent),macro_MAE_CI95=macro_bootstrap(y,p,test.parent.to_numpy()),test_rows=len(test),test_parent_groups=test.parent.nunique())
             folder.mkdir(exist_ok=True,parents=True);pd.DataFrame({'data_row':test.data_row,'parent_id':test.parent_group_id,'y':y,'prediction':p}).to_csv(folder/'predictions.csv',index=False)
-            joblib.dump(model,model_path,compress=3)
+            joblib.dump(model,weight_path,compress=3)
             dump(folder/'metrics.json',result);dump(folder/'training_metadata.json',getattr(model,'training_metadata_',{}))
             print('FINAL',json.dumps(result),flush=True)
         final_records.append(json.loads((folder/'metrics.json').read_text()))
@@ -119,10 +120,10 @@ def final_evaluation():
     # Deploy the selected, already evaluated development-trained model. No full-data refit.
     deployment=OUT/'deployment';deployment.mkdir(exist_ok=True)
     import shutil
-    shutil.copy2(OUT/'final_models'/f'{selected["exp_id"]}.joblib',deployment/'model.joblib')
+    shutil.copy2(model_path(OUT/'final_models'/f'{selected["exp_id"]}.joblib'),model_path(deployment/'model.joblib', create=True))
     cols=['Drug','Solvent','Drug SMILES','Solvent SMILES','Temperature','Solubility_log10','data_row','parent_group_id']
     dev[cols].to_csv(deployment/'training_support.csv',index=False)
-    dump(deployment/'metadata.json',{'model_name':selected['model_name'],'experiment_id':selected['exp_id'],'representation':selected['representation'],'feature_names':feature_names(selected['representation']),'source_sha256':hashlib.sha256((ROOT/'datasets/data_2026.csv').read_bytes()).hexdigest(),'model_sha256':hashlib.sha256((deployment/'model.joblib').read_bytes()).hexdigest(),'training_rows':len(dev),'temperature_range':[float(dev.Temperature.min()),float(dev.Temperature.max())],'metrics':next(r for r in final_records if r['exp_id']==selected['exp_id']),'fit_role':'development_only; final holdout not used for fitting','versions':{p:version(p) for p in ['numpy','scikit-learn','rdkit','torch','tabm','pytabkit','streamlit']}})
+    dump(deployment/'metadata.json',{'model_name':selected['model_name'],'experiment_id':selected['exp_id'],'representation':selected['representation'],'feature_names':feature_names(selected['representation']),'source_sha256':hashlib.sha256((ROOT/'datasets/data_2026.csv').read_bytes()).hexdigest(),'model_sha256':hashlib.sha256(model_path(deployment/'model.joblib').read_bytes()).hexdigest(),'training_rows':len(dev),'temperature_range':[float(dev.Temperature.min()),float(dev.Temperature.max())],'metrics':next(r for r in final_records if r['exp_id']==selected['exp_id']),'fit_role':'development_only; final holdout not used for fitting','versions':{p:version(p) for p in ['numpy','scikit-learn','rdkit','torch','tabm','pytabkit','streamlit']}})
 
 if __name__=='__main__':
     parser=argparse.ArgumentParser();parser.add_argument('stage',choices=['baselines','improvements','freeze','final','collect']);parser.add_argument('--models',nargs='+',default=BASE);args=parser.parse_args()

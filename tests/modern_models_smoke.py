@@ -52,7 +52,7 @@ def main():
             'seconds': time.perf_counter() - start,
             'package_version': model.training_metadata_['package_version'],
         })
-    output = Path(__file__).resolve().parents[1] / 'artifacts' / 'tests'
+    output = Path(__file__).resolve().parents[1] / 'output' / 'tests'
     output.mkdir(parents=True, exist_ok=True)
     (output / 'modern_models_smoke.json').write_text(json.dumps(records, indent=2)+'\n')
     print(json.dumps(records, indent=2))

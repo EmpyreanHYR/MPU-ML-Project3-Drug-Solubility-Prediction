@@ -13,9 +13,10 @@ from pydantic import BaseModel,Field,model_validator,ValidationError
 from rdkit import Chem
 from rdkit.Chem.Draw import rdMolDraw2D
 from src.data import ROOT,load_data
+from src.paths import model_path
 from src.features import featurize_pairs,canonical,drug_parent
-ART=ROOT/'artifacts/revision_v2';STATIC=ROOT/'webapp/static'
-NEWART=ROOT/'artifacts/combination_v3/tabpfn_nested'
+ART=ROOT/'output/revision_v2';STATIC=ROOT/'webapp/static'
+NEWART=ROOT/'output/combination_v3/tabpfn_nested'
 MAIN_MODEL='TabPFN_ExtraTreesBlend'
 NEW_MODELS={'TabPFN_ExtraTreesBlend':'TabPFN＋ExtraTrees / 主融合模型','TabPFN_TwoTreeBlend':'TabPFN＋双树 / 融合对照'}
 INFERENCE_LOCK=RLock()
@@ -51,8 +52,8 @@ def model_root(name):return NEWART if name in NEW_MODELS else ART
 def artifact_paths(name):
     if name in NEW_MODELS:
         directory=NEWART/'deployment'
-        return directory/f'{name}.joblib',directory/f'{name}_metadata.json'
-    return ART/'deployment'/name/'model.joblib',ART/'deployment'/name/'metadata.json'
+        return model_path(directory/f'{name}.joblib'),directory/f'{name}_metadata.json'
+    return model_path(ART/'deployment'/name/'model.joblib'),ART/'deployment'/name/'metadata.json'
 
 def model_metadata(name):
     _,path=artifact_paths(name)
@@ -193,7 +194,7 @@ def insights():
             'file': 'datasets/data_2026.csv',
             'sha256': hashlib.sha256(source.read_bytes()).hexdigest(),
             'concentration_unit': 'mol/L', 'target': 'log10(solubility / mol L⁻¹)',
-            'model_artifacts': 'artifacts/combination_v3/tabpfn_nested/deployment/; artifacts/revision_v2/deployment/',
+            'model_artifacts': 'models/combination_v3/tabpfn_nested/deployment/; models/revision_v2/deployment/',
             'observations_scope': 'development_only',
         },
         'learning_notes': [

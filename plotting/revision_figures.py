@@ -7,7 +7,7 @@ import pandas as pd
 from matplotlib.patches import FancyBboxPatch,FancyArrowPatch
 from revision_style import canvas,panel,save_figure,source_table,COLORS
 from src.data import ROOT,load_data
-O=ROOT/'artifacts/revision_v2';A=O/'analysis'
+O=ROOT/'output/revision_v2';A=O/'analysis'
 D={'AdaptiveHybrid':'SOLAR-H','HybridConditional':'SOLAR-H0' ,'InteractionConditional':'SOLAR-N','TemperatureMLP':'MLP + difference','PlainMLP':'MLP','HistGradientBoosting':'HGB','RandomForest':'Random forest','ExtraTrees':'ExtraTrees','Dummy':'Mean','Ridge':'Ridge','TabM':'TabM','RealMLP':'RealMLP'}
 SHORT={'MolWt':'MW','MolLogP':'LogP','TPSA':'TPSA','HBD':'HBD','HBA':'HBA','RotatableBonds':'RB','RingCount':'Rings','AromaticRings':'ArR','HeavyAtomCount':'HA','FractionCSP3':'Csp3','FormalCharge':'Charge'}
 def short(n):
@@ -16,7 +16,7 @@ def short(n):
 C={'AdaptiveHybrid':'#227d75','HybridConditional':'#227d75','InteractionConditional':'#ce7657','ExtraTrees':'#6888aa','TabM':'#957eb3'}
 def col(n):return C.get(n,'#819197')
 def read(n):return pd.read_csv(A/n)
-def finish(fig,name,files,claim):return save_figure(fig,name,[A/f for f in files]+([ROOT/'datasets/data_2026.csv',ROOT/'analysis/2026-11-16/split_manifest.csv'] if name=='v2_data' else []),{'claim':claim,'language':'English','uncertainty':'specified in Chinese manuscript captions','data':'actual recorded CSV experiments'})
+def finish(fig,name,files,claim):return save_figure(fig,name,[A/f for f in files]+([ROOT/'datasets/data_2026.csv',ROOT/'datasets/splits/split_manifest.csv'] if name=='v2_data' else []),{'claim':claim,'language':'English','uncertainty':'specified in Chinese manuscript captions','data':'actual recorded CSV experiments'})
 
 def data_figure():
  d=load_data();dev=read('development_eda.csv');fig,axs=canvas(2,2,126);a,b,c,e=axs.ravel();f=pd.crosstab(d['Drug SMILES'],d['Solvent SMILES']);a.imshow(f.to_numpy()>0,aspect='auto',cmap='Blues',interpolation='nearest',origin='lower');a.set(xlabel='Solvent structure index',ylabel='Drug structure index');panel(a,'a','Observed drug–solvent combinations')

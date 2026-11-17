@@ -9,9 +9,10 @@ import joblib
 from scipy.optimize import brentq
 from rdkit import DataStructs
 from src.data import ROOT,load_data,development_splits
+from src.paths import model_path
 from src.features import featurize_pairs,feature_names,FP,molecule
 from src.metrics import regression_metrics
-OUT=ROOT/'artifacts/revision_v2';A=OUT/'analysis';A.mkdir(exist_ok=True)
+OUT=ROOT/'output/revision_v2';A=OUT/'analysis';A.mkdir(exist_ok=True)
 def dump(name,x):(A/name).write_text(json.dumps(x,ensure_ascii=False,indent=2,default=lambda o:o.item() if isinstance(o,np.generic) else str(o))+'\n')
 def boot(x):
     x=np.asarray(x);b=np.random.default_rng(2026).choice(x,(2000,len(x)),replace=True).mean(axis=1)
@@ -51,7 +52,7 @@ def main():
     # Explanations of the actual two proposed models on the same historical holdout.
     xt=xmatrix(test);y=test.Solubility_log10.to_numpy();perms=[];metadata={};rng=np.random.default_rng(2026)
     for name in ['AdaptiveHybrid','InteractionConditional']:
-        m=joblib.load(OUT/'deployment'/name/'model.joblib');pred=m.predict(xt);base,temp=m.predict_parts(xt)
+        m=joblib.load(model_path(OUT/'deployment'/name/'model.joblib'));pred=m.predict(xt);base,temp=m.predict_parts(xt)
         pd.DataFrame({'data_row':test.data_row,'target':y,'prediction':pred,'base':base,'temperature_component':temp}).to_csv(A/(name+'_parts.csv'),index=False)
         reference=regression_metrics(y,pred,test.parent)['parent_macro_MAE']
         for key,cols in [('Drug',range(11)),('Solvent',range(11,22)),('Temperature',[22])]:
@@ -86,7 +87,7 @@ def main():
         c=dev[dev.pair.eq(pair)];r=c.iloc[0];ts=np.linspace(c.Temperature.min(),c.Temperature.max(),61)
         xx=featurize_pairs([r['Drug SMILES']]*61,[r['Solvent SMILES']]*61,ts)
         for name in ['AdaptiveHybrid','InteractionConditional',baseline]:
-            model=joblib.load(OUT/'deployment'/name/'model.joblib')
+            model=joblib.load(model_path(OUT/'deployment'/name/'model.joblib'))
             for t,v in zip(ts,model.predict(xx)):curves.append({'pair_number':number,'Drug':r.Drug,'Solvent':r.Solvent,'model':name,'Temperature':t,'prediction':v})
         for _,r in c.iterrows():obs.append({'pair_number':number,'Temperature':r.Temperature,'target':r.Solubility_log10})
     pd.DataFrame(curves).to_csv(A/'response_curves.csv',index=False);pd.DataFrame(obs).to_csv(A/'response_observations.csv',index=False)
@@ -98,7 +99,7 @@ def main():
     for rt in np.linspace(0,.8,41):
         for ry in np.linspace(0,.8,41):grid.append({'R2_temperature':rt,'R2_outcome':ry,'adjusted_slope':beta-se*np.sqrt(dof*ry*rt/(1-rt))})
     pd.DataFrame(grid).to_csv(A/'confounding_sensitivity.csv',index=False)
-    causal=json.loads((ROOT/'artifacts/analysis/causal_associations.json').read_text());assert abs(causal['within_pair_slope']-beta)<1e-12
+    causal=json.loads((ROOT/'output/analysis/causal_associations.json').read_text());assert abs(causal['within_pair_slope']-beta)<1e-12
     causal.update({'OLS_residual_df':int(dof),'OLS_SE_for_bias_identity':se,'equal_strength_R2_to_remove_estimate':equal,'sensitivity_scope':'point-estimate omitted-variable bias identity; not cluster-adjusted confidence interval or evidence that confounding exists'})
     dump('causal.json',causal);d[['data_row','dt','dy']].to_csv(A/'within_pair.csv',index=False)
     print(json.dumps(selection),flush=True)

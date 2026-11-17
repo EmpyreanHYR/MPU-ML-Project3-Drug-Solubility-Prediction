@@ -11,10 +11,11 @@ import pandas as pd
 import joblib
 import statsmodels.api as sm
 from src.data import ROOT,load_data
+from src.paths import model_path
 from src.features import featurize_pairs,feature_names
 from src.metrics import regression_metrics
 
-OUT=ROOT/'artifacts/analysis';OUT.mkdir(exist_ok=True,parents=True)
+OUT=ROOT/'output/analysis';OUT.mkdir(exist_ok=True,parents=True)
 def write_json(name,obj):
     (OUT/name).write_text(json.dumps(obj,ensure_ascii=False,indent=2,default=lambda o:o.item() if isinstance(o,np.generic) else str(o))+'\n')
 def features(df,rep):return featurize_pairs(df['Drug SMILES'].tolist(),df['Solvent SMILES'].tolist(),df.Temperature.tolist(),rep)
@@ -50,8 +51,8 @@ def causal_associations(df):
 
 def main():
     df=load_data();dev=df[df.role.eq('development')].copy();test=df[df.role.ne('development')].copy()
-    meta=json.loads((ROOT/'artifacts/deployment/metadata.json').read_text());rep=meta['representation']
-    model=joblib.load(ROOT/'artifacts/deployment/model.joblib');xt=features(test,rep);y=test.Solubility_log10.to_numpy();pred=model.predict(xt)
+    meta=json.loads((ROOT/'output/deployment/metadata.json').read_text());rep=meta['representation']
+    model=joblib.load(model_path(ROOT/'output/deployment/model.joblib'));xt=features(test,rep);y=test.Solubility_log10.to_numpy();pred=model.predict(xt)
     names=feature_names(rep);baseline=regression_metrics(y,pred,test.parent)
     rng=np.random.default_rng(2026);rows=[]
     for group in ['drug','solvent','temperature']:
@@ -63,7 +64,7 @@ def main():
     pd.DataFrame(rows).to_csv(OUT/'group_permutation.csv',index=False)
     # Explain a named tree reference model. Do not claim these values explain a different winner.
     import shap
-    reference=joblib.load(ROOT/'artifacts/final_models/ExtraTrees_base.joblib')
+    reference=joblib.load(model_path(ROOT/'output/final_models/ExtraTrees_base.joblib'))
     xdesc=features(test,'descriptors');explainer=shap.TreeExplainer(reference,feature_perturbation='tree_path_dependent')
     shap_values=np.asarray(explainer.shap_values(xdesc));expected=float(np.asarray(explainer.expected_value).reshape(-1)[0])
     residual=np.abs(shap_values.sum(axis=1)+expected-reference.predict(xdesc))
@@ -83,7 +84,7 @@ def main():
     test[['data_row','Drug','Solvent','Temperature','Solubility_log10','prediction','residual','absolute_error','parent_group_id','solvent_seen','temperature_in_global_range','target_band','temperature_band']].to_csv(OUT/'holdout_error_rows.csv',index=False)
     test.groupby('parent_group_id').agg(rows=('absolute_error','size'),MAE=('absolute_error','mean')).sort_values('MAE',ascending=False).to_csv(OUT/'holdout_parent_errors.csv')
     # Pairwise parent-level changes relative to Ridge on matched holdout groups.
-    ridge=pd.read_csv(ROOT/'artifacts/final_results/Ridge_base/predictions.csv').set_index('data_row')
+    ridge=pd.read_csv(ROOT/'output/final_results/Ridge_base/predictions.csv').set_index('data_row')
     test['ridge_ae']=np.abs(test.Solubility_log10-test.data_row.map(ridge.prediction))
     paired=test.groupby('parent_group_id')[['absolute_error','ridge_ae']].mean();paired['delta_selected_minus_Ridge']=paired.absolute_error-paired.ridge_ae
     paired.to_csv(OUT/'paired_parent_errors.csv')

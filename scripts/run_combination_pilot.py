@@ -16,7 +16,7 @@ from src.experimental_v3.tree_models import RichTreeRegressor, pilot_candidates
 
 
 def main():
-    out = ROOT / "artifacts/combination_v3/tree_pilot"
+    out = ROOT / "output/combination_v3/tree_pilot"
     out.mkdir(parents=True, exist_ok=True)
     df = load_data().query("role == 'development'").reset_index(drop=True)
     y = df.Solubility_log10.to_numpy()

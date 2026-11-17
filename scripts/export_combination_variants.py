@@ -9,6 +9,7 @@ import joblib
 import numpy as np
 import pandas as pd
 from run_combination_nested import OUT, development, make, choose_weights, dump
+from src.paths import model_path
 from src.experimental_v3.ensemble import FittedConvexEnsemble
 
 
@@ -28,7 +29,7 @@ def main():
     models={name:make(name,selected[name],2026).fit(df,df.Solubility_log10,groups=df.parent.to_numpy())
             for name in families if weights[name]>0}
     ensemble=FittedConvexEnsemble(models,weights,{"candidate":"two trees; exploratory subset"})
-    path=OUT/"deployment/two_tree_model.joblib"
+    path=model_path(OUT/"deployment/two_tree_model.joblib", create=True)
     joblib.dump(ensemble,path,compress=3)
     sample=df.iloc[:20].drop(columns=["Solubility_log10"])
     first=ensemble.predict(sample)

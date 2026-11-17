@@ -1,7 +1,7 @@
 """Export two second-round research ensembles without changing the application.
 
 Built with PriorLabs-TabPFN. The public v2 checkpoint and its license are retained
-in artifacts/combination_v3/tabpfn_probe/. No historical holdout is scored.
+in models/combination_v3/tabpfn_probe/. No historical holdout is scored.
 """
 from pathlib import Path
 import sys
@@ -17,6 +17,7 @@ import pandas as pd
 from run_tabpfn_combination_v3 import OUT, FIRST, development, freeze, tune, CATALOG
 from run_combination_nested import choose_weights, make
 from src.data import ROOT
+from src.paths import model_path
 from src.experimental_tabpfn_v3.adapter import FrameTabPFNRegressor, CHECKPOINT_SHA256, DEFAULT_CHECKPOINT
 from src.experimental_v3.ensemble import FittedConvexEnsemble
 
@@ -65,7 +66,7 @@ def main():
                   attribution='Built with PriorLabs-TabPFN')
     protocol_path=DEST/'export_protocol.json'
     if protocol_path.exists():
-        assert json.loads(protocol_path.read_text())==protocol,'Export source or frozen search inputs changed'
+        assert normalize_frozen(json.loads(protocol_path.read_text()))==protocol,'Export source or frozen search inputs changed'
     else:dump(protocol_path,protocol)
     print('EXPORT PROTOCOL FROZEN',flush=True)
     params['TabPFN'],pred=tune(df,OUT/'full_development_search/TabPFN')
@@ -99,7 +100,7 @@ def main():
                                      dict(model=vname,fit_role='development only',seed=2026,
                                           stage='second-round exploratory research artifact',report_modified=False,
                                           attribution='Built with PriorLabs-TabPFN'))
-        path=DEST/f'{vname}.joblib'
+        path=model_path(DEST/f'{vname}.joblib', create=True)
         joblib.dump(ensemble,path,compress=3)
         # Algebraically identical to the fitted ensemble's predict; reuse original
         # component outputs to avoid repeating expensive local ICL inference.

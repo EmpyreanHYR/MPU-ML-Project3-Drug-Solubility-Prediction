@@ -21,7 +21,7 @@ from matplotlib.patches import FancyArrowPatch, FancyBboxPatch
 from style import canvas, panel, save_figure, source_table, COLORS, QA, SOURCE
 from src.data import load_data
 
-ARTIFACTS = ROOT / "artifacts"
+ARTIFACTS = ROOT / "output"
 BASE = ["Dummy", "Ridge", "RandomForest", "ExtraTrees", "HistGradientBoosting", "TabM", "RealMLP"]
 DISPLAY = {"Dummy":"均值预测", "Ridge":"Ridge", "RandomForest":"随机森林", "ExtraTrees":"ExtraTrees", "HistGradientBoosting":"HGB", "TabM":"TabM", "RealMLP":"RealMLP"}
 
