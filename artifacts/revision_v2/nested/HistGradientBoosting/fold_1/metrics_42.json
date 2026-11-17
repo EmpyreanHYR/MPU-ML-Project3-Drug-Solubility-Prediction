@@ -1,0 +1,16 @@
+{
+  "fit_seconds": 0.056567916995845735,
+  "inference_ms_per_row": 0.004009294752179983,
+  "MAE": 0.7650916215801132,
+  "RMSE": 0.9970731742919999,
+  "R2": 0.49861036919991175,
+  "parent_macro_MAE": 0.9109451627970512,
+  "params": {
+    "max_leaf_nodes": 7,
+    "max_iter": 200,
+    "learning_rate": 0.07,
+    "l2_regularization": 10.0
+  },
+  "training": {},
+  "loss": []
+}

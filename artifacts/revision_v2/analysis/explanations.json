@@ -1,0 +1,16 @@
+{
+  "hybrid": {
+    "model": "AdaptiveHybrid",
+    "expected_value": -1.163202840861811,
+    "max_additivity_error": 6.661338147750939e-15,
+    "explained_component": "structural tree baseline; temperature head reported separately",
+    "rows": 397
+  },
+  "neural": {
+    "expected_value": -1.0636511303981777,
+    "max_completeness_error": 0.005216121673583984,
+    "integration_steps": 1024,
+    "baseline": "zero standardized descriptors and centered temperature",
+    "rows": 397
+  }
+}

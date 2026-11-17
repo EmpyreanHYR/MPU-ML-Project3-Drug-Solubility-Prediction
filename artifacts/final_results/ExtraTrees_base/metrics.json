@@ -1,0 +1,18 @@
+{
+  "exp_id": "ExtraTrees_base",
+  "model_name": "ExtraTrees",
+  "representation": "descriptors",
+  "params": {},
+  "selected_on_development": false,
+  "fit_seconds": 0.17293441598303616,
+  "MAE": 0.7952185167272319,
+  "RMSE": 1.0560049345033937,
+  "R2": 0.32808116829589706,
+  "parent_macro_MAE": 0.7239767151629602,
+  "macro_MAE_CI95": [
+    0.5524109380728734,
+    0.9173171451635854
+  ],
+  "test_rows": 397,
+  "test_parent_groups": 33
+}

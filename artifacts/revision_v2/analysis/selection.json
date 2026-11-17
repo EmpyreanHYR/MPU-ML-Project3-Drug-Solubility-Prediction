@@ -1,0 +1,13 @@
+{
+  "proposed": "AdaptiveHybrid",
+  "baseline": "ExtraTrees",
+  "relative_improvement": 0.04085201635025241,
+  "paired_delta": [
+    -0.030513113301054117,
+    -0.06933112598579327,
+    0.008581198925626074
+  ],
+  "parents_improved": 67,
+  "parents": 128,
+  "scope": "nested development predictions; parent-level conditional bootstrap; seeds averaged within each parent"
+}

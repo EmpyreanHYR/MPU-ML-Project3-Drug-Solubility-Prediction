@@ -1,0 +1,16 @@
+{
+  "fit_seconds": 0.1251184999709949,
+  "inference_ms_per_row": 0.03302949098505484,
+  "MAE": 0.8012138880000792,
+  "RMSE": 1.0300420771883052,
+  "R2": 0.20962471745988787,
+  "parent_macro_MAE": 0.6997558996013035,
+  "params": {
+    "n_estimators": 200,
+    "min_samples_leaf": 1,
+    "max_features": 0.7,
+    "max_depth": 16
+  },
+  "training": {},
+  "loss": []
+}

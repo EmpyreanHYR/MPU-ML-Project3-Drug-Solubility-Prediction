@@ -1,0 +1,10 @@
+{
+  "at": "2026-11-16T17:49:48.815395+00:00",
+  "params": {
+    "learning_rate": 0.003,
+    "epochs": 120,
+    "dropout": 0.2,
+    "d_block": 64
+  },
+  "selection": "3-fold development group CV"
+}

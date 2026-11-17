@@ -1,0 +1,14 @@
+{
+  "params": {
+    "n_estimators": 200,
+    "min_samples_leaf": 1,
+    "max_features": 0.7,
+    "max_depth": null
+  },
+  "candidate": 3,
+  "seconds": 0.3919776260154322,
+  "MAE": 0.7724816651704234,
+  "RMSE": 1.0175023694669336,
+  "R2": 0.4085560063174729,
+  "parent_macro_MAE": 0.7563893277824775
+}

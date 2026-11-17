@@ -1,0 +1,72 @@
+{
+  "model": "TabM",
+  "params": {
+    "learning_rate": 0.003,
+    "epochs": 120,
+    "dropout": 0.2,
+    "d_block": 64
+  },
+  "training_rows": 1507,
+  "seed": 2026,
+  "fit_seconds": 1.6691589590045623,
+  "representation": "descriptors",
+  "model_sha256": "3d5f39130d11c4386523fdbfc26939a6077d06af564d62435056a5d00283edb4",
+  "historical_test": {
+    "MAE": 0.822844376482437,
+    "RMSE": 1.1614509954464627,
+    "R2": 0.18719437765323288,
+    "parent_macro_MAE": 0.7249741317398755
+  },
+  "nested_metrics": {
+    "model": "TabM",
+    "MAE": 0.7704508202526751,
+    "RMSE": 0.9996073189939025,
+    "R2": 0.39080451482639617,
+    "parent_macro_MAE": 0.777853087784433,
+    "seed_metrics": [
+      {
+        "MAE": 0.766607695051628,
+        "RMSE": 0.9922379836763703,
+        "R2": 0.3998501157188159,
+        "parent_macro_MAE": 0.7820165969484894
+      },
+      {
+        "MAE": 0.7633585540988466,
+        "RMSE": 0.9891445640430165,
+        "R2": 0.40358635946663046,
+        "parent_macro_MAE": 0.768094849803191
+      },
+      {
+        "MAE": 0.7813862116075508,
+        "RMSE": 1.017439409262321,
+        "R2": 0.3689770692937423,
+        "parent_macro_MAE": 0.7834478166016186
+      }
+    ],
+    "fit_seconds": 2.1750254860613496,
+    "inference_ms_per_row": 0.0031089201357813933
+  },
+  "training_metadata": {
+    "architecture": "official tabm.TabM, arch_type=tabm, no feature embeddings",
+    "package_version": "0.0.3",
+    "device": "cpu",
+    "training_rows": 1507,
+    "internal_validation_rows": 0,
+    "epochs_completed": 120,
+    "elapsed_seconds": 1.6685135000152513,
+    "loss_unit": "mean member MSE on training-fold standardized target",
+    "adaptation": "bounded training configuration; not paper-default benchmark reproduction",
+    "parameters": {
+      "batch_size": 256,
+      "d_block": 64,
+      "dropout": 0.2,
+      "epochs": 120,
+      "k": 16,
+      "learning_rate": 0.003,
+      "n_blocks": 2,
+      "seed": 2026,
+      "threads": 2,
+      "weight_decay": 0.0003
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "exp_id": "Ridge_base",
+  "model_name": "Ridge",
+  "representation": "descriptors",
+  "params": {},
+  "selected_on_development": false,
+  "fit_seconds": 0.0012117919977754354,
+  "MAE": 1.154013825637917,
+  "RMSE": 1.5175182900376414,
+  "R2": -0.3875632416099586,
+  "parent_macro_MAE": 1.0982625563968047,
+  "macro_MAE_CI95": [
+    0.8143558306737754,
+    1.4062258653813908
+  ],
+  "test_rows": 397,
+  "test_parent_groups": 33
+}

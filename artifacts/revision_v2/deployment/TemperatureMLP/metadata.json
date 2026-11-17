@@ -1,0 +1,69 @@
+{
+  "model": "TemperatureMLP",
+  "params": {
+    "width": 32,
+    "lr": 0.003,
+    "epochs": 160,
+    "delta_weight": 0.1
+  },
+  "training_rows": 1507,
+  "seed": 2026,
+  "fit_seconds": 0.5318282079533674,
+  "representation": "descriptors",
+  "model_sha256": "571843f9c3da23f62d66ef23550ffa370e1c1accfe06efa8ac764c51a9fc5b5a",
+  "historical_test": {
+    "MAE": 0.9030033072073285,
+    "RMSE": 1.2016958098424908,
+    "R2": 0.1298902970724607,
+    "parent_macro_MAE": 0.8436193558004256
+  },
+  "nested_metrics": {
+    "model": "TemperatureMLP",
+    "MAE": 0.7946196480101055,
+    "RMSE": 1.0507472942070175,
+    "R2": 0.3266271148165594,
+    "parent_macro_MAE": 0.8371354242398837,
+    "seed_metrics": [
+      {
+        "MAE": 0.7824334167226896,
+        "RMSE": 1.0189265551497582,
+        "R2": 0.3671310449046665,
+        "parent_macro_MAE": 0.8440019792836227
+      },
+      {
+        "MAE": 0.8040558354672668,
+        "RMSE": 1.0556204394587843,
+        "R2": 0.32072815858778403,
+        "parent_macro_MAE": 0.8374887009411873
+      },
+      {
+        "MAE": 0.7973696918403602,
+        "RMSE": 1.07769488801251,
+        "R2": 0.2920221409572278,
+        "parent_macro_MAE": 0.8299155924948416
+      }
+    ],
+    "fit_seconds": 0.34646594993537294,
+    "inference_ms_per_row": 0.0010550924879592703
+  },
+  "training_metadata": {
+    "epochs": 160,
+    "rows": 1507,
+    "difference_pairs": 887,
+    "internal_validation_rows": 0,
+    "loss": "parent-weighted Huber + within-pair difference Huber",
+    "params": {
+      "balanced": false,
+      "delta_weight": 0.1,
+      "dropout": 0.05,
+      "epochs": 160,
+      "interaction": true,
+      "lr": 0.003,
+      "seed": 2026,
+      "structured": false,
+      "temperature": true,
+      "weight_decay": 0.001,
+      "width": 32
+    }
+  }
+}

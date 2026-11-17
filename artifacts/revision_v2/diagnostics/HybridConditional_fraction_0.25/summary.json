@@ -1,0 +1,10 @@
+{
+  "tag": "HybridConditional_fraction_0.25",
+  "model": "HybridConditional",
+  "changes": {},
+  "fraction": 0.25,
+  "MAE": 0.9224491491605827,
+  "RMSE": 1.2448714640332907,
+  "R2": 0.055218607218369686,
+  "parent_macro_MAE": 0.9309501008849715
+}

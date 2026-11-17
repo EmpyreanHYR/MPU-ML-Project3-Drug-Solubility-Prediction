@@ -1,0 +1,18 @@
+{
+  "exp_id": "RealMLP_base",
+  "model_name": "RealMLP",
+  "representation": "descriptors",
+  "params": {},
+  "selected_on_development": false,
+  "fit_seconds": 2.4315374169964343,
+  "MAE": 0.7713642342876545,
+  "RMSE": 1.0783337283384937,
+  "R2": 0.2993658580163582,
+  "parent_macro_MAE": 0.7294415816931887,
+  "macro_MAE_CI95": [
+    0.5224794014551848,
+    0.9588718968441365
+  ],
+  "test_rows": 397,
+  "test_parent_groups": 33
+}

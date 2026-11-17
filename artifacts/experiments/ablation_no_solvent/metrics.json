@@ -1,0 +1,28 @@
+{
+  "exp_id": "ablation_no_solvent",
+  "model_name": "ExtraTrees",
+  "representation": "descriptors",
+  "params": {
+    "min_samples_leaf": 1,
+    "max_features": 1.0,
+    "max_depth": 8,
+    "n_estimators": 300
+  },
+  "protocol": "parent_group_primary",
+  "drop": "solvent",
+  "seed": 2026,
+  "weight": false,
+  "dedup": false,
+  "MAE": 0.8459963390748557,
+  "RMSE": 1.1151446916484598,
+  "R2": 0.24196287965901297,
+  "parent_macro_MAE": 0.8091023472912382,
+  "macro_MAE_CI95": [
+    0.7255125962298333,
+    0.9018596624813531
+  ],
+  "elapsed_seconds": 0.7848393329768442,
+  "n_features": 12,
+  "rows": 1507,
+  "score_role": "development pooled OOF; model-selection score"
+}

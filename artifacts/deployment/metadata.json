@@ -1,0 +1,70 @@
+{
+  "model_name": "ExtraTrees",
+  "experiment_id": "ExtraTrees_tune_05",
+  "representation": "descriptors",
+  "feature_names": [
+    "drug_MolWt",
+    "drug_MolLogP",
+    "drug_TPSA",
+    "drug_HBD",
+    "drug_HBA",
+    "drug_RotatableBonds",
+    "drug_RingCount",
+    "drug_AromaticRings",
+    "drug_HeavyAtomCount",
+    "drug_FractionCSP3",
+    "drug_FormalCharge",
+    "solvent_MolWt",
+    "solvent_MolLogP",
+    "solvent_TPSA",
+    "solvent_HBD",
+    "solvent_HBA",
+    "solvent_RotatableBonds",
+    "solvent_RingCount",
+    "solvent_AromaticRings",
+    "solvent_HeavyAtomCount",
+    "solvent_FractionCSP3",
+    "solvent_FormalCharge",
+    "Temperature"
+  ],
+  "source_sha256": "5cf4cecfb556dba5fe10d57ffebe337090cdee07cca6327ec7375cf84c79290d",
+  "model_sha256": "2575df0f4ddb02a1b6152a6318d4acda1a2db4e6dc04028daf29e9e7805058a3",
+  "training_rows": 1507,
+  "temperature_range": [
+    -59.5,
+    130.0
+  ],
+  "metrics": {
+    "exp_id": "ExtraTrees_tune_05",
+    "model_name": "ExtraTrees",
+    "representation": "descriptors",
+    "params": {
+      "min_samples_leaf": 1,
+      "max_features": 1.0,
+      "max_depth": 8,
+      "n_estimators": 300
+    },
+    "selected_on_development": true,
+    "fit_seconds": 0.16676433297106996,
+    "MAE": 0.8192947792258991,
+    "RMSE": 1.0680378300217461,
+    "R2": 0.31268125342529784,
+    "parent_macro_MAE": 0.736174394632097,
+    "macro_MAE_CI95": [
+      0.5790444161379072,
+      0.9115612751109685
+    ],
+    "test_rows": 397,
+    "test_parent_groups": 33
+  },
+  "fit_role": "development_only; final holdout not used for fitting",
+  "versions": {
+    "numpy": "2.5.5",
+    "scikit-learn": "1.9.1",
+    "rdkit": "2026.9.2",
+    "torch": "2.15.0",
+    "tabm": "0.0.3",
+    "pytabkit": "1.8.0",
+    "streamlit": "1.67.0"
+  }
+}

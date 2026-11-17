@@ -1,0 +1,7 @@
+frequency,role,records,parents
+1–5,development,157,63
+1–5,reserved_holdout_unscored,25,11
+6–20,development,466,42
+6–20,reserved_holdout_unscored,178,15
+>20,development,884,23
+>20,reserved_holdout_unscored,194,7

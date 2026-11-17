@@ -1,0 +1,25 @@
+{
+  "passed": true,
+  "models": [
+    "AdaptiveHybrid",
+    "Dummy",
+    "ExtraTrees",
+    "HistGradientBoosting",
+    "HybridConditional",
+    "InteractionConditional",
+    "PlainMLP",
+    "RandomForest",
+    "RealMLP",
+    "Ridge",
+    "TabM",
+    "TemperatureMLP"
+  ],
+  "outer_fits": 180,
+  "nested_inner_fits": 1995,
+  "full_development_search_fits": 399,
+  "deployed_models": 12,
+  "diagnostic_variants": 32,
+  "source_artifact_hashes": 2318,
+  "diagnostic_fits": 480,
+  "total_estimator_fits": 3066
+}

@@ -1,0 +1,12 @@
+{
+  "tag": "HybridConditional_no_interaction",
+  "model": "HybridConditional",
+  "changes": {
+    "interaction": false
+  },
+  "fraction": 1.0,
+  "MAE": 0.7709223949491001,
+  "RMSE": 1.0267290669939986,
+  "R2": 0.3573794326093977,
+  "parent_macro_MAE": 0.7581250689510023
+}

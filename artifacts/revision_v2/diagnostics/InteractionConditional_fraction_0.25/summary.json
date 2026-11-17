@@ -1,0 +1,10 @@
+{
+  "tag": "InteractionConditional_fraction_0.25",
+  "model": "InteractionConditional",
+  "changes": {},
+  "fraction": 0.25,
+  "MAE": 0.9871874503982393,
+  "RMSE": 1.3735556940662208,
+  "R2": -0.167839873626949,
+  "parent_macro_MAE": 1.0237518196341229
+}

@@ -1,0 +1,18 @@
+{
+  "exp_id": "Dummy_base",
+  "model_name": "Dummy",
+  "representation": "descriptors",
+  "params": {},
+  "selected_on_development": false,
+  "fit_seconds": 0.0031377910054288805,
+  "MAE": 1.1231140379314215,
+  "RMSE": 1.342649503616795,
+  "R2": -0.0862010773734232,
+  "parent_macro_MAE": 1.0279608012316337,
+  "macro_MAE_CI95": [
+    0.8593217710766086,
+    1.2038761968881138
+  ],
+  "test_rows": 397,
+  "test_parent_groups": 33
+}

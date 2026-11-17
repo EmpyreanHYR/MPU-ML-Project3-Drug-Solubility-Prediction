@@ -1,0 +1,12 @@
+{
+  "tag": "AdaptiveHybrid_no_balanced",
+  "model": "AdaptiveHybrid",
+  "changes": {
+    "balanced": false
+  },
+  "fraction": 1.0,
+  "MAE": 0.7436341680979129,
+  "RMSE": 0.9716986290290978,
+  "R2": 0.42442025580089426,
+  "parent_macro_MAE": 0.737984063911492
+}

@@ -1,0 +1,107 @@
+{
+  "representation_selected_on_development": "descriptors",
+  "configs": [
+    {
+      "min_samples_leaf": 1,
+      "max_features": 0.5,
+      "max_depth": null
+    },
+    {
+      "min_samples_leaf": 4,
+      "max_features": 1.0,
+      "max_depth": 8
+    },
+    {
+      "min_samples_leaf": 4,
+      "max_features": 0.5,
+      "max_depth": 16
+    },
+    {
+      "min_samples_leaf": 8,
+      "max_features": 1.0,
+      "max_depth": 8
+    },
+    {
+      "min_samples_leaf": 8,
+      "max_features": 1.0,
+      "max_depth": 16
+    },
+    {
+      "min_samples_leaf": 1,
+      "max_features": 1.0,
+      "max_depth": 8
+    },
+    {
+      "min_samples_leaf": 2,
+      "max_features": 1.0,
+      "max_depth": null
+    },
+    {
+      "min_samples_leaf": 4,
+      "max_features": 0.8,
+      "max_depth": 16
+    },
+    {
+      "min_samples_leaf": 2,
+      "max_features": 0.5,
+      "max_depth": null
+    },
+    {
+      "min_samples_leaf": 1,
+      "max_features": 0.8,
+      "max_depth": 16
+    },
+    {
+      "min_samples_leaf": 2,
+      "max_features": 0.8,
+      "max_depth": 16
+    },
+    {
+      "min_samples_leaf": 8,
+      "max_features": 0.5,
+      "max_depth": 8
+    },
+    {
+      "min_samples_leaf": 1,
+      "max_features": 0.8,
+      "max_depth": 8
+    },
+    {
+      "min_samples_leaf": 2,
+      "max_features": 1.0,
+      "max_depth": 8
+    },
+    {
+      "min_samples_leaf": 4,
+      "max_features": 1.0,
+      "max_depth": null
+    },
+    {
+      "min_samples_leaf": 8,
+      "max_features": 0.5,
+      "max_depth": null
+    },
+    {
+      "min_samples_leaf": 8,
+      "max_features": 1.0,
+      "max_depth": null
+    },
+    {
+      "min_samples_leaf": 8,
+      "max_features": 0.5,
+      "max_depth": 16
+    },
+    {
+      "min_samples_leaf": 4,
+      "max_features": 0.8,
+      "max_depth": null
+    },
+    {
+      "min_samples_leaf": 2,
+      "max_features": 1.0,
+      "max_depth": 16
+    }
+  ],
+  "n_estimators": 300,
+  "selection_metric": "pooled OOF parent_macro_MAE"
+}

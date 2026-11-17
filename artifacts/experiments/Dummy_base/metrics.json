@@ -1,0 +1,23 @@
+{
+  "exp_id": "Dummy_base",
+  "model_name": "Dummy",
+  "representation": "descriptors",
+  "params": {},
+  "protocol": "parent_group_primary",
+  "drop": null,
+  "seed": 2026,
+  "weight": false,
+  "dedup": false,
+  "MAE": 1.0591014829534982,
+  "RMSE": 1.3111891168061962,
+  "R2": -0.047993772679779,
+  "parent_macro_MAE": 0.9638145164973515,
+  "macro_MAE_CI95": [
+    0.8611380851728951,
+    1.0809967399179705
+  ],
+  "elapsed_seconds": 0.08174958301242441,
+  "n_features": 23,
+  "rows": 1507,
+  "score_role": "development pooled OOF; model-selection score"
+}

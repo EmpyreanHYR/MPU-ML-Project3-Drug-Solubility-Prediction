@@ -1,0 +1,12 @@
+{
+  "tag": "InteractionConditional_no_temperature",
+  "model": "InteractionConditional",
+  "changes": {
+    "temperature": false
+  },
+  "fraction": 1.0,
+  "MAE": 0.8424710559777391,
+  "RMSE": 1.1570871828770264,
+  "R2": 0.18155359085868952,
+  "parent_macro_MAE": 0.8219017270092968
+}

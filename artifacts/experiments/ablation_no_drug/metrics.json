@@ -1,0 +1,28 @@
+{
+  "exp_id": "ablation_no_drug",
+  "model_name": "ExtraTrees",
+  "representation": "descriptors",
+  "params": {
+    "min_samples_leaf": 1,
+    "max_features": 1.0,
+    "max_depth": 8,
+    "n_estimators": 300
+  },
+  "protocol": "parent_group_primary",
+  "drop": "drug",
+  "seed": 2026,
+  "weight": false,
+  "dedup": false,
+  "MAE": 1.0677175110705877,
+  "RMSE": 1.3629757502950088,
+  "R2": -0.13241154525013243,
+  "parent_macro_MAE": 1.0371975078528561,
+  "macro_MAE_CI95": [
+    0.9234836660584125,
+    1.1733521069418698
+  ],
+  "elapsed_seconds": 0.7124659999972209,
+  "n_features": 12,
+  "rows": 1507,
+  "score_role": "development pooled OOF; model-selection score"
+}

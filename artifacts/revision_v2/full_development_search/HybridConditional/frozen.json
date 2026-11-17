@@ -1,0 +1,10 @@
+{
+  "at": "2026-11-16T17:56:30.541048+00:00",
+  "params": {
+    "n_estimators": 200,
+    "min_samples_leaf": 1,
+    "max_depth": 8,
+    "alpha": 1000.0
+  },
+  "selection": "3-fold development group CV"
+}

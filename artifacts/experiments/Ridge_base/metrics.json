@@ -1,0 +1,23 @@
+{
+  "exp_id": "Ridge_base",
+  "model_name": "Ridge",
+  "representation": "descriptors",
+  "params": {},
+  "protocol": "parent_group_primary",
+  "drop": null,
+  "seed": 2026,
+  "weight": false,
+  "dedup": false,
+  "MAE": 0.921803698055821,
+  "RMSE": 1.2129577861805307,
+  "R2": 0.10315084422992016,
+  "parent_macro_MAE": 0.9544350773159633,
+  "macro_MAE_CI95": [
+    0.8451525491610922,
+    1.0730320246069156
+  ],
+  "elapsed_seconds": 0.804711667005904,
+  "n_features": 23,
+  "rows": 1507,
+  "score_role": "development pooled OOF; model-selection score"
+}

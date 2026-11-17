@@ -1,0 +1,12 @@
+{
+  "tag": "HybridConditional_alpha_100.0",
+  "model": "HybridConditional",
+  "changes": {
+    "alpha": 100.0
+  },
+  "fraction": 1.0,
+  "MAE": 0.8284937924101339,
+  "RMSE": 1.2117940947398325,
+  "R2": 0.10486612531454516,
+  "parent_macro_MAE": 0.8430577032834717
+}

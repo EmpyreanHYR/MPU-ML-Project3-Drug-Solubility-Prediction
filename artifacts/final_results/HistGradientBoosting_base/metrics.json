@@ -1,0 +1,18 @@
+{
+  "exp_id": "HistGradientBoosting_base",
+  "model_name": "HistGradientBoosting",
+  "representation": "descriptors",
+  "params": {},
+  "selected_on_development": false,
+  "fit_seconds": 0.0981889579561539,
+  "MAE": 0.8708869704560612,
+  "RMSE": 1.1640877780942722,
+  "R2": 0.18349964656488693,
+  "parent_macro_MAE": 0.8472561430158358,
+  "macro_MAE_CI95": [
+    0.6570540358242637,
+    1.0532535233810367
+  ],
+  "test_rows": 397,
+  "test_parent_groups": 33
+}

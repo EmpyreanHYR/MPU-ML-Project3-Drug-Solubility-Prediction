@@ -1,0 +1,550 @@
+pair_number,Drug,Solvent,model,Temperature,prediction
+1,Lovastatin,Acetone,AdaptiveHybrid,5.5,-1.213321614092945
+1,Lovastatin,Acetone,AdaptiveHybrid,6.233333333333333,-1.213321614092945
+1,Lovastatin,Acetone,AdaptiveHybrid,6.966666666666667,-1.213321614092945
+1,Lovastatin,Acetone,AdaptiveHybrid,7.699999999999999,-1.213321614092945
+1,Lovastatin,Acetone,AdaptiveHybrid,8.433333333333334,-1.213321614092945
+1,Lovastatin,Acetone,AdaptiveHybrid,9.166666666666666,-1.213321614092945
+1,Lovastatin,Acetone,AdaptiveHybrid,9.899999999999999,-1.213321614092945
+1,Lovastatin,Acetone,AdaptiveHybrid,10.633333333333333,-1.213321614092945
+1,Lovastatin,Acetone,AdaptiveHybrid,11.366666666666667,-1.213321614092945
+1,Lovastatin,Acetone,AdaptiveHybrid,12.1,-1.213321614092945
+1,Lovastatin,Acetone,AdaptiveHybrid,12.833333333333332,-1.213321614092945
+1,Lovastatin,Acetone,AdaptiveHybrid,13.566666666666666,-1.213321614092945
+1,Lovastatin,Acetone,AdaptiveHybrid,14.299999999999999,-1.213321614092945
+1,Lovastatin,Acetone,AdaptiveHybrid,15.033333333333333,-1.213321614092945
+1,Lovastatin,Acetone,AdaptiveHybrid,15.766666666666666,-1.213321614092945
+1,Lovastatin,Acetone,AdaptiveHybrid,16.5,-1.213321614092945
+1,Lovastatin,Acetone,AdaptiveHybrid,17.233333333333334,-1.213321614092945
+1,Lovastatin,Acetone,AdaptiveHybrid,17.966666666666665,-1.213321614092945
+1,Lovastatin,Acetone,AdaptiveHybrid,18.7,-1.213321614092945
+1,Lovastatin,Acetone,AdaptiveHybrid,19.43333333333333,-1.213321614092945
+1,Lovastatin,Acetone,AdaptiveHybrid,20.166666666666664,-1.213321614092945
+1,Lovastatin,Acetone,AdaptiveHybrid,20.9,-1.213321614092945
+1,Lovastatin,Acetone,AdaptiveHybrid,21.633333333333333,-1.213321614092945
+1,Lovastatin,Acetone,AdaptiveHybrid,22.366666666666667,-1.213321614092945
+1,Lovastatin,Acetone,AdaptiveHybrid,23.099999999999998,-1.213321614092945
+1,Lovastatin,Acetone,AdaptiveHybrid,23.833333333333332,-1.213321614092945
+1,Lovastatin,Acetone,AdaptiveHybrid,24.566666666666666,-1.213321614092945
+1,Lovastatin,Acetone,AdaptiveHybrid,25.299999999999997,-1.213321614092945
+1,Lovastatin,Acetone,AdaptiveHybrid,26.03333333333333,-1.213321614092945
+1,Lovastatin,Acetone,AdaptiveHybrid,26.766666666666666,-1.213321614092945
+1,Lovastatin,Acetone,AdaptiveHybrid,27.5,-1.213321614092945
+1,Lovastatin,Acetone,AdaptiveHybrid,28.23333333333333,-1.213321614092945
+1,Lovastatin,Acetone,AdaptiveHybrid,28.966666666666665,-1.213321614092945
+1,Lovastatin,Acetone,AdaptiveHybrid,29.7,-1.213321614092945
+1,Lovastatin,Acetone,AdaptiveHybrid,30.43333333333333,-1.213321614092945
+1,Lovastatin,Acetone,AdaptiveHybrid,31.166666666666664,-1.213321614092945
+1,Lovastatin,Acetone,AdaptiveHybrid,31.9,-1.213321614092945
+1,Lovastatin,Acetone,AdaptiveHybrid,32.63333333333333,-1.213321614092945
+1,Lovastatin,Acetone,AdaptiveHybrid,33.36666666666666,-1.213321614092945
+1,Lovastatin,Acetone,AdaptiveHybrid,34.099999999999994,-1.213321614092945
+1,Lovastatin,Acetone,AdaptiveHybrid,34.83333333333333,-1.213321614092945
+1,Lovastatin,Acetone,AdaptiveHybrid,35.56666666666666,-1.213321614092945
+1,Lovastatin,Acetone,AdaptiveHybrid,36.3,-1.213321614092945
+1,Lovastatin,Acetone,AdaptiveHybrid,37.03333333333333,-1.213321614092945
+1,Lovastatin,Acetone,AdaptiveHybrid,37.766666666666666,-1.213321614092945
+1,Lovastatin,Acetone,AdaptiveHybrid,38.5,-1.213321614092945
+1,Lovastatin,Acetone,AdaptiveHybrid,39.233333333333334,-1.213321614092945
+1,Lovastatin,Acetone,AdaptiveHybrid,39.96666666666666,-1.213321614092945
+1,Lovastatin,Acetone,AdaptiveHybrid,40.699999999999996,-1.213321614092945
+1,Lovastatin,Acetone,AdaptiveHybrid,41.43333333333333,-1.213321614092945
+1,Lovastatin,Acetone,AdaptiveHybrid,42.166666666666664,-1.213321614092945
+1,Lovastatin,Acetone,AdaptiveHybrid,42.9,-1.213321614092945
+1,Lovastatin,Acetone,AdaptiveHybrid,43.63333333333333,-1.213321614092945
+1,Lovastatin,Acetone,AdaptiveHybrid,44.36666666666667,-1.213321614092945
+1,Lovastatin,Acetone,AdaptiveHybrid,45.099999999999994,-1.213321614092945
+1,Lovastatin,Acetone,AdaptiveHybrid,45.83333333333333,-1.213321614092945
+1,Lovastatin,Acetone,AdaptiveHybrid,46.56666666666666,-1.213321614092945
+1,Lovastatin,Acetone,AdaptiveHybrid,47.3,-1.213321614092945
+1,Lovastatin,Acetone,AdaptiveHybrid,48.03333333333333,-1.213321614092945
+1,Lovastatin,Acetone,AdaptiveHybrid,48.766666666666666,-1.213321614092945
+1,Lovastatin,Acetone,AdaptiveHybrid,49.5,-1.213321614092945
+1,Lovastatin,Acetone,InteractionConditional,5.5,-1.7740366458892822
+1,Lovastatin,Acetone,InteractionConditional,6.233333333333333,-1.7636852264404297
+1,Lovastatin,Acetone,InteractionConditional,6.966666666666667,-1.7533336877822876
+1,Lovastatin,Acetone,InteractionConditional,7.699999999999999,-1.7429821491241455
+1,Lovastatin,Acetone,InteractionConditional,8.433333333333334,-1.732630729675293
+1,Lovastatin,Acetone,InteractionConditional,9.166666666666666,-1.7222791910171509
+1,Lovastatin,Acetone,InteractionConditional,9.899999999999999,-1.7119276523590088
+1,Lovastatin,Acetone,InteractionConditional,10.633333333333333,-1.7015762329101562
+1,Lovastatin,Acetone,InteractionConditional,11.366666666666667,-1.6912246942520142
+1,Lovastatin,Acetone,InteractionConditional,12.1,-1.680873155593872
+1,Lovastatin,Acetone,InteractionConditional,12.833333333333332,-1.6705217361450195
+1,Lovastatin,Acetone,InteractionConditional,13.566666666666666,-1.6601701974868774
+1,Lovastatin,Acetone,InteractionConditional,14.299999999999999,-1.6498186588287354
+1,Lovastatin,Acetone,InteractionConditional,15.033333333333333,-1.6394672393798828
+1,Lovastatin,Acetone,InteractionConditional,15.766666666666666,-1.6291157007217407
+1,Lovastatin,Acetone,InteractionConditional,16.5,-1.6187642812728882
+1,Lovastatin,Acetone,InteractionConditional,17.233333333333334,-1.608412742614746
+1,Lovastatin,Acetone,InteractionConditional,17.966666666666665,-1.598061203956604
+1,Lovastatin,Acetone,InteractionConditional,18.7,-1.5877097845077515
+1,Lovastatin,Acetone,InteractionConditional,19.43333333333333,-1.5773582458496094
+1,Lovastatin,Acetone,InteractionConditional,20.166666666666664,-1.5670067071914673
+1,Lovastatin,Acetone,InteractionConditional,20.9,-1.5566552877426147
+1,Lovastatin,Acetone,InteractionConditional,21.633333333333333,-1.5463037490844727
+1,Lovastatin,Acetone,InteractionConditional,22.366666666666667,-1.5359522104263306
+1,Lovastatin,Acetone,InteractionConditional,23.099999999999998,-1.525600790977478
+1,Lovastatin,Acetone,InteractionConditional,23.833333333333332,-1.515249252319336
+1,Lovastatin,Acetone,InteractionConditional,24.566666666666666,-1.5048977136611938
+1,Lovastatin,Acetone,InteractionConditional,25.299999999999997,-1.4945462942123413
+1,Lovastatin,Acetone,InteractionConditional,26.03333333333333,-1.4841947555541992
+1,Lovastatin,Acetone,InteractionConditional,26.766666666666666,-1.4738432168960571
+1,Lovastatin,Acetone,InteractionConditional,27.5,-1.4634917974472046
+1,Lovastatin,Acetone,InteractionConditional,28.23333333333333,-1.4531402587890625
+1,Lovastatin,Acetone,InteractionConditional,28.966666666666665,-1.4427887201309204
+1,Lovastatin,Acetone,InteractionConditional,29.7,-1.4324373006820679
+1,Lovastatin,Acetone,InteractionConditional,30.43333333333333,-1.4220857620239258
+1,Lovastatin,Acetone,InteractionConditional,31.166666666666664,-1.4117343425750732
+1,Lovastatin,Acetone,InteractionConditional,31.9,-1.4013828039169312
+1,Lovastatin,Acetone,InteractionConditional,32.63333333333333,-1.391031265258789
+1,Lovastatin,Acetone,InteractionConditional,33.36666666666666,-1.3806798458099365
+1,Lovastatin,Acetone,InteractionConditional,34.099999999999994,-1.3703283071517944
+1,Lovastatin,Acetone,InteractionConditional,34.83333333333333,-1.3599767684936523
+1,Lovastatin,Acetone,InteractionConditional,35.56666666666666,-1.3496253490447998
+1,Lovastatin,Acetone,InteractionConditional,36.3,-1.3392738103866577
+1,Lovastatin,Acetone,InteractionConditional,37.03333333333333,-1.3289222717285156
+1,Lovastatin,Acetone,InteractionConditional,37.766666666666666,-1.318570852279663
+1,Lovastatin,Acetone,InteractionConditional,38.5,-1.308219313621521
+1,Lovastatin,Acetone,InteractionConditional,39.233333333333334,-1.297867774963379
+1,Lovastatin,Acetone,InteractionConditional,39.96666666666666,-1.2875163555145264
+1,Lovastatin,Acetone,InteractionConditional,40.699999999999996,-1.2771648168563843
+1,Lovastatin,Acetone,InteractionConditional,41.43333333333333,-1.2668132781982422
+1,Lovastatin,Acetone,InteractionConditional,42.166666666666664,-1.2564618587493896
+1,Lovastatin,Acetone,InteractionConditional,42.9,-1.2461103200912476
+1,Lovastatin,Acetone,InteractionConditional,43.63333333333333,-1.2357587814331055
+1,Lovastatin,Acetone,InteractionConditional,44.36666666666667,-1.225407361984253
+1,Lovastatin,Acetone,InteractionConditional,45.099999999999994,-1.2150559425354004
+1,Lovastatin,Acetone,InteractionConditional,45.83333333333333,-1.2047042846679688
+1,Lovastatin,Acetone,InteractionConditional,46.56666666666666,-1.1943528652191162
+1,Lovastatin,Acetone,InteractionConditional,47.3,-1.1840013265609741
+1,Lovastatin,Acetone,InteractionConditional,48.03333333333333,-1.1736499071121216
+1,Lovastatin,Acetone,InteractionConditional,48.766666666666666,-1.1632983684539795
+1,Lovastatin,Acetone,InteractionConditional,49.5,-1.1529468297958374
+1,Lovastatin,Acetone,ExtraTrees,5.5,-1.0157175981083162
+1,Lovastatin,Acetone,ExtraTrees,6.233333333333333,-1.0157175981083162
+1,Lovastatin,Acetone,ExtraTrees,6.966666666666667,-1.015110263213316
+1,Lovastatin,Acetone,ExtraTrees,7.699999999999999,-1.014654982765816
+1,Lovastatin,Acetone,ExtraTrees,8.433333333333334,-1.0130305181316985
+1,Lovastatin,Acetone,ExtraTrees,9.166666666666666,-1.0119526195041986
+1,Lovastatin,Acetone,ExtraTrees,9.899999999999999,-1.0119526195041986
+1,Lovastatin,Acetone,ExtraTrees,10.633333333333333,-1.0119526195041986
+1,Lovastatin,Acetone,ExtraTrees,11.366666666666667,-1.0119526195041986
+1,Lovastatin,Acetone,ExtraTrees,12.1,-1.0102267250247539
+1,Lovastatin,Acetone,ExtraTrees,12.833333333333332,-1.008713606752548
+1,Lovastatin,Acetone,ExtraTrees,13.566666666666666,-1.008713606752548
+1,Lovastatin,Acetone,ExtraTrees,14.299999999999999,-1.0068932292165307
+1,Lovastatin,Acetone,ExtraTrees,15.033333333333333,-1.0068932292165307
+1,Lovastatin,Acetone,ExtraTrees,15.766666666666666,-1.0068932292165307
+1,Lovastatin,Acetone,ExtraTrees,16.5,-1.0068932292165307
+1,Lovastatin,Acetone,ExtraTrees,17.233333333333334,-1.0063298524881972
+1,Lovastatin,Acetone,ExtraTrees,17.966666666666665,-1.0063298524881972
+1,Lovastatin,Acetone,ExtraTrees,18.7,-1.0063298524881972
+1,Lovastatin,Acetone,ExtraTrees,19.43333333333333,-1.0063298524881972
+1,Lovastatin,Acetone,ExtraTrees,20.166666666666664,-1.0051921538031974
+1,Lovastatin,Acetone,ExtraTrees,20.9,-1.0051921538031974
+1,Lovastatin,Acetone,ExtraTrees,21.633333333333333,-1.0024666541906735
+1,Lovastatin,Acetone,ExtraTrees,22.366666666666667,-1.0021303310740068
+1,Lovastatin,Acetone,ExtraTrees,23.099999999999998,-1.0021303310740068
+1,Lovastatin,Acetone,ExtraTrees,23.833333333333332,-1.0021303310740068
+1,Lovastatin,Acetone,ExtraTrees,24.566666666666666,-1.0021303310740068
+1,Lovastatin,Acetone,ExtraTrees,25.299999999999997,-1.0005564967743368
+1,Lovastatin,Acetone,ExtraTrees,26.03333333333333,-0.9980380139624049
+1,Lovastatin,Acetone,ExtraTrees,26.766666666666666,-0.9957994000824048
+1,Lovastatin,Acetone,ExtraTrees,27.5,-0.9957994000824048
+1,Lovastatin,Acetone,ExtraTrees,28.23333333333333,-0.9957994000824048
+1,Lovastatin,Acetone,ExtraTrees,28.966666666666665,-0.9957994000824048
+1,Lovastatin,Acetone,ExtraTrees,29.7,-0.9928303385764198
+1,Lovastatin,Acetone,ExtraTrees,30.43333333333333,-0.9915214383458416
+1,Lovastatin,Acetone,ExtraTrees,31.166666666666664,-0.9915214383458416
+1,Lovastatin,Acetone,ExtraTrees,31.9,-0.9915214383458416
+1,Lovastatin,Acetone,ExtraTrees,32.63333333333333,-0.9915214383458416
+1,Lovastatin,Acetone,ExtraTrees,33.36666666666666,-0.9894046568172883
+1,Lovastatin,Acetone,ExtraTrees,34.099999999999994,-0.9894046568172883
+1,Lovastatin,Acetone,ExtraTrees,34.83333333333333,-0.9894046568172883
+1,Lovastatin,Acetone,ExtraTrees,35.56666666666666,-0.9880080946006808
+1,Lovastatin,Acetone,ExtraTrees,36.3,-0.9872684204124309
+1,Lovastatin,Acetone,ExtraTrees,37.03333333333333,-0.9855583979330561
+1,Lovastatin,Acetone,ExtraTrees,37.766666666666666,-0.9855583979330561
+1,Lovastatin,Acetone,ExtraTrees,38.5,-0.9855583979330561
+1,Lovastatin,Acetone,ExtraTrees,39.233333333333334,-0.983848375453681
+1,Lovastatin,Acetone,ExtraTrees,39.96666666666666,-0.9804096708650536
+1,Lovastatin,Acetone,ExtraTrees,40.699999999999996,-0.9804096708650536
+1,Lovastatin,Acetone,ExtraTrees,41.43333333333333,-0.9798369491813037
+1,Lovastatin,Acetone,ExtraTrees,42.166666666666664,-0.9778377913143036
+1,Lovastatin,Acetone,ExtraTrees,42.9,-0.9778377913143036
+1,Lovastatin,Acetone,ExtraTrees,43.63333333333333,-0.973799968197588
+1,Lovastatin,Acetone,ExtraTrees,44.36666666666667,-0.973799968197588
+1,Lovastatin,Acetone,ExtraTrees,45.099999999999994,-0.973799968197588
+1,Lovastatin,Acetone,ExtraTrees,45.83333333333333,-0.973799968197588
+1,Lovastatin,Acetone,ExtraTrees,46.56666666666666,-0.9734288345275881
+1,Lovastatin,Acetone,ExtraTrees,47.3,-0.9722283898405881
+1,Lovastatin,Acetone,ExtraTrees,48.03333333333333,-0.9722283898405881
+1,Lovastatin,Acetone,ExtraTrees,48.766666666666666,-0.9715032005118381
+1,Lovastatin,Acetone,ExtraTrees,49.5,-0.9691893088907854
+2,Lovastatin,Butyl Acetate,AdaptiveHybrid,5.95,-1.4485962756440685
+2,Lovastatin,Butyl Acetate,AdaptiveHybrid,6.6875,-1.4485962756440685
+2,Lovastatin,Butyl Acetate,AdaptiveHybrid,7.425000000000001,-1.4485962756440685
+2,Lovastatin,Butyl Acetate,AdaptiveHybrid,8.162500000000001,-1.4485962756440685
+2,Lovastatin,Butyl Acetate,AdaptiveHybrid,8.9,-1.4485962756440685
+2,Lovastatin,Butyl Acetate,AdaptiveHybrid,9.6375,-1.4485962756440685
+2,Lovastatin,Butyl Acetate,AdaptiveHybrid,10.375,-1.4485962756440685
+2,Lovastatin,Butyl Acetate,AdaptiveHybrid,11.1125,-1.4485962756440685
+2,Lovastatin,Butyl Acetate,AdaptiveHybrid,11.850000000000001,-1.4485962756440685
+2,Lovastatin,Butyl Acetate,AdaptiveHybrid,12.5875,-1.4485962756440685
+2,Lovastatin,Butyl Acetate,AdaptiveHybrid,13.325,-1.4485962756440685
+2,Lovastatin,Butyl Acetate,AdaptiveHybrid,14.0625,-1.4485962756440685
+2,Lovastatin,Butyl Acetate,AdaptiveHybrid,14.8,-1.4485962756440685
+2,Lovastatin,Butyl Acetate,AdaptiveHybrid,15.537500000000001,-1.4485962756440685
+2,Lovastatin,Butyl Acetate,AdaptiveHybrid,16.275000000000002,-1.4485962756440685
+2,Lovastatin,Butyl Acetate,AdaptiveHybrid,17.0125,-1.4485962756440685
+2,Lovastatin,Butyl Acetate,AdaptiveHybrid,17.75,-1.4485962756440685
+2,Lovastatin,Butyl Acetate,AdaptiveHybrid,18.4875,-1.4485962756440685
+2,Lovastatin,Butyl Acetate,AdaptiveHybrid,19.225,-1.4485962756440685
+2,Lovastatin,Butyl Acetate,AdaptiveHybrid,19.962500000000002,-1.4485962756440685
+2,Lovastatin,Butyl Acetate,AdaptiveHybrid,20.7,-1.4485962756440685
+2,Lovastatin,Butyl Acetate,AdaptiveHybrid,21.4375,-1.4485962756440685
+2,Lovastatin,Butyl Acetate,AdaptiveHybrid,22.175,-1.4485962756440685
+2,Lovastatin,Butyl Acetate,AdaptiveHybrid,22.9125,-1.4485962756440685
+2,Lovastatin,Butyl Acetate,AdaptiveHybrid,23.650000000000002,-1.4485962756440685
+2,Lovastatin,Butyl Acetate,AdaptiveHybrid,24.3875,-1.4485962756440685
+2,Lovastatin,Butyl Acetate,AdaptiveHybrid,25.125,-1.4485962756440685
+2,Lovastatin,Butyl Acetate,AdaptiveHybrid,25.8625,-1.4485962756440685
+2,Lovastatin,Butyl Acetate,AdaptiveHybrid,26.6,-1.4485962756440685
+2,Lovastatin,Butyl Acetate,AdaptiveHybrid,27.337500000000002,-1.4485962756440685
+2,Lovastatin,Butyl Acetate,AdaptiveHybrid,28.075,-1.4485962756440685
+2,Lovastatin,Butyl Acetate,AdaptiveHybrid,28.8125,-1.4485962756440685
+2,Lovastatin,Butyl Acetate,AdaptiveHybrid,29.55,-1.4485962756440685
+2,Lovastatin,Butyl Acetate,AdaptiveHybrid,30.2875,-1.4485962756440685
+2,Lovastatin,Butyl Acetate,AdaptiveHybrid,31.025000000000002,-1.4485962756440685
+2,Lovastatin,Butyl Acetate,AdaptiveHybrid,31.7625,-1.4485962756440685
+2,Lovastatin,Butyl Acetate,AdaptiveHybrid,32.5,-1.4485962756440685
+2,Lovastatin,Butyl Acetate,AdaptiveHybrid,33.237500000000004,-1.4485962756440685
+2,Lovastatin,Butyl Acetate,AdaptiveHybrid,33.975,-1.4485962756440685
+2,Lovastatin,Butyl Acetate,AdaptiveHybrid,34.712500000000006,-1.4485962756440685
+2,Lovastatin,Butyl Acetate,AdaptiveHybrid,35.45,-1.4485962756440685
+2,Lovastatin,Butyl Acetate,AdaptiveHybrid,36.1875,-1.4485962756440685
+2,Lovastatin,Butyl Acetate,AdaptiveHybrid,36.925000000000004,-1.4485962756440685
+2,Lovastatin,Butyl Acetate,AdaptiveHybrid,37.6625,-1.4485962756440685
+2,Lovastatin,Butyl Acetate,AdaptiveHybrid,38.400000000000006,-1.4485962756440685
+2,Lovastatin,Butyl Acetate,AdaptiveHybrid,39.1375,-1.4485962756440685
+2,Lovastatin,Butyl Acetate,AdaptiveHybrid,39.87500000000001,-1.4485962756440685
+2,Lovastatin,Butyl Acetate,AdaptiveHybrid,40.612500000000004,-1.4485962756440685
+2,Lovastatin,Butyl Acetate,AdaptiveHybrid,41.35000000000001,-1.4485962756440685
+2,Lovastatin,Butyl Acetate,AdaptiveHybrid,42.087500000000006,-1.4485962756440685
+2,Lovastatin,Butyl Acetate,AdaptiveHybrid,42.825,-1.4485962756440685
+2,Lovastatin,Butyl Acetate,AdaptiveHybrid,43.56250000000001,-1.4485962756440685
+2,Lovastatin,Butyl Acetate,AdaptiveHybrid,44.300000000000004,-1.4485962756440685
+2,Lovastatin,Butyl Acetate,AdaptiveHybrid,45.03750000000001,-1.4485962756440685
+2,Lovastatin,Butyl Acetate,AdaptiveHybrid,45.775000000000006,-1.4485962756440685
+2,Lovastatin,Butyl Acetate,AdaptiveHybrid,46.5125,-1.4485962756440685
+2,Lovastatin,Butyl Acetate,AdaptiveHybrid,47.25000000000001,-1.4485962756440685
+2,Lovastatin,Butyl Acetate,AdaptiveHybrid,47.987500000000004,-1.4485962756440685
+2,Lovastatin,Butyl Acetate,AdaptiveHybrid,48.72500000000001,-1.4485962756440685
+2,Lovastatin,Butyl Acetate,AdaptiveHybrid,49.462500000000006,-1.4485962756440685
+2,Lovastatin,Butyl Acetate,AdaptiveHybrid,50.2,-1.4485962756440685
+2,Lovastatin,Butyl Acetate,InteractionConditional,5.95,-1.5560760498046875
+2,Lovastatin,Butyl Acetate,InteractionConditional,6.6875,-1.5450129508972168
+2,Lovastatin,Butyl Acetate,InteractionConditional,7.425000000000001,-1.5339499711990356
+2,Lovastatin,Butyl Acetate,InteractionConditional,8.162500000000001,-1.522886872291565
+2,Lovastatin,Butyl Acetate,InteractionConditional,8.9,-1.5118238925933838
+2,Lovastatin,Butyl Acetate,InteractionConditional,9.6375,-1.500760793685913
+2,Lovastatin,Butyl Acetate,InteractionConditional,10.375,-1.489697813987732
+2,Lovastatin,Butyl Acetate,InteractionConditional,11.1125,-1.4786347150802612
+2,Lovastatin,Butyl Acetate,InteractionConditional,11.850000000000001,-1.46757173538208
+2,Lovastatin,Butyl Acetate,InteractionConditional,12.5875,-1.4565086364746094
+2,Lovastatin,Butyl Acetate,InteractionConditional,13.325,-1.4454456567764282
+2,Lovastatin,Butyl Acetate,InteractionConditional,14.0625,-1.4343825578689575
+2,Lovastatin,Butyl Acetate,InteractionConditional,14.8,-1.4233195781707764
+2,Lovastatin,Butyl Acetate,InteractionConditional,15.537500000000001,-1.4122564792633057
+2,Lovastatin,Butyl Acetate,InteractionConditional,16.275000000000002,-1.4011934995651245
+2,Lovastatin,Butyl Acetate,InteractionConditional,17.0125,-1.3901304006576538
+2,Lovastatin,Butyl Acetate,InteractionConditional,17.75,-1.3790674209594727
+2,Lovastatin,Butyl Acetate,InteractionConditional,18.4875,-1.368004322052002
+2,Lovastatin,Butyl Acetate,InteractionConditional,19.225,-1.3569413423538208
+2,Lovastatin,Butyl Acetate,InteractionConditional,19.962500000000002,-1.34587824344635
+2,Lovastatin,Butyl Acetate,InteractionConditional,20.7,-1.334815263748169
+2,Lovastatin,Butyl Acetate,InteractionConditional,21.4375,-1.3237521648406982
+2,Lovastatin,Butyl Acetate,InteractionConditional,22.175,-1.312689185142517
+2,Lovastatin,Butyl Acetate,InteractionConditional,22.9125,-1.3016260862350464
+2,Lovastatin,Butyl Acetate,InteractionConditional,23.650000000000002,-1.2905631065368652
+2,Lovastatin,Butyl Acetate,InteractionConditional,24.3875,-1.2795000076293945
+2,Lovastatin,Butyl Acetate,InteractionConditional,25.125,-1.2684370279312134
+2,Lovastatin,Butyl Acetate,InteractionConditional,25.8625,-1.2573739290237427
+2,Lovastatin,Butyl Acetate,InteractionConditional,26.6,-1.2463109493255615
+2,Lovastatin,Butyl Acetate,InteractionConditional,27.337500000000002,-1.2352478504180908
+2,Lovastatin,Butyl Acetate,InteractionConditional,28.075,-1.2241847515106201
+2,Lovastatin,Butyl Acetate,InteractionConditional,28.8125,-1.213121771812439
+2,Lovastatin,Butyl Acetate,InteractionConditional,29.55,-1.2020587921142578
+2,Lovastatin,Butyl Acetate,InteractionConditional,30.2875,-1.190995693206787
+2,Lovastatin,Butyl Acetate,InteractionConditional,31.025000000000002,-1.179932713508606
+2,Lovastatin,Butyl Acetate,InteractionConditional,31.7625,-1.1688696146011353
+2,Lovastatin,Butyl Acetate,InteractionConditional,32.5,-1.157806634902954
+2,Lovastatin,Butyl Acetate,InteractionConditional,33.237500000000004,-1.1467435359954834
+2,Lovastatin,Butyl Acetate,InteractionConditional,33.975,-1.1356805562973022
+2,Lovastatin,Butyl Acetate,InteractionConditional,34.712500000000006,-1.1246174573898315
+2,Lovastatin,Butyl Acetate,InteractionConditional,35.45,-1.1135543584823608
+2,Lovastatin,Butyl Acetate,InteractionConditional,36.1875,-1.1024913787841797
+2,Lovastatin,Butyl Acetate,InteractionConditional,36.925000000000004,-1.0914283990859985
+2,Lovastatin,Butyl Acetate,InteractionConditional,37.6625,-1.0803653001785278
+2,Lovastatin,Butyl Acetate,InteractionConditional,38.400000000000006,-1.0693022012710571
+2,Lovastatin,Butyl Acetate,InteractionConditional,39.1375,-1.058239221572876
+2,Lovastatin,Butyl Acetate,InteractionConditional,39.87500000000001,-1.0471761226654053
+2,Lovastatin,Butyl Acetate,InteractionConditional,40.612500000000004,-1.0361131429672241
+2,Lovastatin,Butyl Acetate,InteractionConditional,41.35000000000001,-1.025050163269043
+2,Lovastatin,Butyl Acetate,InteractionConditional,42.087500000000006,-1.0139870643615723
+2,Lovastatin,Butyl Acetate,InteractionConditional,42.825,-1.0029239654541016
+2,Lovastatin,Butyl Acetate,InteractionConditional,43.56250000000001,-0.9918609857559204
+2,Lovastatin,Butyl Acetate,InteractionConditional,44.300000000000004,-0.9807979464530945
+2,Lovastatin,Butyl Acetate,InteractionConditional,45.03750000000001,-0.9697349071502686
+2,Lovastatin,Butyl Acetate,InteractionConditional,45.775000000000006,-0.9586718082427979
+2,Lovastatin,Butyl Acetate,InteractionConditional,46.5125,-0.9476088285446167
+2,Lovastatin,Butyl Acetate,InteractionConditional,47.25000000000001,-0.9365457892417908
+2,Lovastatin,Butyl Acetate,InteractionConditional,47.987500000000004,-0.9254827499389648
+2,Lovastatin,Butyl Acetate,InteractionConditional,48.72500000000001,-0.9144197106361389
+2,Lovastatin,Butyl Acetate,InteractionConditional,49.462500000000006,-0.9033566117286682
+2,Lovastatin,Butyl Acetate,InteractionConditional,50.2,-0.8922936320304871
+2,Lovastatin,Butyl Acetate,ExtraTrees,5.95,-1.351434053495141
+2,Lovastatin,Butyl Acetate,ExtraTrees,6.6875,-1.351434053495141
+2,Lovastatin,Butyl Acetate,ExtraTrees,7.425000000000001,-1.3504377486258912
+2,Lovastatin,Butyl Acetate,ExtraTrees,8.162500000000001,-1.3504377486258912
+2,Lovastatin,Butyl Acetate,ExtraTrees,8.9,-1.3504377486258912
+2,Lovastatin,Butyl Acetate,ExtraTrees,9.6375,-1.3504377486258912
+2,Lovastatin,Butyl Acetate,ExtraTrees,10.375,-1.3504377486258912
+2,Lovastatin,Butyl Acetate,ExtraTrees,11.1125,-1.3504377486258912
+2,Lovastatin,Butyl Acetate,ExtraTrees,11.850000000000001,-1.3504377486258912
+2,Lovastatin,Butyl Acetate,ExtraTrees,12.5875,-1.3504377486258912
+2,Lovastatin,Butyl Acetate,ExtraTrees,13.325,-1.3504377486258912
+2,Lovastatin,Butyl Acetate,ExtraTrees,14.0625,-1.3504377486258912
+2,Lovastatin,Butyl Acetate,ExtraTrees,14.8,-1.3486173710898735
+2,Lovastatin,Butyl Acetate,ExtraTrees,15.537500000000001,-1.3459629706145173
+2,Lovastatin,Butyl Acetate,ExtraTrees,16.275000000000002,-1.3459629706145173
+2,Lovastatin,Butyl Acetate,ExtraTrees,17.0125,-1.3459629706145173
+2,Lovastatin,Butyl Acetate,ExtraTrees,17.75,-1.3459629706145173
+2,Lovastatin,Butyl Acetate,ExtraTrees,18.4875,-1.3440735209371104
+2,Lovastatin,Butyl Acetate,ExtraTrees,19.225,-1.3432539407309647
+2,Lovastatin,Butyl Acetate,ExtraTrees,19.962500000000002,-1.341878458869298
+2,Lovastatin,Butyl Acetate,ExtraTrees,20.7,-1.341878458869298
+2,Lovastatin,Butyl Acetate,ExtraTrees,21.4375,-1.3392897520447764
+2,Lovastatin,Butyl Acetate,ExtraTrees,22.175,-1.3392897520447764
+2,Lovastatin,Butyl Acetate,ExtraTrees,22.9125,-1.3392897520447764
+2,Lovastatin,Butyl Acetate,ExtraTrees,23.650000000000002,-1.3392897520447764
+2,Lovastatin,Butyl Acetate,ExtraTrees,24.3875,-1.3392897520447764
+2,Lovastatin,Butyl Acetate,ExtraTrees,25.125,-1.3380085845067007
+2,Lovastatin,Butyl Acetate,ExtraTrees,25.8625,-1.3339118201972138
+2,Lovastatin,Butyl Acetate,ExtraTrees,26.6,-1.3323085014749412
+2,Lovastatin,Butyl Acetate,ExtraTrees,27.337500000000002,-1.3313919144012158
+2,Lovastatin,Butyl Acetate,ExtraTrees,28.075,-1.330072780105829
+2,Lovastatin,Butyl Acetate,ExtraTrees,28.8125,-1.330072780105829
+2,Lovastatin,Butyl Acetate,ExtraTrees,29.55,-1.3277611661462583
+2,Lovastatin,Butyl Acetate,ExtraTrees,30.2875,-1.3253033355102082
+2,Lovastatin,Butyl Acetate,ExtraTrees,31.025000000000002,-1.324127174996204
+2,Lovastatin,Butyl Acetate,ExtraTrees,31.7625,-1.3230121576797307
+2,Lovastatin,Butyl Acetate,ExtraTrees,32.5,-1.321768072595915
+2,Lovastatin,Butyl Acetate,ExtraTrees,33.237500000000004,-1.319179330174469
+2,Lovastatin,Butyl Acetate,ExtraTrees,33.975,-1.319179330174469
+2,Lovastatin,Butyl Acetate,ExtraTrees,34.712500000000006,-1.316806676283428
+2,Lovastatin,Butyl Acetate,ExtraTrees,35.45,-1.316806676283428
+2,Lovastatin,Butyl Acetate,ExtraTrees,36.1875,-1.316806676283428
+2,Lovastatin,Butyl Acetate,ExtraTrees,36.925000000000004,-1.3139905087055173
+2,Lovastatin,Butyl Acetate,ExtraTrees,37.6625,-1.3116106624627775
+2,Lovastatin,Butyl Acetate,ExtraTrees,38.400000000000006,-1.3116106624627775
+2,Lovastatin,Butyl Acetate,ExtraTrees,39.1375,-1.3116106624627775
+2,Lovastatin,Butyl Acetate,ExtraTrees,39.87500000000001,-1.3116106624627775
+2,Lovastatin,Butyl Acetate,ExtraTrees,40.612500000000004,-1.3116106624627775
+2,Lovastatin,Butyl Acetate,ExtraTrees,41.35000000000001,-1.3096509537775554
+2,Lovastatin,Butyl Acetate,ExtraTrees,42.087500000000006,-1.3067739616484275
+2,Lovastatin,Butyl Acetate,ExtraTrees,42.825,-1.3067739616484275
+2,Lovastatin,Butyl Acetate,ExtraTrees,43.56250000000001,-1.3067739616484275
+2,Lovastatin,Butyl Acetate,ExtraTrees,44.300000000000004,-1.3024792836150658
+2,Lovastatin,Butyl Acetate,ExtraTrees,45.03750000000001,-1.3024792836150658
+2,Lovastatin,Butyl Acetate,ExtraTrees,45.775000000000006,-1.3024792836150658
+2,Lovastatin,Butyl Acetate,ExtraTrees,46.5125,-1.301579041815066
+2,Lovastatin,Butyl Acetate,ExtraTrees,47.25000000000001,-1.301579041815066
+2,Lovastatin,Butyl Acetate,ExtraTrees,47.987500000000004,-1.301579041815066
+2,Lovastatin,Butyl Acetate,ExtraTrees,48.72500000000001,-1.301579041815066
+2,Lovastatin,Butyl Acetate,ExtraTrees,49.462500000000006,-1.2996111620322877
+2,Lovastatin,Butyl Acetate,ExtraTrees,50.2,-1.2996111620322877
+3,Paroxetine HCl hemihydrate,2-Butanol,AdaptiveHybrid,13.75,-1.87077595554136
+3,Paroxetine HCl hemihydrate,2-Butanol,AdaptiveHybrid,14.823333333333334,-1.87077595554136
+3,Paroxetine HCl hemihydrate,2-Butanol,AdaptiveHybrid,15.896666666666667,-1.87077595554136
+3,Paroxetine HCl hemihydrate,2-Butanol,AdaptiveHybrid,16.97,-1.87077595554136
+3,Paroxetine HCl hemihydrate,2-Butanol,AdaptiveHybrid,18.043333333333333,-1.87077595554136
+3,Paroxetine HCl hemihydrate,2-Butanol,AdaptiveHybrid,19.116666666666667,-1.87077595554136
+3,Paroxetine HCl hemihydrate,2-Butanol,AdaptiveHybrid,20.19,-1.87077595554136
+3,Paroxetine HCl hemihydrate,2-Butanol,AdaptiveHybrid,21.263333333333335,-1.87077595554136
+3,Paroxetine HCl hemihydrate,2-Butanol,AdaptiveHybrid,22.336666666666666,-1.87077595554136
+3,Paroxetine HCl hemihydrate,2-Butanol,AdaptiveHybrid,23.410000000000004,-1.87077595554136
+3,Paroxetine HCl hemihydrate,2-Butanol,AdaptiveHybrid,24.483333333333334,-1.87077595554136
+3,Paroxetine HCl hemihydrate,2-Butanol,AdaptiveHybrid,25.55666666666667,-1.87077595554136
+3,Paroxetine HCl hemihydrate,2-Butanol,AdaptiveHybrid,26.630000000000003,-1.87077595554136
+3,Paroxetine HCl hemihydrate,2-Butanol,AdaptiveHybrid,27.703333333333333,-1.87077595554136
+3,Paroxetine HCl hemihydrate,2-Butanol,AdaptiveHybrid,28.77666666666667,-1.87077595554136
+3,Paroxetine HCl hemihydrate,2-Butanol,AdaptiveHybrid,29.85,-1.87077595554136
+3,Paroxetine HCl hemihydrate,2-Butanol,AdaptiveHybrid,30.923333333333336,-1.87077595554136
+3,Paroxetine HCl hemihydrate,2-Butanol,AdaptiveHybrid,31.99666666666667,-1.87077595554136
+3,Paroxetine HCl hemihydrate,2-Butanol,AdaptiveHybrid,33.07000000000001,-1.87077595554136
+3,Paroxetine HCl hemihydrate,2-Butanol,AdaptiveHybrid,34.14333333333333,-1.87077595554136
+3,Paroxetine HCl hemihydrate,2-Butanol,AdaptiveHybrid,35.21666666666667,-1.87077595554136
+3,Paroxetine HCl hemihydrate,2-Butanol,AdaptiveHybrid,36.290000000000006,-1.87077595554136
+3,Paroxetine HCl hemihydrate,2-Butanol,AdaptiveHybrid,37.36333333333334,-1.87077595554136
+3,Paroxetine HCl hemihydrate,2-Butanol,AdaptiveHybrid,38.43666666666667,-1.87077595554136
+3,Paroxetine HCl hemihydrate,2-Butanol,AdaptiveHybrid,39.510000000000005,-1.87077595554136
+3,Paroxetine HCl hemihydrate,2-Butanol,AdaptiveHybrid,40.583333333333336,-1.87077595554136
+3,Paroxetine HCl hemihydrate,2-Butanol,AdaptiveHybrid,41.656666666666666,-1.87077595554136
+3,Paroxetine HCl hemihydrate,2-Butanol,AdaptiveHybrid,42.730000000000004,-1.87077595554136
+3,Paroxetine HCl hemihydrate,2-Butanol,AdaptiveHybrid,43.80333333333334,-1.87077595554136
+3,Paroxetine HCl hemihydrate,2-Butanol,AdaptiveHybrid,44.87666666666667,-1.87077595554136
+3,Paroxetine HCl hemihydrate,2-Butanol,AdaptiveHybrid,45.95,-1.87077595554136
+3,Paroxetine HCl hemihydrate,2-Butanol,AdaptiveHybrid,47.02333333333334,-1.87077595554136
+3,Paroxetine HCl hemihydrate,2-Butanol,AdaptiveHybrid,48.09666666666667,-1.87077595554136
+3,Paroxetine HCl hemihydrate,2-Butanol,AdaptiveHybrid,49.17,-1.87077595554136
+3,Paroxetine HCl hemihydrate,2-Butanol,AdaptiveHybrid,50.24333333333334,-1.87077595554136
+3,Paroxetine HCl hemihydrate,2-Butanol,AdaptiveHybrid,51.31666666666667,-1.87077595554136
+3,Paroxetine HCl hemihydrate,2-Butanol,AdaptiveHybrid,52.39000000000001,-1.87077595554136
+3,Paroxetine HCl hemihydrate,2-Butanol,AdaptiveHybrid,53.46333333333334,-1.87077595554136
+3,Paroxetine HCl hemihydrate,2-Butanol,AdaptiveHybrid,54.53666666666667,-1.87077595554136
+3,Paroxetine HCl hemihydrate,2-Butanol,AdaptiveHybrid,55.61000000000001,-1.87077595554136
+3,Paroxetine HCl hemihydrate,2-Butanol,AdaptiveHybrid,56.68333333333334,-1.87077595554136
+3,Paroxetine HCl hemihydrate,2-Butanol,AdaptiveHybrid,57.756666666666675,-1.87077595554136
+3,Paroxetine HCl hemihydrate,2-Butanol,AdaptiveHybrid,58.830000000000005,-1.87077595554136
+3,Paroxetine HCl hemihydrate,2-Butanol,AdaptiveHybrid,59.903333333333336,-1.87077595554136
+3,Paroxetine HCl hemihydrate,2-Butanol,AdaptiveHybrid,60.976666666666674,-1.87077595554136
+3,Paroxetine HCl hemihydrate,2-Butanol,AdaptiveHybrid,62.050000000000004,-1.87077595554136
+3,Paroxetine HCl hemihydrate,2-Butanol,AdaptiveHybrid,63.12333333333334,-1.87077595554136
+3,Paroxetine HCl hemihydrate,2-Butanol,AdaptiveHybrid,64.19666666666667,-1.87077595554136
+3,Paroxetine HCl hemihydrate,2-Butanol,AdaptiveHybrid,65.27000000000001,-1.87077595554136
+3,Paroxetine HCl hemihydrate,2-Butanol,AdaptiveHybrid,66.34333333333333,-1.87077595554136
+3,Paroxetine HCl hemihydrate,2-Butanol,AdaptiveHybrid,67.41666666666667,-1.87077595554136
+3,Paroxetine HCl hemihydrate,2-Butanol,AdaptiveHybrid,68.49000000000001,-1.87077595554136
+3,Paroxetine HCl hemihydrate,2-Butanol,AdaptiveHybrid,69.56333333333333,-1.87077595554136
+3,Paroxetine HCl hemihydrate,2-Butanol,AdaptiveHybrid,70.63666666666668,-1.87077595554136
+3,Paroxetine HCl hemihydrate,2-Butanol,AdaptiveHybrid,71.71000000000001,-1.87077595554136
+3,Paroxetine HCl hemihydrate,2-Butanol,AdaptiveHybrid,72.78333333333333,-1.87077595554136
+3,Paroxetine HCl hemihydrate,2-Butanol,AdaptiveHybrid,73.85666666666668,-1.87077595554136
+3,Paroxetine HCl hemihydrate,2-Butanol,AdaptiveHybrid,74.93,-1.87077595554136
+3,Paroxetine HCl hemihydrate,2-Butanol,AdaptiveHybrid,76.00333333333334,-1.87077595554136
+3,Paroxetine HCl hemihydrate,2-Butanol,AdaptiveHybrid,77.07666666666668,-1.87077595554136
+3,Paroxetine HCl hemihydrate,2-Butanol,AdaptiveHybrid,78.15,-1.87077595554136
+3,Paroxetine HCl hemihydrate,2-Butanol,InteractionConditional,13.75,-2.5929129123687744
+3,Paroxetine HCl hemihydrate,2-Butanol,InteractionConditional,14.823333333333334,-2.5756027698516846
+3,Paroxetine HCl hemihydrate,2-Butanol,InteractionConditional,15.896666666666667,-2.5582923889160156
+3,Paroxetine HCl hemihydrate,2-Butanol,InteractionConditional,16.97,-2.540982246398926
+3,Paroxetine HCl hemihydrate,2-Butanol,InteractionConditional,18.043333333333333,-2.523671865463257
+3,Paroxetine HCl hemihydrate,2-Butanol,InteractionConditional,19.116666666666667,-2.506361484527588
+3,Paroxetine HCl hemihydrate,2-Butanol,InteractionConditional,20.19,-2.489051342010498
+3,Paroxetine HCl hemihydrate,2-Butanol,InteractionConditional,21.263333333333335,-2.471740961074829
+3,Paroxetine HCl hemihydrate,2-Butanol,InteractionConditional,22.336666666666666,-2.4544308185577393
+3,Paroxetine HCl hemihydrate,2-Butanol,InteractionConditional,23.410000000000004,-2.4371204376220703
+3,Paroxetine HCl hemihydrate,2-Butanol,InteractionConditional,24.483333333333334,-2.4198100566864014
+3,Paroxetine HCl hemihydrate,2-Butanol,InteractionConditional,25.55666666666667,-2.4024999141693115
+3,Paroxetine HCl hemihydrate,2-Butanol,InteractionConditional,26.630000000000003,-2.3851895332336426
+3,Paroxetine HCl hemihydrate,2-Butanol,InteractionConditional,27.703333333333333,-2.3678793907165527
+3,Paroxetine HCl hemihydrate,2-Butanol,InteractionConditional,28.77666666666667,-2.350569009780884
+3,Paroxetine HCl hemihydrate,2-Butanol,InteractionConditional,29.85,-2.333258628845215
+3,Paroxetine HCl hemihydrate,2-Butanol,InteractionConditional,30.923333333333336,-2.315948486328125
+3,Paroxetine HCl hemihydrate,2-Butanol,InteractionConditional,31.99666666666667,-2.298638105392456
+3,Paroxetine HCl hemihydrate,2-Butanol,InteractionConditional,33.07000000000001,-2.281327962875366
+3,Paroxetine HCl hemihydrate,2-Butanol,InteractionConditional,34.14333333333333,-2.2640175819396973
+3,Paroxetine HCl hemihydrate,2-Butanol,InteractionConditional,35.21666666666667,-2.2467072010040283
+3,Paroxetine HCl hemihydrate,2-Butanol,InteractionConditional,36.290000000000006,-2.2293970584869385
+3,Paroxetine HCl hemihydrate,2-Butanol,InteractionConditional,37.36333333333334,-2.2120866775512695
+3,Paroxetine HCl hemihydrate,2-Butanol,InteractionConditional,38.43666666666667,-2.1947765350341797
+3,Paroxetine HCl hemihydrate,2-Butanol,InteractionConditional,39.510000000000005,-2.1774661540985107
+3,Paroxetine HCl hemihydrate,2-Butanol,InteractionConditional,40.583333333333336,-2.160156011581421
+3,Paroxetine HCl hemihydrate,2-Butanol,InteractionConditional,41.656666666666666,-2.142845630645752
+3,Paroxetine HCl hemihydrate,2-Butanol,InteractionConditional,42.730000000000004,-2.125535249710083
+3,Paroxetine HCl hemihydrate,2-Butanol,InteractionConditional,43.80333333333334,-2.108225107192993
+3,Paroxetine HCl hemihydrate,2-Butanol,InteractionConditional,44.87666666666667,-2.090914726257324
+3,Paroxetine HCl hemihydrate,2-Butanol,InteractionConditional,45.95,-2.0736045837402344
+3,Paroxetine HCl hemihydrate,2-Butanol,InteractionConditional,47.02333333333334,-2.0562942028045654
+3,Paroxetine HCl hemihydrate,2-Butanol,InteractionConditional,48.09666666666667,-2.0389838218688965
+3,Paroxetine HCl hemihydrate,2-Butanol,InteractionConditional,49.17,-2.0216736793518066
+3,Paroxetine HCl hemihydrate,2-Butanol,InteractionConditional,50.24333333333334,-2.0043632984161377
+3,Paroxetine HCl hemihydrate,2-Butanol,InteractionConditional,51.31666666666667,-1.9870530366897583
+3,Paroxetine HCl hemihydrate,2-Butanol,InteractionConditional,52.39000000000001,-1.969742774963379
+3,Paroxetine HCl hemihydrate,2-Butanol,InteractionConditional,53.46333333333334,-1.95243239402771
+3,Paroxetine HCl hemihydrate,2-Butanol,InteractionConditional,54.53666666666667,-1.9351221323013306
+3,Paroxetine HCl hemihydrate,2-Butanol,InteractionConditional,55.61000000000001,-1.9178118705749512
+3,Paroxetine HCl hemihydrate,2-Butanol,InteractionConditional,56.68333333333334,-1.9005014896392822
+3,Paroxetine HCl hemihydrate,2-Butanol,InteractionConditional,57.756666666666675,-1.8831913471221924
+3,Paroxetine HCl hemihydrate,2-Butanol,InteractionConditional,58.830000000000005,-1.8658809661865234
+3,Paroxetine HCl hemihydrate,2-Butanol,InteractionConditional,59.903333333333336,-1.8485708236694336
+3,Paroxetine HCl hemihydrate,2-Butanol,InteractionConditional,60.976666666666674,-1.8312604427337646
+3,Paroxetine HCl hemihydrate,2-Butanol,InteractionConditional,62.050000000000004,-1.8139501810073853
+3,Paroxetine HCl hemihydrate,2-Butanol,InteractionConditional,63.12333333333334,-1.7966399192810059
+3,Paroxetine HCl hemihydrate,2-Butanol,InteractionConditional,64.19666666666667,-1.7793296575546265
+3,Paroxetine HCl hemihydrate,2-Butanol,InteractionConditional,65.27000000000001,-1.762019395828247
+3,Paroxetine HCl hemihydrate,2-Butanol,InteractionConditional,66.34333333333333,-1.7447090148925781
+3,Paroxetine HCl hemihydrate,2-Butanol,InteractionConditional,67.41666666666667,-1.7273988723754883
+3,Paroxetine HCl hemihydrate,2-Butanol,InteractionConditional,68.49000000000001,-1.7100884914398193
+3,Paroxetine HCl hemihydrate,2-Butanol,InteractionConditional,69.56333333333333,-1.6927781105041504
+3,Paroxetine HCl hemihydrate,2-Butanol,InteractionConditional,70.63666666666668,-1.6754679679870605
+3,Paroxetine HCl hemihydrate,2-Butanol,InteractionConditional,71.71000000000001,-1.6581575870513916
+3,Paroxetine HCl hemihydrate,2-Butanol,InteractionConditional,72.78333333333333,-1.6408473253250122
+3,Paroxetine HCl hemihydrate,2-Butanol,InteractionConditional,73.85666666666668,-1.6235369443893433
+3,Paroxetine HCl hemihydrate,2-Butanol,InteractionConditional,74.93,-1.6062266826629639
+3,Paroxetine HCl hemihydrate,2-Butanol,InteractionConditional,76.00333333333334,-1.5889164209365845
+3,Paroxetine HCl hemihydrate,2-Butanol,InteractionConditional,77.07666666666668,-1.571606159210205
+3,Paroxetine HCl hemihydrate,2-Butanol,InteractionConditional,78.15,-1.5542957782745361
+3,Paroxetine HCl hemihydrate,2-Butanol,ExtraTrees,13.75,-2.0264749268564297
+3,Paroxetine HCl hemihydrate,2-Butanol,ExtraTrees,14.823333333333334,-2.0264749268564297
+3,Paroxetine HCl hemihydrate,2-Butanol,ExtraTrees,15.896666666666667,-2.0264749268564297
+3,Paroxetine HCl hemihydrate,2-Butanol,ExtraTrees,16.97,-2.0264749268564297
+3,Paroxetine HCl hemihydrate,2-Butanol,ExtraTrees,18.043333333333333,-2.0264749268564297
+3,Paroxetine HCl hemihydrate,2-Butanol,ExtraTrees,19.116666666666667,-2.0264749268564297
+3,Paroxetine HCl hemihydrate,2-Butanol,ExtraTrees,20.19,-2.0264749268564297
+3,Paroxetine HCl hemihydrate,2-Butanol,ExtraTrees,21.263333333333335,-2.0264749268564297
+3,Paroxetine HCl hemihydrate,2-Butanol,ExtraTrees,22.336666666666666,-2.025838293150694
+3,Paroxetine HCl hemihydrate,2-Butanol,ExtraTrees,23.410000000000004,-2.025838293150694
+3,Paroxetine HCl hemihydrate,2-Butanol,ExtraTrees,24.483333333333334,-2.025838293150694
+3,Paroxetine HCl hemihydrate,2-Butanol,ExtraTrees,25.55666666666667,-2.025838293150694
+3,Paroxetine HCl hemihydrate,2-Butanol,ExtraTrees,26.630000000000003,-2.025838293150694
+3,Paroxetine HCl hemihydrate,2-Butanol,ExtraTrees,27.703333333333333,-2.0245871374990365
+3,Paroxetine HCl hemihydrate,2-Butanol,ExtraTrees,28.77666666666667,-2.0232239327071104
+3,Paroxetine HCl hemihydrate,2-Butanol,ExtraTrees,29.85,-2.0232239327071104
+3,Paroxetine HCl hemihydrate,2-Butanol,ExtraTrees,30.923333333333336,-2.0221299413789855
+3,Paroxetine HCl hemihydrate,2-Butanol,ExtraTrees,31.99666666666667,-2.0221299413789855
+3,Paroxetine HCl hemihydrate,2-Butanol,ExtraTrees,33.07000000000001,-2.0221299413789855
+3,Paroxetine HCl hemihydrate,2-Butanol,ExtraTrees,34.14333333333333,-2.021461045186985
+3,Paroxetine HCl hemihydrate,2-Butanol,ExtraTrees,35.21666666666667,-2.021461045186985
+3,Paroxetine HCl hemihydrate,2-Butanol,ExtraTrees,36.290000000000006,-2.021461045186985
+3,Paroxetine HCl hemihydrate,2-Butanol,ExtraTrees,37.36333333333334,-2.021461045186985
+3,Paroxetine HCl hemihydrate,2-Butanol,ExtraTrees,38.43666666666667,-2.018965534520681
+3,Paroxetine HCl hemihydrate,2-Butanol,ExtraTrees,39.510000000000005,-2.014762384344404
+3,Paroxetine HCl hemihydrate,2-Butanol,ExtraTrees,40.583333333333336,-2.0138158398091757
+3,Paroxetine HCl hemihydrate,2-Butanol,ExtraTrees,41.656666666666666,-2.0138158398091757
+3,Paroxetine HCl hemihydrate,2-Butanol,ExtraTrees,42.730000000000004,-2.0114023982964766
+3,Paroxetine HCl hemihydrate,2-Butanol,ExtraTrees,43.80333333333334,-2.0114023982964766
+3,Paroxetine HCl hemihydrate,2-Butanol,ExtraTrees,44.87666666666667,-2.0114023982964766
+3,Paroxetine HCl hemihydrate,2-Butanol,ExtraTrees,45.95,-2.0114023982964766
+3,Paroxetine HCl hemihydrate,2-Butanol,ExtraTrees,47.02333333333334,-2.0100485547284292
+3,Paroxetine HCl hemihydrate,2-Butanol,ExtraTrees,48.09666666666667,-2.0086097146546793
+3,Paroxetine HCl hemihydrate,2-Butanol,ExtraTrees,49.17,-2.007154376500287
+3,Paroxetine HCl hemihydrate,2-Butanol,ExtraTrees,50.24333333333334,-2.005699038345895
+3,Paroxetine HCl hemihydrate,2-Butanol,ExtraTrees,51.31666666666667,-2.0043295332328555
+3,Paroxetine HCl hemihydrate,2-Butanol,ExtraTrees,52.39000000000001,-2.0009387637526497
+3,Paroxetine HCl hemihydrate,2-Butanol,ExtraTrees,53.46333333333334,-1.9993463174303638
+3,Paroxetine HCl hemihydrate,2-Butanol,ExtraTrees,54.53666666666667,-1.9993463174303638
+3,Paroxetine HCl hemihydrate,2-Butanol,ExtraTrees,55.61000000000001,-1.9972707213852883
+3,Paroxetine HCl hemihydrate,2-Butanol,ExtraTrees,56.68333333333334,-1.9941782706093567
+3,Paroxetine HCl hemihydrate,2-Butanol,ExtraTrees,57.756666666666675,-1.9927100264167656
+3,Paroxetine HCl hemihydrate,2-Butanol,ExtraTrees,58.830000000000005,-1.9902575738346642
+3,Paroxetine HCl hemihydrate,2-Butanol,ExtraTrees,59.903333333333336,-1.9902575738346642
+3,Paroxetine HCl hemihydrate,2-Butanol,ExtraTrees,60.976666666666674,-1.9890674404302893
+3,Paroxetine HCl hemihydrate,2-Butanol,ExtraTrees,62.050000000000004,-1.9890674404302893
+3,Paroxetine HCl hemihydrate,2-Butanol,ExtraTrees,63.12333333333334,-1.9869648590968725
+3,Paroxetine HCl hemihydrate,2-Butanol,ExtraTrees,64.19666666666667,-1.984661018798352
+3,Paroxetine HCl hemihydrate,2-Butanol,ExtraTrees,65.27000000000001,-1.984661018798352
+3,Paroxetine HCl hemihydrate,2-Butanol,ExtraTrees,66.34333333333333,-1.9796030672154894
+3,Paroxetine HCl hemihydrate,2-Butanol,ExtraTrees,67.41666666666667,-1.9796030672154894
+3,Paroxetine HCl hemihydrate,2-Butanol,ExtraTrees,68.49000000000001,-1.9781738590098323
+3,Paroxetine HCl hemihydrate,2-Butanol,ExtraTrees,69.56333333333333,-1.9781738590098323
+3,Paroxetine HCl hemihydrate,2-Butanol,ExtraTrees,70.63666666666668,-1.9781738590098323
+3,Paroxetine HCl hemihydrate,2-Butanol,ExtraTrees,71.71000000000001,-1.9781738590098323
+3,Paroxetine HCl hemihydrate,2-Butanol,ExtraTrees,72.78333333333333,-1.976029529966332
+3,Paroxetine HCl hemihydrate,2-Butanol,ExtraTrees,73.85666666666668,-1.975487662083832
+3,Paroxetine HCl hemihydrate,2-Butanol,ExtraTrees,74.93,-1.975487662083832
+3,Paroxetine HCl hemihydrate,2-Butanol,ExtraTrees,76.00333333333334,-1.975487662083832
+3,Paroxetine HCl hemihydrate,2-Butanol,ExtraTrees,77.07666666666668,-1.9737622327245463
+3,Paroxetine HCl hemihydrate,2-Butanol,ExtraTrees,78.15,-1.9721393527928797

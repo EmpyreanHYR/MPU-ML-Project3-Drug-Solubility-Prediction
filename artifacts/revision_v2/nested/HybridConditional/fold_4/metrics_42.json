@@ -1,0 +1,30 @@
+{
+  "fit_seconds": 0.29895645898068324,
+  "inference_ms_per_row": 0.05266016419045627,
+  "MAE": 0.6693430477355483,
+  "RMSE": 0.9556910507113623,
+  "R2": -0.31942623460610386,
+  "parent_macro_MAE": 0.6750652878439852,
+  "params": {
+    "n_estimators": 200,
+    "min_samples_leaf": 2,
+    "max_depth": null,
+    "alpha": 1000.0
+  },
+  "training": {
+    "rows": 1257,
+    "slope_rows": 903,
+    "internal_validation_rows": 0,
+    "params": {
+      "alpha": 1000.0,
+      "balanced": true,
+      "interaction": true,
+      "max_depth": null,
+      "min_samples_leaf": 2,
+      "n_estimators": 200,
+      "seed": 42,
+      "temperature": true
+    }
+  },
+  "loss": []
+}

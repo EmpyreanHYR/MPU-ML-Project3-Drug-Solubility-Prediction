@@ -1,0 +1,52 @@
+{
+  "data_scope": "development only; no intervention data",
+  "exposure": "Temperature in CSV raw units",
+  "outcome": "Solubility_log10",
+  "contrast": "one raw temperature unit within exact molecule-solvent pairs",
+  "observed_adjustment": "exact drug-solvent pair fixed effects",
+  "unmeasured_confounders": [
+    "experimental source",
+    "pH",
+    "solid form",
+    "pressure",
+    "protocol"
+  ],
+  "assumptions_for_causal_reading": [
+    "no unmeasured within-pair temperature-outcome confounding",
+    "consistent treatment/measurement",
+    "positivity",
+    "correct functional form"
+  ],
+  "identification": "not established; coefficients are associations, not identified causal effects",
+  "DAG_edges": [
+    [
+      "Drug",
+      "Temperature"
+    ],
+    [
+      "Drug",
+      "Y"
+    ],
+    [
+      "Solvent",
+      "Temperature"
+    ],
+    [
+      "Solvent",
+      "Y"
+    ],
+    [
+      "U",
+      "Temperature"
+    ],
+    [
+      "U",
+      "Y"
+    ],
+    [
+      "Temperature",
+      "Y"
+    ]
+  ],
+  "DAG_status": "hypothesized causal assumptions, not learned or proven from CSV"
+}

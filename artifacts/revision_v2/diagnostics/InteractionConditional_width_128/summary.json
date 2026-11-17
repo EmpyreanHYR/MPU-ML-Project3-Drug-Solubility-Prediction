@@ -1,0 +1,12 @@
+{
+  "tag": "InteractionConditional_width_128",
+  "model": "InteractionConditional",
+  "changes": {
+    "width": 128
+  },
+  "fraction": 1.0,
+  "MAE": 0.882713502291855,
+  "RMSE": 1.1971390409171692,
+  "R2": 0.1253689673382898,
+  "parent_macro_MAE": 0.8454603484765614
+}

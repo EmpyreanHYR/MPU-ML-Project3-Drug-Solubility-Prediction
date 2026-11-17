@@ -1,0 +1,12 @@
+{
+  "tag": "AdaptiveHybrid_full_gain",
+  "model": "AdaptiveHybrid",
+  "changes": {
+    "temperature_gain": 1.0
+  },
+  "fraction": 1.0,
+  "MAE": 0.8076034299961389,
+  "RMSE": 1.1524252337830487,
+  "R2": 0.19037120531773064,
+  "parent_macro_MAE": 0.8150844502183549
+}

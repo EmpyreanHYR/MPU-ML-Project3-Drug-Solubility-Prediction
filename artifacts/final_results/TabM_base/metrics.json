@@ -1,0 +1,18 @@
+{
+  "exp_id": "TabM_base",
+  "model_name": "TabM",
+  "representation": "descriptors",
+  "params": {},
+  "selected_on_development": false,
+  "fit_seconds": 4.375802207970992,
+  "MAE": 0.8016147827087415,
+  "RMSE": 1.1456483722953705,
+  "R2": 0.20916186584616459,
+  "parent_macro_MAE": 0.7039636312774683,
+  "macro_MAE_CI95": [
+    0.49419524391146286,
+    0.9372974636314828
+  ],
+  "test_rows": 397,
+  "test_parent_groups": 33
+}

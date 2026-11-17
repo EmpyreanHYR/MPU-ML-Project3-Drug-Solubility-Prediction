@@ -1,0 +1,20 @@
+{
+  "python": "3.12.12",
+  "platform": "macOS-27.2.1-arm64-arm-64bit",
+  "device": "cpu",
+  "threads": 2,
+  "versions": {
+    "numpy": "2.5.5",
+    "pandas": "3.1.1",
+    "scikit-learn": "1.9.1",
+    "rdkit": "2026.9.2",
+    "torch": "2.15.0",
+    "tabm": "0.0.3",
+    "pytabkit": "1.8.0",
+    "fastapi": "0.163.1",
+    "uvicorn": "0.54.0",
+    "shap": "0.54.1",
+    "matplotlib": "3.11.2"
+  },
+  "uv_lock_sha256": "96647c0b55a1846d2d22410f7d5dcee9fe0cf3e2d8c3ab8886f007d79f26fb8d"
+}

@@ -1,0 +1,79 @@
+{
+  "selection": {
+    "proposed": "AdaptiveHybrid",
+    "baseline": "ExtraTrees",
+    "relative_improvement": 0.04085201635025241,
+    "paired_delta": [
+      -0.030513113301054117,
+      -0.06933112598579327,
+      0.008581198925626074
+    ],
+    "parents_improved": 67,
+    "parents": 128,
+    "scope": "nested development predictions; parent-level conditional bootstrap; seeds averaged within each parent"
+  },
+  "hybrid": {
+    "MAE": 0.7520405159662951,
+    "RMSE": 1.001603654511485,
+    "R2": 0.3884443635637065,
+    "parent_macro_MAE": 0.7164050568926572,
+    "fit_seconds": 0.6977836500581664,
+    "inference_ms_per_row": 0.1150533799952205
+  },
+  "network": {
+    "MAE": 0.8480667505708004,
+    "RMSE": 1.2844688757545353,
+    "R2": -0.012146271308735912,
+    "parent_macro_MAE": 0.8878228173018946,
+    "fit_seconds": 0.705614124936983,
+    "inference_ms_per_row": 0.0016320990140521266
+  },
+  "baseline": {
+    "MAE": 0.7491397950666454,
+    "RMSE": 0.9729744616733139,
+    "R2": 0.422914825592336,
+    "parent_macro_MAE": 0.7469181701937112,
+    "fit_seconds": 0.10561420832527801,
+    "inference_ms_per_row": 0.04286015248483481
+  },
+  "causal": {
+    "pooled_slope": -0.0071675672733965716,
+    "pooled_cluster_ci": [
+      -0.02444631674821701,
+      0.010111182201423864
+    ],
+    "within_pair_slope": 0.01538485936636009,
+    "within_cluster_ci": [
+      0.011984999110161794,
+      0.018784719622558385
+    ],
+    "within_parent_bootstrap_ci": [
+      0.0123636163855774,
+      0.019017625720049832
+    ],
+    "within_rows": 1118,
+    "within_pairs": 157,
+    "within_parent_groups": 73,
+    "excluded_from_within_only_constant_temperature_rows": 389,
+    "permutation_two_sided_p_exploratory": 0.001996007984031936,
+    "permutation_iterations": 500,
+    "leave_one_parent_out_slope_range": [
+      0.014239883329890943,
+      0.015989309363184136
+    ],
+    "interpretation": "association conditional on observed pairs; unmeasured confounding not ruled out; no identified do(T) effect",
+    "unit": "log10 per CSV raw temperature unit",
+    "cluster_ci": "statsmodels cluster-robust normal approximation; auxiliary to group bootstrap",
+    "pooled_same_subset_slope": -0.007459219356167298,
+    "pooled_same_subset_cluster_ci": [
+      -0.026144571907348972,
+      0.011226133195014377
+    ],
+    "cohort_comparison_note": "Compare within slope to pooled_same_subset to hold observations fixed; pooled_slope uses all development records",
+    "permutation_assumption": "temperature exchangeability within exact pairs; unverified with missing experimental-source metadata",
+    "OLS_residual_df": 960,
+    "OLS_SE_for_bias_identity": 0.0006234143892858112,
+    "equal_strength_R2_to_remove_estimate": 0.5401302600155647,
+    "sensitivity_scope": "point-estimate omitted-variable bias identity; not cluster-adjusted confidence interval or evidence that confounding exists"
+  }
+}

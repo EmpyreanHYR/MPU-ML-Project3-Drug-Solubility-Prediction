@@ -1,0 +1,23 @@
+{
+  "exp_id": "ExtraTrees_fp",
+  "model_name": "ExtraTrees",
+  "representation": "fingerprints",
+  "params": {},
+  "protocol": "parent_group_primary",
+  "drop": null,
+  "seed": 2026,
+  "weight": false,
+  "dedup": false,
+  "MAE": 1.0249064045517986,
+  "RMSE": 1.407967872701011,
+  "R2": -0.20840780189675612,
+  "parent_macro_MAE": 0.9496671618687877,
+  "macro_MAE_CI95": [
+    0.8339439962527498,
+    1.0819337364003194
+  ],
+  "elapsed_seconds": 11.289307917002589,
+  "n_features": 2049,
+  "rows": 1507,
+  "score_role": "development pooled OOF; model-selection score"
+}

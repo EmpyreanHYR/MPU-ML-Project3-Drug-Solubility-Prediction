@@ -1,0 +1,18 @@
+{
+  "exp_id": "RandomForest_base",
+  "model_name": "RandomForest",
+  "representation": "descriptors",
+  "params": {},
+  "selected_on_development": false,
+  "fit_seconds": 0.2602865840308368,
+  "MAE": 0.8036048837592108,
+  "RMSE": 1.0832301899277053,
+  "R2": 0.2929885799723808,
+  "parent_macro_MAE": 0.7802014835821459,
+  "macro_MAE_CI95": [
+    0.6066263747657349,
+    0.9698134386168411
+  ],
+  "test_rows": 397,
+  "test_parent_groups": 33
+}

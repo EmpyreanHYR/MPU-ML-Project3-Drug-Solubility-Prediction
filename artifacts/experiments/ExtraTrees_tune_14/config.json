@@ -1,0 +1,16 @@
+{
+  "exp_id": "ExtraTrees_tune_14",
+  "model_name": "ExtraTrees",
+  "representation": "descriptors",
+  "params": {
+    "min_samples_leaf": 4,
+    "max_features": 1.0,
+    "max_depth": null,
+    "n_estimators": 300
+  },
+  "protocol": "parent_group_primary",
+  "drop": null,
+  "seed": 2026,
+  "weight": false,
+  "dedup": false
+}

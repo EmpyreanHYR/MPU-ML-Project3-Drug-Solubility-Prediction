@@ -1,0 +1,23 @@
+{
+  "exp_id": "TabM_base",
+  "model_name": "TabM",
+  "representation": "descriptors",
+  "params": {},
+  "protocol": "parent_group_primary",
+  "drop": null,
+  "seed": 2026,
+  "weight": false,
+  "dedup": false,
+  "MAE": 0.7905028376286908,
+  "RMSE": 1.0322349338416523,
+  "R2": 0.35049105591486396,
+  "parent_macro_MAE": 0.7914726271495756,
+  "macro_MAE_CI95": [
+    0.6994777229063558,
+    0.8907840542895307
+  ],
+  "elapsed_seconds": 14.540300249995198,
+  "n_features": 23,
+  "rows": 1507,
+  "score_role": "development pooled OOF; model-selection score"
+}

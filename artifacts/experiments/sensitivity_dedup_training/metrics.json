@@ -1,0 +1,28 @@
+{
+  "exp_id": "sensitivity_dedup_training",
+  "model_name": "ExtraTrees",
+  "representation": "descriptors",
+  "params": {
+    "min_samples_leaf": 1,
+    "max_features": 1.0,
+    "max_depth": 8,
+    "n_estimators": 300
+  },
+  "protocol": "parent_group_primary",
+  "drop": null,
+  "seed": 2026,
+  "weight": false,
+  "dedup": true,
+  "MAE": 0.7527142012423071,
+  "RMSE": 0.9703876052876483,
+  "R2": 0.4259912512931284,
+  "parent_macro_MAE": 0.735013818176183,
+  "macro_MAE_CI95": [
+    0.6539113083826231,
+    0.8269931277838837
+  ],
+  "elapsed_seconds": 1.0265422090305947,
+  "n_features": 23,
+  "rows": 1507,
+  "score_role": "development pooled OOF; model-selection score"
+}

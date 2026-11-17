@@ -1,0 +1,28 @@
+{
+  "outer": "frozen development parent 5-fold",
+  "inner": "GroupKFold 3 shuffled seed 2026",
+  "seeds": [
+    2026,
+    17,
+    42
+  ],
+  "candidates": 12,
+  "rows": 1507,
+  "groups": 128,
+  "model_names": [
+    "Dummy",
+    "Ridge",
+    "RandomForest",
+    "ExtraTrees",
+    "HistGradientBoosting",
+    "TabM",
+    "RealMLP",
+    "PlainMLP",
+    "TemperatureMLP",
+    "HybridConditional",
+    "InteractionConditional"
+  ],
+  "primary": "mean of three seed-specific parent_macro_MAE",
+  "historical_test": "397 previously inspected records; secondary evaluation",
+  "source_sha256": "5cf4cecfb556dba5fe10d57ffebe337090cdee07cca6327ec7375cf84c79290d"
+}

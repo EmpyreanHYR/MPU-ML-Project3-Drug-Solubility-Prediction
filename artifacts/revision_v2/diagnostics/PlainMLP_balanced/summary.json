@@ -1,0 +1,12 @@
+{
+  "tag": "PlainMLP_balanced",
+  "model": "PlainMLP",
+  "changes": {
+    "balanced": true
+  },
+  "fraction": 1.0,
+  "MAE": 0.7953775608675696,
+  "RMSE": 1.042347005432154,
+  "R2": 0.3375127699450504,
+  "parent_macro_MAE": 0.8261412651740297
+}

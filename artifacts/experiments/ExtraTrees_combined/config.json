@@ -1,0 +1,11 @@
+{
+  "exp_id": "ExtraTrees_combined",
+  "model_name": "ExtraTrees",
+  "representation": "combined",
+  "params": {},
+  "protocol": "parent_group_primary",
+  "drop": null,
+  "seed": 2026,
+  "weight": false,
+  "dedup": false
+}

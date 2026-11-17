@@ -1,0 +1,23 @@
+{
+  "exp_id": "ExtraTrees_base",
+  "model_name": "ExtraTrees",
+  "representation": "descriptors",
+  "params": {},
+  "protocol": "parent_group_primary",
+  "drop": null,
+  "seed": 2026,
+  "weight": false,
+  "dedup": false,
+  "MAE": 0.7522487157553162,
+  "RMSE": 0.9678700985661544,
+  "R2": 0.4289657253673055,
+  "parent_macro_MAE": 0.7412251427647099,
+  "macro_MAE_CI95": [
+    0.6584408916635287,
+    0.8343871447084479
+  ],
+  "elapsed_seconds": 0.9004912920063362,
+  "n_features": 23,
+  "rows": 1507,
+  "score_role": "development pooled OOF; model-selection score"
+}

@@ -1,0 +1,10 @@
+{
+  "at": "2026-11-16T17:54:30.271516+00:00",
+  "params": {
+    "width": 32,
+    "weight_decay": 0.001,
+    "lr": 0.003,
+    "epochs": 160
+  },
+  "selection": "3-fold development group CV"
+}

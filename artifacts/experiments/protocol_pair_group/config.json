@@ -1,0 +1,16 @@
+{
+  "exp_id": "protocol_pair_group",
+  "model_name": "ExtraTrees",
+  "representation": "descriptors",
+  "params": {
+    "min_samples_leaf": 1,
+    "max_features": 1.0,
+    "max_depth": 8,
+    "n_estimators": 300
+  },
+  "protocol": "pair_group",
+  "drop": null,
+  "seed": 2026,
+  "weight": false,
+  "dedup": false
+}

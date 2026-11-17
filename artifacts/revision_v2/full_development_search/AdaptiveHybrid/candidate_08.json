@@ -1,0 +1,15 @@
+{
+  "params": {
+    "temperature_gain": 0.3,
+    "alpha": 1000.0,
+    "max_depth": null,
+    "min_samples_leaf": 1,
+    "n_estimators": 200
+  },
+  "candidate": 8,
+  "seconds": 2.1769953740295023,
+  "MAE": 0.7237704114926351,
+  "RMSE": 0.9654641340471364,
+  "R2": 0.43180118970668746,
+  "parent_macro_MAE": 0.7140449362847958
+}

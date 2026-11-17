@@ -1,0 +1,9 @@
+{
+  "at": "2026-11-16T17:53:26.115828+00:00",
+  "params": {
+    "n_hidden_layers": 3,
+    "hidden_width": 192,
+    "epochs": 128
+  },
+  "selection": "3-fold development group CV"
+}

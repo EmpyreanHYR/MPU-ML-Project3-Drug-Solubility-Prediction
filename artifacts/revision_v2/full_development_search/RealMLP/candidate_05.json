@@ -1,0 +1,13 @@
+{
+  "params": {
+    "n_hidden_layers": 3,
+    "hidden_width": 96,
+    "epochs": 128
+  },
+  "candidate": 5,
+  "seconds": 3.185877792071551,
+  "MAE": 0.7958789283380072,
+  "RMSE": 1.0671224305555622,
+  "R2": 0.3058448855773944,
+  "parent_macro_MAE": 0.8052042931852221
+}

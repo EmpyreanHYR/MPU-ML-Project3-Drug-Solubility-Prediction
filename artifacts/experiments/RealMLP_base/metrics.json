@@ -1,0 +1,23 @@
+{
+  "exp_id": "RealMLP_base",
+  "model_name": "RealMLP",
+  "representation": "descriptors",
+  "params": {},
+  "protocol": "parent_group_primary",
+  "drop": null,
+  "seed": 2026,
+  "weight": false,
+  "dedup": false,
+  "MAE": 0.8394416840773696,
+  "RMSE": 1.0797421372621878,
+  "R2": 0.2893297577156848,
+  "parent_macro_MAE": 0.8407500351081079,
+  "macro_MAE_CI95": [
+    0.7400765665683742,
+    0.9542810293125815
+  ],
+  "elapsed_seconds": 8.199975625029765,
+  "n_features": 23,
+  "rows": 1507,
+  "score_role": "development pooled OOF; model-selection score"
+}

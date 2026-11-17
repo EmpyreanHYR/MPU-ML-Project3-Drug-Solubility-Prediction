@@ -1,0 +1,23 @@
+{
+  "exp_id": "HistGradientBoosting_base",
+  "model_name": "HistGradientBoosting",
+  "representation": "descriptors",
+  "params": {},
+  "protocol": "parent_group_primary",
+  "drop": null,
+  "seed": 2026,
+  "weight": false,
+  "dedup": false,
+  "MAE": 0.7338461608582716,
+  "RMSE": 0.9634457255634502,
+  "R2": 0.43417446996296316,
+  "parent_macro_MAE": 0.7673146387515836,
+  "macro_MAE_CI95": [
+    0.6775936870026276,
+    0.8711097127627961
+  ],
+  "elapsed_seconds": 0.5859199580154382,
+  "n_features": 23,
+  "rows": 1507,
+  "score_role": "development pooled OOF; model-selection score"
+}

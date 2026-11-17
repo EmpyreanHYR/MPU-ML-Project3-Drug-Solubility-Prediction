@@ -1,0 +1,23 @@
+{
+  "architecture": "official tabm.TabM, arch_type=tabm, no feature embeddings",
+  "package_version": "0.0.3",
+  "device": "cpu",
+  "training_rows": 1507,
+  "internal_validation_rows": 0,
+  "epochs_completed": 120,
+  "elapsed_seconds": 3.763251708995085,
+  "loss_unit": "mean member MSE on training-fold standardized target",
+  "adaptation": "bounded training configuration; not paper-default benchmark reproduction",
+  "parameters": {
+    "batch_size": 256,
+    "d_block": 128,
+    "dropout": 0.1,
+    "epochs": 120,
+    "k": 16,
+    "learning_rate": 0.002,
+    "n_blocks": 2,
+    "seed": 2026,
+    "threads": 2,
+    "weight_decay": 0.0003
+  }
+}

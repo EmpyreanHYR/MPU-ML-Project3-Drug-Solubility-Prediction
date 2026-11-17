@@ -1,0 +1,12 @@
+{
+  "reference": "Ridge_base",
+  "selected": "ExtraTrees_tune_05",
+  "parents": 33,
+  "mean_delta_macro_MAE": -0.36208816457670673,
+  "bootstrap95": [
+    -0.5894534366112683,
+    -0.15426162738993568
+  ],
+  "parents_improved": 23,
+  "interpretation": "paired parent bootstrap, conditional on this held-out sample"
+}

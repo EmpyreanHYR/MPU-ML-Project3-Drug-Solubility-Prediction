@@ -1,0 +1,50 @@
+{
+  "model": "RandomForest",
+  "params": {
+    "n_estimators": 200,
+    "min_samples_leaf": 1,
+    "max_features": 1.0,
+    "max_depth": 8
+  },
+  "training_rows": 1507,
+  "seed": 2026,
+  "fit_seconds": 0.20576516597066075,
+  "representation": "descriptors",
+  "model_sha256": "287885ee85b1a8183cfbcc6229e12805483502b9324aabdfa38ebbca55aa348d",
+  "historical_test": {
+    "MAE": 0.8184646425982647,
+    "RMSE": 1.0954892009645874,
+    "R2": 0.2768954079807133,
+    "parent_macro_MAE": 0.7909660097072871
+  },
+  "nested_metrics": {
+    "model": "RandomForest",
+    "MAE": 0.7698525713611056,
+    "RMSE": 0.9925054768633744,
+    "R2": 0.3995231273667394,
+    "parent_macro_MAE": 0.7593847486873367,
+    "seed_metrics": [
+      {
+        "MAE": 0.7678649487408568,
+        "RMSE": 0.9903068808812107,
+        "R2": 0.40218387708931924,
+        "parent_macro_MAE": 0.7564074917142833
+      },
+      {
+        "MAE": 0.7699959208754137,
+        "RMSE": 0.9957600675500975,
+        "R2": 0.3955819263611191,
+        "parent_macro_MAE": 0.7596077237162538
+      },
+      {
+        "MAE": 0.7716968444670466,
+        "RMSE": 0.9914494821588149,
+        "R2": 0.4008035786497799,
+        "parent_macro_MAE": 0.7621390306314728
+      }
+    ],
+    "fit_seconds": 0.1561450722704952,
+    "inference_ms_per_row": 0.04211638472260924
+  },
+  "training_metadata": {}
+}

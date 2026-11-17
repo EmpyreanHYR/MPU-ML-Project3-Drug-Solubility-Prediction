@@ -1,0 +1,23 @@
+{
+  "exp_id": "RandomForest_base",
+  "model_name": "RandomForest",
+  "representation": "descriptors",
+  "params": {},
+  "protocol": "parent_group_primary",
+  "drop": null,
+  "seed": 2026,
+  "weight": false,
+  "dedup": false,
+  "MAE": 0.7828735480599398,
+  "RMSE": 1.0155916447472486,
+  "R2": 0.3712669806207842,
+  "parent_macro_MAE": 0.7689636576779519,
+  "macro_MAE_CI95": [
+    0.685309670303747,
+    0.8635392101632396
+  ],
+  "elapsed_seconds": 2.549443333002273,
+  "n_features": 23,
+  "rows": 1507,
+  "score_role": "development pooled OOF; model-selection score"
+}

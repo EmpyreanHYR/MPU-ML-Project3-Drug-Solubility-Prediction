@@ -1,0 +1,11 @@
+{
+  "exp_id": "RealMLP_base",
+  "model_name": "RealMLP",
+  "representation": "descriptors",
+  "params": {},
+  "protocol": "parent_group_primary",
+  "drop": null,
+  "seed": 2026,
+  "weight": false,
+  "dedup": false
+}

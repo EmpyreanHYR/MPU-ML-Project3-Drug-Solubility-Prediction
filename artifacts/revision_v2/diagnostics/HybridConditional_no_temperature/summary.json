@@ -1,0 +1,12 @@
+{
+  "tag": "HybridConditional_no_temperature",
+  "model": "HybridConditional",
+  "changes": {
+    "temperature": false
+  },
+  "fraction": 1.0,
+  "MAE": 0.7556086001496721,
+  "RMSE": 0.9986766547454762,
+  "R2": 0.3920092788125524,
+  "parent_macro_MAE": 0.7131118668452606
+}

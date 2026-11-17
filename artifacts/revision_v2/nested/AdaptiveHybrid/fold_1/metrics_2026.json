@@ -1,0 +1,34 @@
+{
+  "fit_seconds": 0.5346589169930667,
+  "inference_ms_per_row": 0.12608698408761287,
+  "MAE": 0.654258600280278,
+  "RMSE": 0.9339892724583565,
+  "R2": 0.5600482390610475,
+  "parent_macro_MAE": 0.7424594100131023,
+  "params": {
+    "temperature_gain": 0.0,
+    "alpha": 1000.0,
+    "max_depth": 8,
+    "min_samples_leaf": 1,
+    "n_estimators": 200
+  },
+  "training": {
+    "rows": 1256,
+    "slope_rows": 939,
+    "internal_validation_rows": 0,
+    "params": {
+      "alpha": 1000.0,
+      "balanced": true,
+      "interaction": true,
+      "max_depth": 8,
+      "min_samples_leaf": 1,
+      "n_estimators": 200,
+      "seed": 2026,
+      "temperature": true,
+      "temperature_gain": 0.0
+    },
+    "temperature_gain": 0.0,
+    "refinement": "inner-selected shrinkage; original full-gain result retained"
+  },
+  "loss": []
+}

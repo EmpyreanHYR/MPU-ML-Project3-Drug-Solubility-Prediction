@@ -1,0 +1,28 @@
+{
+  "exp_id": "ExtraTrees_tune_02",
+  "model_name": "ExtraTrees",
+  "representation": "descriptors",
+  "params": {
+    "min_samples_leaf": 4,
+    "max_features": 0.5,
+    "max_depth": 16,
+    "n_estimators": 300
+  },
+  "protocol": "parent_group_primary",
+  "drop": null,
+  "seed": 2026,
+  "weight": false,
+  "dedup": false,
+  "MAE": 0.7802575122728775,
+  "RMSE": 0.9989914668232028,
+  "R2": 0.39165269627190247,
+  "parent_macro_MAE": 0.7629499389927944,
+  "macro_MAE_CI95": [
+    0.6788317222358258,
+    0.8565333906976581
+  ],
+  "elapsed_seconds": 0.9499964999849908,
+  "n_features": 23,
+  "rows": 1507,
+  "score_role": "development pooled OOF; model-selection score"
+}

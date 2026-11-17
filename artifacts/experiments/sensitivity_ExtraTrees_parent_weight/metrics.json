@@ -1,0 +1,28 @@
+{
+  "exp_id": "sensitivity_ExtraTrees_parent_weight",
+  "model_name": "ExtraTrees",
+  "representation": "descriptors",
+  "params": {
+    "min_samples_leaf": 1,
+    "max_features": 1.0,
+    "max_depth": 8,
+    "n_estimators": 300
+  },
+  "protocol": "parent_group_primary",
+  "drop": null,
+  "seed": 2026,
+  "weight": true,
+  "dedup": false,
+  "MAE": 0.7447413876750479,
+  "RMSE": 0.984350623287697,
+  "R2": 0.40935344994001643,
+  "parent_macro_MAE": 0.7134083356102106,
+  "macro_MAE_CI95": [
+    0.636724542342934,
+    0.8015375210826244
+  ],
+  "elapsed_seconds": 1.0786464579869062,
+  "n_features": 23,
+  "rows": 1507,
+  "score_role": "development pooled OOF; model-selection score"
+}

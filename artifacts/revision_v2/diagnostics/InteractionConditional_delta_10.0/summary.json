@@ -1,0 +1,12 @@
+{
+  "tag": "InteractionConditional_delta_10.0",
+  "model": "InteractionConditional",
+  "changes": {
+    "delta_weight": 10.0
+  },
+  "fraction": 1.0,
+  "MAE": 0.8568134382526021,
+  "RMSE": 1.1683737574892572,
+  "R2": 0.16309304087091522,
+  "parent_macro_MAE": 0.8864868518559335
+}

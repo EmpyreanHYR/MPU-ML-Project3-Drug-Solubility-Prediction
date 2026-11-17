@@ -1,0 +1,68 @@
+{
+  "model": "AdaptiveHybrid",
+  "params": {
+    "temperature_gain": 0.0,
+    "alpha": 1000.0,
+    "max_depth": 8,
+    "min_samples_leaf": 1,
+    "n_estimators": 200
+  },
+  "training_rows": 1507,
+  "seed": 2026,
+  "fit_seconds": 0.6157619999721646,
+  "representation": "descriptors",
+  "model_sha256": "3c2b3ef463e9224f3f794744a43399c394f76abdef03eab2db8737333c797e4c",
+  "historical_test": {
+    "MAE": 0.8713731696264804,
+    "RMSE": 1.1178654258561684,
+    "R2": 0.24705376439883575,
+    "parent_macro_MAE": 0.7594162717512277
+  },
+  "nested_metrics": {
+    "model": "AdaptiveHybrid",
+    "MAE": 0.7520405159662951,
+    "RMSE": 1.001603654511485,
+    "R2": 0.3884443635637065,
+    "parent_macro_MAE": 0.7164050568926572,
+    "seed_metrics": [
+      {
+        "MAE": 0.7523695931774911,
+        "RMSE": 1.0036949419836243,
+        "R2": 0.38591074059643016,
+        "parent_macro_MAE": 0.7205238071164268
+      },
+      {
+        "MAE": 0.7463575718667246,
+        "RMSE": 0.9933018307828104,
+        "R2": 0.39856250125318193,
+        "parent_macro_MAE": 0.7081520733587862
+      },
+      {
+        "MAE": 0.7573943828546694,
+        "RMSE": 1.0078141907680207,
+        "R2": 0.38085984884150725,
+        "parent_macro_MAE": 0.7205392902027588
+      }
+    ],
+    "fit_seconds": 0.6977836500581664,
+    "inference_ms_per_row": 0.1150533799952205
+  },
+  "training_metadata": {
+    "rows": 1507,
+    "slope_rows": 1098,
+    "internal_validation_rows": 0,
+    "params": {
+      "alpha": 1000.0,
+      "balanced": true,
+      "interaction": true,
+      "max_depth": 8,
+      "min_samples_leaf": 1,
+      "n_estimators": 200,
+      "seed": 2026,
+      "temperature": true,
+      "temperature_gain": 0.0
+    },
+    "temperature_gain": 0.0,
+    "refinement": "inner-selected shrinkage; original full-gain result retained"
+  }
+}

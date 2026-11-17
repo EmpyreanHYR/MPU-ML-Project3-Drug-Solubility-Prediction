@@ -1,0 +1,14 @@
+{
+  "params": {
+    "max_leaf_nodes": 31,
+    "max_iter": 200,
+    "learning_rate": 0.07,
+    "l2_regularization": 0.1
+  },
+  "candidate": 10,
+  "seconds": 0.4112229170277715,
+  "MAE": 0.7737516470693099,
+  "RMSE": 1.0110395144346256,
+  "R2": 0.37689061959287395,
+  "parent_macro_MAE": 0.7747655214039904
+}

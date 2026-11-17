@@ -1,0 +1,10 @@
+{
+  "tag": "AdaptiveHybrid_fraction_0.25",
+  "model": "AdaptiveHybrid",
+  "changes": {},
+  "fraction": 0.25,
+  "MAE": 0.880267259223924,
+  "RMSE": 1.1732608088471546,
+  "R2": 0.160770878807586,
+  "parent_macro_MAE": 0.8747690717120359
+}
