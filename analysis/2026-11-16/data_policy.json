@@ -1,0 +1,52 @@
+{
+  "policy_version": "1.0",
+  "decision_date": "2026-11-16",
+  "authorization": "User confirmed no additional metadata is available; proceed using CSV alone.",
+  "source": "datasets/data_2026.csv",
+  "source_sha256": "5cf4cecfb556dba5fe10d57ffebe337090cdee07cca6327ec7375cf84c79290d",
+  "primary_analysis_rows": 1904,
+  "temperature": {
+    "input": "original numeric values",
+    "display_label": "Temperature（CSV原始尺度）",
+    "physical_unit_verified": false,
+    "unit_conversion": false,
+    "inverse_kelvin_feature": false
+  },
+  "target": {
+    "column": "Solubility_log10",
+    "training_transform": "none",
+    "interpretation": "base-10 log concentration, adopted from CSV column name",
+    "inverse_display": "10 ** predicted_log10",
+    "inverse_display_unit": "mol/L, adopted from Solubility Unit column",
+    "display_qualification": "按CSV字段反变换",
+    "original_measurement_definition_independently_verified": false
+  },
+  "structures": {
+    "model_input": "original full Drug SMILES and Solvent SMILES",
+    "name_role": "CSV display label, not independently verified identity",
+    "external_structure_replacement": false,
+    "known_identity_flags": "retain and annotate; do not block prediction using the supplied structure"
+  },
+  "row_policy": {
+    "exact_duplicates": "retain in primary analysis; keep grouped",
+    "same_condition_different_targets": "retain individual original targets and flag",
+    "extreme_targets": "retain and flag; no clipping",
+    "automatic_correction_or_imputation": false,
+    "optional_sensitivity": "drop exact duplicates in training folds only; keep validation rows fixed; report separately"
+  },
+  "encoding": {
+    "decoder": "latin1",
+    "purpose": "reversible byte mapping, not verified original name encoding",
+    "model_columns_ascii_verified": true
+  },
+  "evaluation": {
+    "split_manifest": "split_manifest.csv",
+    "development_folds": "development_folds.csv",
+    "development_rows": 1507,
+    "reserved_holdout_rows": 397,
+    "selection_metric": "pooled out-of-fold parent-family macro MAE",
+    "holdout_use": "score only after model and feature selection are frozen"
+  },
+  "external_metadata_confirmation_required": false,
+  "raw_file_modification": false
+}

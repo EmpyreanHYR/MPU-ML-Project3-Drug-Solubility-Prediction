@@ -1,0 +1,16 @@
+protocol,fold,train_rows,validation_rows,validation_parent_seen_fraction,validation_pair_seen_fraction
+random_rows_diagnostic,1,1205,302,0.9867549668874173,0.7682119205298014
+random_rows_diagnostic,2,1205,302,0.9834437086092715,0.7549668874172185
+random_rows_diagnostic,3,1206,301,0.9800664451827242,0.7674418604651163
+random_rows_diagnostic,4,1206,301,0.9767441860465116,0.7840531561461794
+random_rows_diagnostic,5,1206,301,0.9767441860465116,0.7740863787375415
+pair_group,1,1197,310,0.8838709677419355,0.0
+pair_group,2,1222,285,0.7157894736842105,0.0
+pair_group,3,1206,301,0.8837209302325582,0.0
+pair_group,4,1211,296,0.8918918918918919,0.0
+pair_group,5,1192,315,0.9079365079365079,0.0
+parent_group_primary,1,1256,251,0.0,0.0
+parent_group_primary,2,1210,297,0.0,0.0
+parent_group_primary,3,1130,377,0.0,0.0
+parent_group_primary,4,1257,250,0.0,0.0
+parent_group_primary,5,1175,332,0.0,0.0

@@ -1,0 +1,141 @@
+{
+  "scope": "All records; no sampling, truncation, row removal or corrections",
+  "source_sha256": "5cf4cecfb556dba5fe10d57ffebe337090cdee07cca6327ec7375cf84c79290d",
+  "encoding_policy": "latin1 byte-preserving provisional mapping; source encoding unverified; model columns verified ASCII",
+  "rows": 1904,
+  "columns": [
+    "Drug",
+    "Solvent",
+    "Drug SMILES",
+    "Solvent SMILES",
+    "Temperature",
+    "Solubility_log10",
+    "Solubility Unit"
+  ],
+  "missing_blank_counts": {
+    "Drug": 0,
+    "Solvent": 0,
+    "Drug SMILES": 0,
+    "Solvent SMILES": 0,
+    "Temperature": 0,
+    "Solubility_log10": 0,
+    "Solubility Unit": 0
+  },
+  "non_ascii_rows": {
+    "Drug": 28,
+    "Solvent": 0,
+    "Drug SMILES": 0,
+    "Solvent SMILES": 0,
+    "Temperature": 0,
+    "Solubility_log10": 0,
+    "Solubility Unit": 0
+  },
+  "unique_raw": {
+    "Drug": 186,
+    "Solvent": 49,
+    "Drug SMILES": 168,
+    "Solvent SMILES": 49,
+    "Temperature": 539,
+    "Solubility_log10": 1871,
+    "Solubility Unit": 1
+  },
+  "exact_duplicate_excess_rows": 4,
+  "exact_duplicate_involved_rows": 8,
+  "invalid_smiles": {
+    "Drug SMILES": {
+      "unique": 0,
+      "rows": 0
+    },
+    "Solvent SMILES": {
+      "unique": 0,
+      "rows": 0
+    }
+  },
+  "unique_canonical": {
+    "Drug SMILES_canonical": 168,
+    "Solvent SMILES_canonical": 49
+  },
+  "parent_families": 161,
+  "canonical_pairs": 646,
+  "parent_group_policy": "ChargeParent then remove stereochemistry for grouping only; retain original full structure as model input. No tautomer canonicalization: initial enumeration hit transform limits.",
+  "parent_family_rows": {
+    "n": 161,
+    "min": 1.0,
+    "q25": 3.0,
+    "median": 6.0,
+    "q75": 18.0,
+    "max": 96.0,
+    "mean": 11.826086956521738,
+    "sd": 14.520918194707637,
+    "mad": 5.0,
+    "iqr_flagged_count": 9,
+    "mean_without_flagged": 9.177631578947368
+  },
+  "pair_rows": {
+    "n": 646,
+    "min": 1.0,
+    "q25": 1.0,
+    "median": 1.0,
+    "q75": 4.0,
+    "max": 23.0,
+    "mean": 2.9473684210526314,
+    "sd": 3.481559511188479,
+    "mad": 0.0,
+    "iqr_flagged_count": 73,
+    "mean_without_flagged": 1.9092495636998255
+  },
+  "parent_families_single_row": 34,
+  "pairs_with_multiple_rows": 222,
+  "rows_in_repeated_pairs": 1480,
+  "pair_grid_coverage": 0.07847424684159378,
+  "names_mapping_to_multiple_structures": 0,
+  "structures_mapping_to_multiple_names": 17,
+  "multifragment_drug_unique": 26,
+  "same_condition_repeated_groups": 86,
+  "same_condition_conflicting_groups": 86,
+  "rows_in_conflicting_groups": 205,
+  "conflict_spread_over_one_log10_groups": 11,
+  "maximum_conflict_spread_log10": 3.673785704,
+  "temperature": {
+    "n": 1904,
+    "min": -59.5,
+    "q25": 25.0,
+    "median": 25.0,
+    "q75": 35.0625,
+    "max": 130.0,
+    "mean": 28.77533613445378,
+    "sd": 15.669874970785148,
+    "mad": 5.0,
+    "iqr_flagged_count": 264,
+    "mean_without_flagged": 28.6232987804878
+  },
+  "target_log10": {
+    "n": 1904,
+    "min": -6.234331445,
+    "q25": -2.0273781265,
+    "median": -1.0638043755,
+    "q75": -0.1520843855,
+    "max": 2.21675143,
+    "mean": -1.1512718764469538,
+    "sd": 1.291884551397519,
+    "mad": 0.9429865785,
+    "iqr_flagged_count": 9,
+    "mean_without_flagged": -1.1299324663018468
+  },
+  "versions": {
+    "pandas": "3.1.1",
+    "numpy": "2.5.5",
+    "rdkit": "2026.9.2",
+    "scikit-learn": "1.9.1",
+    "matplotlib": "3.11.2"
+  },
+  "python": "3.12.14",
+  "unresolved": [
+    "temperature unit",
+    "source encoding",
+    "experimental sources and independence",
+    "pH, solid form, purity, pressure and equilibrium definition",
+    "name-structure identity accuracy",
+    "log10 transformation and original unit provenance"
+  ]
+}
