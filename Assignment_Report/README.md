@@ -6,6 +6,6 @@
 - 主文件：`Assignment-main.tex`
 - 正文：`sections/`
 - 应用截图：`figures/revision_v4/`
-- 实验结果：`../artifacts/combination_v3/`
+- 实验结果：`../output/combination_v3/`
 
 根目录运行 `bash scripts/build_report.sh` 编译。误差排序为探索性证据，正文保留区间与选择偏差说明。
