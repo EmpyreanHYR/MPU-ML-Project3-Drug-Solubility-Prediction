@@ -1,0 +1,17 @@
+{
+  "params": {
+    "family": "extra",
+    "representation": "full",
+    "weight_power": 0.0,
+    "iterations": 300,
+    "depth": null,
+    "min_samples_leaf": 2,
+    "max_features": 0.7
+  },
+  "candidate": 0,
+  "seconds": 5.2275857090135105,
+  "MAE": 0.6483437418708257,
+  "RMSE": 0.8606874356864309,
+  "R2": 0.5259850047849224,
+  "parent_macro_MAE": 0.680665767433599
+}

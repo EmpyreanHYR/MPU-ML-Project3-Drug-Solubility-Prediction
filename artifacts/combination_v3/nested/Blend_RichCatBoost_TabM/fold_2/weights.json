@@ -1,0 +1,13 @@
+{
+  "families": [
+    "RichCatBoost",
+    "TabM"
+  ],
+  "weights": {
+    "RichCatBoost": 0.5,
+    "TabM": 0.5
+  },
+  "inner_parent_macro_MAE": 0.7192424493046555,
+  "selection_rows": 1210,
+  "outer_validation_used": false
+}

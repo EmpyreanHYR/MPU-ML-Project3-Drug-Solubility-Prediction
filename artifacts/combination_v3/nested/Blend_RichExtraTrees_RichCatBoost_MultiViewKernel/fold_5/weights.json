@@ -1,0 +1,15 @@
+{
+  "families": [
+    "RichExtraTrees",
+    "RichCatBoost",
+    "MultiViewKernel"
+  ],
+  "weights": {
+    "RichExtraTrees": 0.5,
+    "RichCatBoost": 0.25,
+    "MultiViewKernel": 0.25
+  },
+  "inner_parent_macro_MAE": 0.6924871987531654,
+  "selection_rows": 1175,
+  "outer_validation_used": false
+}

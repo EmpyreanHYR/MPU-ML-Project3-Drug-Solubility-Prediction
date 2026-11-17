@@ -1,0 +1,62 @@
+[
+  {
+    "representation": "full",
+    "family": "extra",
+    "weight_power": 1.0,
+    "iterations": 300,
+    "min_samples_leaf": 1
+  },
+  {
+    "representation": "full",
+    "family": "extra",
+    "weight_power": 1.0,
+    "iterations": 300,
+    "min_samples_leaf": 2
+  },
+  {
+    "representation": "full",
+    "family": "extra",
+    "weight_power": 0.5,
+    "iterations": 300,
+    "min_samples_leaf": 1
+  },
+  {
+    "representation": "full",
+    "family": "extra",
+    "weight_power": 0.5,
+    "iterations": 300,
+    "min_samples_leaf": 2
+  },
+  {
+    "representation": "basic",
+    "family": "extra",
+    "weight_power": 1.0,
+    "iterations": 300,
+    "min_samples_leaf": 1
+  },
+  {
+    "representation": "basic",
+    "family": "extra",
+    "weight_power": 0.5,
+    "iterations": 300,
+    "min_samples_leaf": 2
+  },
+  {
+    "representation": "full",
+    "family": "catboost",
+    "weight_power": 1.0,
+    "iterations": 500,
+    "depth": 5,
+    "learning_rate": 0.04,
+    "loss": "MAE"
+  },
+  {
+    "representation": "basic",
+    "family": "catboost",
+    "weight_power": 1.0,
+    "iterations": 500,
+    "depth": 5,
+    "learning_rate": 0.04,
+    "loss": "MAE"
+  }
+]

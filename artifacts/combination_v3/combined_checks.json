@@ -1,0 +1,237 @@
+{
+  "status": "passed",
+  "coverage": [
+    {
+      "model": "TabPFN_ExtraTreesBlend",
+      "rows_per_seed": 1507,
+      "seeds": [
+        17,
+        42,
+        2026
+      ],
+      "heldout_rows": 0
+    },
+    {
+      "model": "TabPFN_TwoTreeBlend",
+      "rows_per_seed": 1507,
+      "seeds": [
+        17,
+        42,
+        2026
+      ],
+      "heldout_rows": 0
+    },
+    {
+      "model": "Blend_RichExtraTrees_RichCatBoost",
+      "rows_per_seed": 1507,
+      "seeds": [
+        17,
+        42,
+        2026
+      ],
+      "heldout_rows": 0
+    },
+    {
+      "model": "TabPFN_CatBoostBlend",
+      "rows_per_seed": 1507,
+      "seeds": [
+        17,
+        42,
+        2026
+      ],
+      "heldout_rows": 0
+    },
+    {
+      "model": "TabPFN_FiveViewBlend",
+      "rows_per_seed": 1507,
+      "seeds": [
+        17,
+        42,
+        2026
+      ],
+      "heldout_rows": 0
+    },
+    {
+      "model": "TabPFN",
+      "rows_per_seed": 1507,
+      "seeds": [
+        17,
+        42,
+        2026
+      ],
+      "heldout_rows": 0
+    },
+    {
+      "model": "RichExtraTrees",
+      "rows_per_seed": 1507,
+      "seeds": [
+        17,
+        42,
+        2026
+      ],
+      "heldout_rows": 0
+    },
+    {
+      "model": "Blend_RichExtraTrees_RichCatBoost_MultiViewKernel",
+      "rows_per_seed": 1507,
+      "seeds": [
+        17,
+        42,
+        2026
+      ],
+      "heldout_rows": 0
+    },
+    {
+      "model": "Blend_RichExtraTrees_MultiViewKernel",
+      "rows_per_seed": 1507,
+      "seeds": [
+        17,
+        42,
+        2026
+      ],
+      "heldout_rows": 0
+    },
+    {
+      "model": "Blend_RichExtraTrees_RichCatBoost_TabM",
+      "rows_per_seed": 1507,
+      "seeds": [
+        17,
+        42,
+        2026
+      ],
+      "heldout_rows": 0
+    },
+    {
+      "model": "MultiViewBlend",
+      "rows_per_seed": 1507,
+      "seeds": [
+        17,
+        42,
+        2026
+      ],
+      "heldout_rows": 0
+    },
+    {
+      "model": "Blend_RichExtraTrees_MultiViewKernel_TabM",
+      "rows_per_seed": 1507,
+      "seeds": [
+        17,
+        42,
+        2026
+      ],
+      "heldout_rows": 0
+    },
+    {
+      "model": "RichCatBoost",
+      "rows_per_seed": 1507,
+      "seeds": [
+        17,
+        42,
+        2026
+      ],
+      "heldout_rows": 0
+    },
+    {
+      "model": "Blend_RichExtraTrees_TabM",
+      "rows_per_seed": 1507,
+      "seeds": [
+        17,
+        42,
+        2026
+      ],
+      "heldout_rows": 0
+    },
+    {
+      "model": "Blend_RichCatBoost_MultiViewKernel",
+      "rows_per_seed": 1507,
+      "seeds": [
+        17,
+        42,
+        2026
+      ],
+      "heldout_rows": 0
+    },
+    {
+      "model": "Blend_RichCatBoost_TabM",
+      "rows_per_seed": 1507,
+      "seeds": [
+        17,
+        42,
+        2026
+      ],
+      "heldout_rows": 0
+    },
+    {
+      "model": "Blend_RichCatBoost_MultiViewKernel_TabM",
+      "rows_per_seed": 1507,
+      "seeds": [
+        17,
+        42,
+        2026
+      ],
+      "heldout_rows": 0
+    },
+    {
+      "model": "Original_AdaptiveHybrid",
+      "rows_per_seed": 1507,
+      "seeds": [
+        17,
+        42,
+        2026
+      ],
+      "heldout_rows": 0
+    },
+    {
+      "model": "Blend_MultiViewKernel_TabM",
+      "rows_per_seed": 1507,
+      "seeds": [
+        17,
+        42,
+        2026
+      ],
+      "heldout_rows": 0
+    },
+    {
+      "model": "MultiViewKernel",
+      "rows_per_seed": 1507,
+      "seeds": [
+        17,
+        42,
+        2026
+      ],
+      "heldout_rows": 0
+    },
+    {
+      "model": "Original_ExtraTrees",
+      "rows_per_seed": 1507,
+      "seeds": [
+        17,
+        42,
+        2026
+      ],
+      "heldout_rows": 0
+    },
+    {
+      "model": "TabM",
+      "rows_per_seed": 1507,
+      "seeds": [
+        17,
+        42,
+        2026
+      ],
+      "heldout_rows": 0
+    }
+  ],
+  "holdout_used": false,
+  "original_report_unchanged_since_snapshot": false,
+  "original_report_files": 96,
+  "report_written_by_this_experiment": false,
+  "report_snapshot_changed_paths": [
+    "Assignment_Report/README.md",
+    "Assignment_Report/sections/discussion.tex",
+    "Assignment_Report/sections/evidence_map.md"
+  ],
+  "reused_input_hashes_verified": true,
+  "frozen_protocol_inputs_verified": true,
+  "explanation": "All metrics exploratory; averaging seeds is not three independent group experiments"
+}

@@ -1,0 +1,14 @@
+{
+  "families": [
+    "TabPFN",
+    "RichExtraTrees",
+    "RichCatBoost"
+  ],
+  "weights": {
+    "TabPFN": 0.25,
+    "RichExtraTrees": 0.75,
+    "RichCatBoost": 0.0
+  },
+  "inner_parent_macro_MAE": 0.7073145799658214,
+  "outer_validation_used": false
+}

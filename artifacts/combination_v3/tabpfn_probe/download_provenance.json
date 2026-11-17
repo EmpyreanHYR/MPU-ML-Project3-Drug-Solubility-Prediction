@@ -1,0 +1,12 @@
+{
+  "LICENSE.txt": {
+    "url": "https://huggingface.co/Prior-Labs/TabPFN-v2-reg/resolve/main/LICENSE.txt",
+    "bytes": 11483,
+    "sha256": "08b1851b4b6136b5fb0cb124d3258e0d91e3e1623f1be5904b77e4d270d112d8"
+  },
+  "tabpfn-v2-regressor.ckpt": {
+    "url": "https://huggingface.co/Prior-Labs/TabPFN-v2-reg/resolve/main/tabpfn-v2-regressor.ckpt",
+    "bytes": 44390977,
+    "sha256": "2ab5a07d5c41dfe6db9aa7ae106fc6de898326c2765be66505a07e2868c10736"
+  }
+}

@@ -1,0 +1,112 @@
+{
+  "model": "TabPFN_TwoTreeBlend",
+  "training_rows": 1507,
+  "training_groups": 128,
+  "seed": 2026,
+  "params": {
+    "TabPFN": {
+      "representation": "small",
+      "n_estimators": 2
+    },
+    "RichExtraTrees": {
+      "family": "extra",
+      "representation": "interaction",
+      "weight_power": 1.0,
+      "iterations": 300,
+      "depth": null,
+      "min_samples_leaf": 2,
+      "max_features": 0.7
+    },
+    "RichCatBoost": {
+      "family": "catboost",
+      "representation": "full",
+      "weight_power": 0.5,
+      "loss": "RMSE",
+      "iterations": 500,
+      "depth": 5,
+      "learning_rate": 0.04
+    }
+  },
+  "weights": {
+    "TabPFN": 0.25,
+    "RichExtraTrees": 0.5,
+    "RichCatBoost": 0.25
+  },
+  "inner_parent_macro_MAE": 0.6660555928221339,
+  "retained_components": [
+    "TabPFN",
+    "RichExtraTrees",
+    "RichCatBoost"
+  ],
+  "fit_seconds": {
+    "TabPFN": 0.16402224998455495,
+    "RichExtraTrees": 4.005543292034417,
+    "RichCatBoost": 1.5072891659801826
+  },
+  "model_sha256": "78528f12329d450a9d44c2f3c33df345eca50600dd785ac11e0de6f13f9e5636",
+  "serialization_check": {
+    "rows": 20,
+    "target_column_removed": true,
+    "maximum_absolute_difference": 4.440892098500626e-16,
+    "ensemble_rtol": 1e-06,
+    "ensemble_atol": 1e-06,
+    "tree_rtol": 1e-12,
+    "tree_atol": 1e-12,
+    "tree_maximum_absolute_differences": {
+      "RichExtraTrees": 4.440892098500626e-16,
+      "RichCatBoost": 0.0
+    },
+    "status": "PASS"
+  },
+  "checkpoint": {
+    "path": "artifacts/combination_v3/tabpfn_probe/tabpfn-v2-regressor.ckpt",
+    "sha256": "2ab5a07d5c41dfe6db9aa7ae106fc6de898326c2765be66505a07e2868c10736",
+    "embedded_in_joblib": false
+  },
+  "deployment": "research only; application and report are unchanged",
+  "primary": true,
+  "exploratory": true,
+  "historical_holdout_evaluated": false,
+  "export_protocol_sha256": "89ded39da18697431414fa9568ccc5bb7322474ce483ef656bc4ce59814e3a85",
+  "attribution": "Built with PriorLabs-TabPFN",
+  "license": "TabPFN-LICENSE.txt",
+  "resolved_component_params": {
+    "TabPFN": {
+      "device": "mps",
+      "model_path": null,
+      "n_estimators": 2,
+      "output_type": "mean",
+      "representation": "small",
+      "seed": 2026
+    },
+    "RichExtraTrees": {
+      "depth": null,
+      "family": "extra",
+      "iterations": 300,
+      "l2_leaf_reg": 5.0,
+      "learning_rate": 0.04,
+      "loss": "MAE",
+      "max_features": 0.7,
+      "min_samples_leaf": 2,
+      "representation": "interaction",
+      "seed": 2026,
+      "threads": 2,
+      "weight_power": 1.0
+    },
+    "RichCatBoost": {
+      "depth": 5,
+      "family": "catboost",
+      "iterations": 500,
+      "l2_leaf_reg": 5.0,
+      "learning_rate": 0.04,
+      "loss": "RMSE",
+      "max_features": 0.7,
+      "min_samples_leaf": 2,
+      "representation": "full",
+      "seed": 2026,
+      "threads": 2,
+      "weight_power": 0.5
+    }
+  },
+  "post_export_validation": "Artifact hashes, weights, complete training context and resolved constructor parameters checked from loaded joblib"
+}

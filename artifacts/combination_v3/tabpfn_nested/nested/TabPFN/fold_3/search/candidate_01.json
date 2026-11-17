@@ -1,0 +1,12 @@
+{
+  "params": {
+    "representation": "small",
+    "n_estimators": 4
+  },
+  "candidate": 1,
+  "seconds": 7.016273042012472,
+  "MAE": 0.7733677526453848,
+  "RMSE": 1.0466906048556126,
+  "R2": 0.31855417379056394,
+  "parent_macro_MAE": 0.8320208021068144
+}

@@ -1,0 +1,58 @@
+{
+  "scope": "same-development 3-fold exploratory diagnostics; no holdout",
+  "baseline_sources": [
+    "tree_pilot candidate 09",
+    "tree_pilot candidate 03"
+  ],
+  "new_source": "pair_pilot candidate 01",
+  "caution": "Best candidate was identified on these OOF scores; final inference requires nested validation",
+  "checks": {
+    "same_rows": true,
+    "same_parents": true,
+    "same_targets": true
+  },
+  "results": [
+    {
+      "recipe": "raw_interaction_ET",
+      "MAE": 0.6713016077681189,
+      "RMSE": 0.9240756259188326,
+      "R2": 0.4794732407584671,
+      "parent_macro_MAE": 0.6759883681830607
+    },
+    {
+      "recipe": "normalized_interaction_ET",
+      "MAE": 0.6929220935733114,
+      "RMSE": 0.9500789682225066,
+      "R2": 0.44976597952706554,
+      "parent_macro_MAE": 0.6816910643512903
+    },
+    {
+      "recipe": "half_raw_half_normalized",
+      "MAE": 0.6797275607326042,
+      "RMSE": 0.9324477890030486,
+      "R2": 0.46999852607092363,
+      "parent_macro_MAE": 0.676493138961876
+    },
+    {
+      "recipe": "three_quarters_raw_quarter_normalized",
+      "MAE": 0.6745307925984593,
+      "RMSE": 0.9270821509373609,
+      "R2": 0.4760806123967346,
+      "parent_macro_MAE": 0.6755728673536863
+    },
+    {
+      "recipe": "half_raw_ET_half_CatBoost",
+      "MAE": 0.6534600296883761,
+      "RMSE": 0.8838899140818229,
+      "R2": 0.5237616258388575,
+      "parent_macro_MAE": 0.6675802495426733
+    },
+    {
+      "recipe": "equal_raw_ET_normalized_ET_CatBoost",
+      "MAE": 0.6621755436562902,
+      "RMSE": 0.9004310625529892,
+      "R2": 0.5057701549139728,
+      "parent_macro_MAE": 0.6664127639001667
+    }
+  ]
+}

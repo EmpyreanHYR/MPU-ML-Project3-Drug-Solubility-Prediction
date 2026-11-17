@@ -1,0 +1,112 @@
+{
+  "config": "full",
+  "cap": null,
+  "seconds": 25.818237000028603,
+  "adapter_sha256": "9413b4e65d84a6c79a20ece5cc8deb25c74bc83559f49aa32b271c067762a003",
+  "MAE": 0.7089105197408516,
+  "RMSE": 0.9492510724559987,
+  "R2": 0.4507245060388225,
+  "parent_macro_MAE": 0.7251715514056125,
+  "folds": [
+    {
+      "fold": 1,
+      "available_training_rows": 1121,
+      "selected_training_rows": 1121,
+      "training_parents": 85,
+      "max_rows_per_parent": 96,
+      "validation_rows": 386,
+      "seconds": 10.937451416975819,
+      "MAE": 0.847985606673377,
+      "RMSE": 1.0649444022541685,
+      "R2": 0.39701983011601394,
+      "parent_macro_MAE": 0.8238615352604842,
+      "metadata": {
+        "rows": 1121,
+        "features": 23,
+        "groups": 85,
+        "local_inference_only": true,
+        "telemetry_disabled": true,
+        "sample_weight_supported": false,
+        "params": {
+          "device": "mps",
+          "model_path": null,
+          "n_estimators": 4,
+          "output_type": "mean",
+          "representation": "small",
+          "seed": 2026
+        },
+        "checkpoint_sha256": "2ab5a07d5c41dfe6db9aa7ae106fc6de898326c2765be66505a07e2868c10736",
+        "serialization": "stores training context and rebuilds local estimator lazily"
+      }
+    },
+    {
+      "fold": 2,
+      "available_training_rows": 941,
+      "selected_training_rows": 941,
+      "training_parents": 85,
+      "max_rows_per_parent": 96,
+      "validation_rows": 566,
+      "seconds": 7.977414416964166,
+      "MAE": 0.6806609652463642,
+      "RMSE": 0.8729247209272262,
+      "R2": 0.5211316485901443,
+      "parent_macro_MAE": 0.7152113538846683,
+      "metadata": {
+        "rows": 941,
+        "features": 23,
+        "groups": 85,
+        "local_inference_only": true,
+        "telemetry_disabled": true,
+        "sample_weight_supported": false,
+        "params": {
+          "device": "mps",
+          "model_path": null,
+          "n_estimators": 4,
+          "output_type": "mean",
+          "representation": "small",
+          "seed": 2026
+        },
+        "checkpoint_sha256": "2ab5a07d5c41dfe6db9aa7ae106fc6de898326c2765be66505a07e2868c10736",
+        "serialization": "stores training context and rebuilds local estimator lazily"
+      }
+    },
+    {
+      "fold": 3,
+      "available_training_rows": 952,
+      "selected_training_rows": 952,
+      "training_parents": 86,
+      "max_rows_per_parent": 64,
+      "validation_rows": 555,
+      "seconds": 6.886306583008263,
+      "MAE": 0.6409938788181943,
+      "RMSE": 0.9385326648617933,
+      "R2": 0.38739693126714225,
+      "parent_macro_MAE": 0.6343291511113539,
+      "metadata": {
+        "rows": 952,
+        "features": 23,
+        "groups": 86,
+        "local_inference_only": true,
+        "telemetry_disabled": true,
+        "sample_weight_supported": false,
+        "params": {
+          "device": "mps",
+          "model_path": null,
+          "n_estimators": 4,
+          "output_type": "mean",
+          "representation": "small",
+          "seed": 2026
+        },
+        "checkpoint_sha256": "2ab5a07d5c41dfe6db9aa7ae106fc6de898326c2765be66505a07e2868c10736",
+        "serialization": "stores training context and rebuilds local estimator lazily"
+      }
+    }
+  ],
+  "checks": {
+    "parent_overlap": 0,
+    "all_training_parents_preserved": true,
+    "fixed_complete_validation": true,
+    "label_free_sampling": true,
+    "finite_predictions": true
+  }
+}

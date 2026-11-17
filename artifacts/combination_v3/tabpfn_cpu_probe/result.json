@@ -1,0 +1,58 @@
+{
+  "purpose": "one-shot device speed/numerical probe, not a model-performance comparison",
+  "fold": 1,
+  "training_rows": 1121,
+  "validation_rows": 386,
+  "features": 435,
+  "n_estimators": 2,
+  "seed": 2026,
+  "device": "cpu",
+  "actual_torch_threads": 2,
+  "adapter_sha256": "9413b4e65d84a6c79a20ece5cc8deb25c74bc83559f49aa32b271c067762a003",
+  "checkpoint_sha256": "2ab5a07d5c41dfe6db9aa7ae106fc6de898326c2765be66505a07e2868c10736",
+  "reserved_holdout_scored": false,
+  "local_inference_only": true,
+  "allow_cpu_large_dataset_performance_override": true,
+  "deterministic_feature_warmup_seconds": 0.7755025000078604,
+  "cpu_fit_seconds": 0.5843906669761054,
+  "cpu_predict_seconds": 158.27070704096695,
+  "cpu_total_seconds": 158.85509770794306,
+  "mps_fit_seconds": 0.7589925419888459,
+  "mps_predict_seconds": 36.070326500048395,
+  "mps_total_seconds": 36.82931904203724,
+  "max_absolute_prediction_difference": 0.03374457359313965,
+  "mean_absolute_prediction_difference": 0.006783929524986662,
+  "cpu_metrics": {
+    "MAE": 0.7937664996751118,
+    "RMSE": 1.033315517693812,
+    "R2": 0.4323050087802498,
+    "parent_macro_MAE": 0.8452046887629258
+  },
+  "mps_metrics": {
+    "MAE": 0.7917894171892559,
+    "RMSE": 1.0321746194528925,
+    "R2": 0.43355791681896727,
+    "parent_macro_MAE": 0.8429440949774453
+  },
+  "metadata": {
+    "rows": 1121,
+    "features": 435,
+    "groups": 85,
+    "local_inference_only": true,
+    "telemetry_disabled": true,
+    "sample_weight_supported": false,
+    "params": {
+      "device": "cpu",
+      "model_path": null,
+      "n_estimators": 2,
+      "output_type": "mean",
+      "representation": "full",
+      "seed": 2026
+    },
+    "checkpoint_sha256": "2ab5a07d5c41dfe6db9aa7ae106fc6de898326c2765be66505a07e2868c10736",
+    "serialization": "stores training context and rebuilds local estimator lazily"
+  },
+  "timing_caution": "Separate runs; MPS reference used direct output_type=main, adapter predicts mean; warmup, contention and hardware kernels can differ",
+  "sample_MAE_difference_cpu_minus_mps": 0.00197708248585593,
+  "parent_MAE_difference_cpu_minus_mps": 0.0022605937854804914
+}

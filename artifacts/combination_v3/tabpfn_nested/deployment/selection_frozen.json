@@ -1,0 +1,103 @@
+{
+  "all_base_params": {
+    "RichExtraTrees": {
+      "family": "extra",
+      "representation": "interaction",
+      "weight_power": 1.0,
+      "iterations": 300,
+      "depth": null,
+      "min_samples_leaf": 2,
+      "max_features": 0.7
+    },
+    "RichCatBoost": {
+      "family": "catboost",
+      "representation": "full",
+      "weight_power": 0.5,
+      "loss": "RMSE",
+      "iterations": 500,
+      "depth": 5,
+      "learning_rate": 0.04
+    },
+    "MultiViewKernel": {
+      "features": "full",
+      "gamma": 1.0,
+      "alpha": 0.03
+    },
+    "TabM": {
+      "d_block": 64
+    },
+    "TabPFN": {
+      "representation": "small",
+      "n_estimators": 2
+    }
+  },
+  "ensembles": {
+    "TabPFN_TwoTreeBlend": {
+      "families": [
+        "TabPFN",
+        "RichExtraTrees",
+        "RichCatBoost"
+      ],
+      "weights": {
+        "TabPFN": 0.25,
+        "RichExtraTrees": 0.5,
+        "RichCatBoost": 0.25
+      },
+      "inner_parent_macro_MAE": 0.6660555928221339,
+      "params": {
+        "TabPFN": {
+          "representation": "small",
+          "n_estimators": 2
+        },
+        "RichExtraTrees": {
+          "family": "extra",
+          "representation": "interaction",
+          "weight_power": 1.0,
+          "iterations": 300,
+          "depth": null,
+          "min_samples_leaf": 2,
+          "max_features": 0.7
+        },
+        "RichCatBoost": {
+          "family": "catboost",
+          "representation": "full",
+          "weight_power": 0.5,
+          "loss": "RMSE",
+          "iterations": 500,
+          "depth": 5,
+          "learning_rate": 0.04
+        }
+      },
+      "outer_validation_used": false
+    },
+    "TabPFN_ExtraTreesBlend": {
+      "families": [
+        "TabPFN",
+        "RichExtraTrees"
+      ],
+      "weights": {
+        "TabPFN": 0.25,
+        "RichExtraTrees": 0.75
+      },
+      "inner_parent_macro_MAE": 0.6683203325491135,
+      "params": {
+        "TabPFN": {
+          "representation": "small",
+          "n_estimators": 2
+        },
+        "RichExtraTrees": {
+          "family": "extra",
+          "representation": "interaction",
+          "weight_power": 1.0,
+          "iterations": 300,
+          "depth": null,
+          "min_samples_leaf": 2,
+          "max_features": 0.7
+        }
+      },
+      "outer_validation_used": false
+    }
+  },
+  "fit_seed": 2026,
+  "historical_holdout_evaluated": false
+}

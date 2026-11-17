@@ -1,0 +1,17 @@
+{
+  "candidate": 8,
+  "params": {
+    "family": "extra",
+    "representation": "interaction",
+    "weight_power": 0.0,
+    "iterations": 300,
+    "depth": null,
+    "min_samples_leaf": 2,
+    "max_features": 0.7
+  },
+  "seconds": 8.181370124977548,
+  "MAE": 0.6708681644573833,
+  "RMSE": 0.8978590571379852,
+  "R2": 0.5085895742061277,
+  "parent_macro_MAE": 0.6984971600832819
+}

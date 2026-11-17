@@ -1,0 +1,15 @@
+{
+  "src/data.py": "f2f761053c055410a9f124141178af87ba024ecbe63674bd89538d1bf3dcfb8d",
+  "src/features.py": "3e7405a979057107949d22f32c6090623579fa9af1adfa0edba21b0f7a0bd2e2",
+  "src/metrics.py": "9c40ad73b551ab12f7e56f0fbeb9578773993a35e618eb540f2d45086d863338",
+  "src/models/tabm_model.py": "20c159598dea5f0597b6a0353fac6fc9f371323f22b8f9e08bbc45cdd22a23e8",
+  "src/models/conditional_common.py": "43cab8bdc44fcf9551d42ca32072b73824509df8f420875004204c1e39b0d946",
+  "src/revision_models/adaptive_hybrid_model.py": "5c62cc7ae4d525b9abdbd48ee244e05e8bf290ddbda1537cd5f9e4bdad8a3f5a",
+  "src/models/hybrid_conditional_model.py": "69ee6167d7cef4a41ad0d68a8da743ae928672f8c969e120d8719140a0225f25",
+  "analysis/2026-11-16/split_manifest.csv": "2811c201e525c1c31623109fd8d2cd16c05501186a8662a8999bc04964d88f30",
+  "analysis/2026-11-16/development_folds.csv": "8df9edea9ba359f6c2a1260c5957cee89c6f81c9e42cac40d07d1d5f7e97d5a1",
+  "analysis/2026-11-16/data_policy.json": "fffc4c9fd1a832823cb2e8d9bab366ae51f1cde37b8958888723a52488a4d476",
+  "datasets/data_2026.csv": "5cf4cecfb556dba5fe10d57ffebe337090cdee07cca6327ec7375cf84c79290d",
+  "pyproject.toml": "034bca9b1a937ef3f0c40c6ac35f42ced11e0521c5b70000c2db5a118e868926",
+  "uv.lock": "96647c0b55a1846d2d22410f7d5dcee9fe0cf3e2d8c3ab8886f007d79f26fb8d"
+}

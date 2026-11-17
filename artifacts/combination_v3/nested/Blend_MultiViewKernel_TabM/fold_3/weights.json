@@ -1,0 +1,13 @@
+{
+  "families": [
+    "MultiViewKernel",
+    "TabM"
+  ],
+  "weights": {
+    "MultiViewKernel": 1.0,
+    "TabM": 0.0
+  },
+  "inner_parent_macro_MAE": 0.7030002622343833,
+  "selection_rows": 1130,
+  "outer_validation_used": false
+}

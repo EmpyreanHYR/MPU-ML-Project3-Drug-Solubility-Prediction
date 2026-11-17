@@ -1,0 +1,8 @@
+{
+  "reason": "Serialization-only assertion changed from bitwise equality to rtol=atol=1e-12; parallel ExtraTrees sum reduction differed by 4.44e-16. Training, candidate search, outer predictions, fusion weights and metrics unchanged.",
+  "file": "scripts/run_combination_nested.py",
+  "before": "7fbef31b8bd27baf4e5f7c17f8becc5f1690dddfee2ddb45f256d01850df5401",
+  "after": "ae64a1615c82c7f877408e5a14c9a2ff68760a824c2f93ebe7388faa98fd7459",
+  "stage": "after all outer predictions; before successful research model finalization",
+  "original_failure_log": "deployment.log"
+}

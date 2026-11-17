@@ -1,0 +1,77 @@
+{
+  "representation": "small",
+  "features": 23,
+  "params": {
+    "model_path": "/Users/hyr/Downloads/MPU-Class/机器学习/小组作业/MPU-ML-Project3-Drug-Solubility-Prediction/artifacts/combination_v3/tabpfn_probe/tabpfn-v2-regressor.ckpt",
+    "device": "mps",
+    "n_estimators": 2,
+    "n_preprocessing_jobs": 1,
+    "random_state": 2026,
+    "memory_saving_mode": "auto"
+  },
+  "mean": {
+    "MAE": 0.7167331453266605,
+    "RMSE": 0.9985996698397758,
+    "R2": 0.3921297812263066,
+    "parent_macro_MAE": 0.7098742180872573
+  },
+  "median": {
+    "MAE": 0.7317092405486575,
+    "RMSE": 1.0068202861887396,
+    "R2": 0.3820804365263024,
+    "parent_macro_MAE": 0.7171347140903699
+  },
+  "folds": [
+    {
+      "fold": 1,
+      "fit_seconds": 0.9850393750239164,
+      "predict_seconds": 4.59625516703818,
+      "mean": {
+        "MAE": 0.9060930721814393,
+        "RMSE": 1.1395724934309353,
+        "R2": 0.3095486623007343,
+        "parent_macro_MAE": 0.8423283156306857
+      },
+      "median": {
+        "MAE": 0.9383447980487057,
+        "RMSE": 1.1788197046397606,
+        "R2": 0.2611710010964544,
+        "parent_macro_MAE": 0.8645610967652313
+      }
+    },
+    {
+      "fold": 2,
+      "fit_seconds": 0.21020299999509007,
+      "predict_seconds": 2.9591532080085017,
+      "mean": {
+        "MAE": 0.6599047098234093,
+        "RMSE": 0.8761289252748538,
+        "R2": 0.517609676700467,
+        "parent_macro_MAE": 0.6699615289453968
+      },
+      "median": {
+        "MAE": 0.6751897717488302,
+        "RMSE": 0.9097432977212057,
+        "R2": 0.4798839217026125,
+        "parent_macro_MAE": 0.6846432362790449
+      }
+    },
+    {
+      "fold": 3,
+      "fit_seconds": 0.15685637504793704,
+      "predict_seconds": 2.840548874984961,
+      "mean": {
+        "MAE": 0.6429889340273733,
+        "RMSE": 1.010797791782851,
+        "R2": 0.28942658993735504,
+        "parent_macro_MAE": 0.6151294428189855
+      },
+      "median": {
+        "MAE": 0.6456348155859251,
+        "RMSE": 0.9705524605086481,
+        "R2": 0.3448836884984823,
+        "parent_macro_MAE": 0.5994632638729401
+      }
+    }
+  ]
+}

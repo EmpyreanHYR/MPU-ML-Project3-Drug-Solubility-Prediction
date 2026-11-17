@@ -1,0 +1,16 @@
+{
+  "params": {
+    "family": "catboost",
+    "representation": "interaction",
+    "weight_power": 0.5,
+    "loss": "RMSE",
+    "iterations": 500,
+    "depth": 5,
+    "learning_rate": 0.04
+  },
+  "seconds": 4.490288541011978,
+  "MAE": 0.5766198517047219,
+  "RMSE": 0.756677013148789,
+  "R2": 0.1728749795388136,
+  "parent_macro_MAE": 0.5113360647502722
+}

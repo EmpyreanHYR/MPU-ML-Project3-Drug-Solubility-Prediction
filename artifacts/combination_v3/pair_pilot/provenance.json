@@ -1,0 +1,10 @@
+{
+  "purpose": "exploratory screening, not nested final validation",
+  "development_rows": 1507,
+  "parents": 128,
+  "protocol": "GroupKFold(3, shuffle=True, random_state=2026)",
+  "reserved_holdout_scored": false,
+  "model_code_sha256": "7cd93817407691b36fee0dc646957bedbdc027e2fce6d88e664e76d7ce359455",
+  "data_sha256": "5cf4cecfb556dba5fe10d57ffebe337090cdee07cca6327ec7375cf84c79290d",
+  "training_seed": 2026
+}

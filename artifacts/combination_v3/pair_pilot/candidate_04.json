@@ -1,0 +1,119 @@
+{
+  "candidate": 4,
+  "params": {
+    "representation": "basic",
+    "family": "extra",
+    "weight_power": 1.0,
+    "iterations": 300,
+    "min_samples_leaf": 1
+  },
+  "seconds": 1.3494717919966206,
+  "model_code_sha256": "7cd93817407691b36fee0dc646957bedbdc027e2fce6d88e664e76d7ce359455",
+  "MAE": 0.7270377614560903,
+  "RMSE": 0.965137380836098,
+  "R2": 0.432185728834678,
+  "parent_macro_MAE": 0.7179480245619568,
+  "fold_metrics": [
+    {
+      "fold": 1,
+      "MAE": 0.8266146108706637,
+      "RMSE": 1.047671851099646,
+      "R2": 0.41642092608375636,
+      "parent_macro_MAE": 0.850827876182223
+    },
+    {
+      "fold": 2,
+      "MAE": 0.6540125246551943,
+      "RMSE": 0.8733991201068535,
+      "R2": 0.5206110161054807,
+      "parent_macro_MAE": 0.6687869429491661
+    },
+    {
+      "fold": 3,
+      "MAE": 0.7322550950692108,
+      "RMSE": 0.9939603679354194,
+      "R2": 0.3129022610930532,
+      "parent_macro_MAE": 0.6322359505066844
+    }
+  ],
+  "training_metadata": [
+    {
+      "fold": 1,
+      "training_rows": 1121,
+      "training_parents": 85,
+      "descriptor_count_per_side": 11,
+      "retained_features": 41,
+      "scaling": "separate side StandardScaler, training rows only, parent weighted",
+      "imputation": "training side medians",
+      "params": {
+        "clip": 8.0,
+        "depth": null,
+        "family": "extra",
+        "iterations": 300,
+        "l2_leaf_reg": 5.0,
+        "learning_rate": 0.04,
+        "loss": "MAE",
+        "max_features": 0.7,
+        "min_samples_leaf": 1,
+        "representation": "basic",
+        "seed": 2026,
+        "threads": 2,
+        "weight_power": 1.0
+      }
+    },
+    {
+      "fold": 2,
+      "training_rows": 941,
+      "training_parents": 85,
+      "descriptor_count_per_side": 11,
+      "retained_features": 41,
+      "scaling": "separate side StandardScaler, training rows only, parent weighted",
+      "imputation": "training side medians",
+      "params": {
+        "clip": 8.0,
+        "depth": null,
+        "family": "extra",
+        "iterations": 300,
+        "l2_leaf_reg": 5.0,
+        "learning_rate": 0.04,
+        "loss": "MAE",
+        "max_features": 0.7,
+        "min_samples_leaf": 1,
+        "representation": "basic",
+        "seed": 2026,
+        "threads": 2,
+        "weight_power": 1.0
+      }
+    },
+    {
+      "fold": 3,
+      "training_rows": 952,
+      "training_parents": 86,
+      "descriptor_count_per_side": 11,
+      "retained_features": 41,
+      "scaling": "separate side StandardScaler, training rows only, parent weighted",
+      "imputation": "training side medians",
+      "params": {
+        "clip": 8.0,
+        "depth": null,
+        "family": "extra",
+        "iterations": 300,
+        "l2_leaf_reg": 5.0,
+        "learning_rate": 0.04,
+        "loss": "MAE",
+        "max_features": 0.7,
+        "min_samples_leaf": 1,
+        "representation": "basic",
+        "seed": 2026,
+        "threads": 2,
+        "weight_power": 1.0
+      }
+    }
+  ],
+  "checks": {
+    "training_side_scaler_means_verified": true,
+    "parent_overlap": 0,
+    "finite_predictions": true,
+    "each_row_predicted_once": true
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "AdaptiveHybrid": {
+    "old_parent_macro_MAE": 0.7164050568926572,
+    "new_parent_macro_MAE": 0.6896656876381193,
+    "difference_new_minus_old": -0.026739369254537886,
+    "relative_reduction_percent": 3.732437257006184,
+    "parent_paired_bootstrap_95CI": [
+      -0.07924000112366948,
+      0.03046867924799324
+    ],
+    "improved_parents": 74,
+    "total_parents": 128,
+    "bootstrap_unit": "parent; average absolute error over that parent's rows and seeds",
+    "interpretation": "exploratory uncertainty conditional on these fitted folds; not independent repeated experiments or a new heldout test"
+  },
+  "ExtraTrees": {
+    "old_parent_macro_MAE": 0.7469181701937113,
+    "new_parent_macro_MAE": 0.6896656876381193,
+    "difference_new_minus_old": -0.057252482555592,
+    "relative_reduction_percent": 7.665161304181918,
+    "parent_paired_bootstrap_95CI": [
+      -0.10601493455939105,
+      -0.011160411564367315
+    ],
+    "improved_parents": 80,
+    "total_parents": 128,
+    "bootstrap_unit": "parent; average absolute error over that parent's rows and seeds",
+    "interpretation": "exploratory uncertainty conditional on these fitted folds; not independent repeated experiments or a new heldout test"
+  }
+}

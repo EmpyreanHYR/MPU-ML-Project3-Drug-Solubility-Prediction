@@ -1,0 +1,67 @@
+{
+  "stage": "Full-development research artifact after second exploratory round; no app replacement",
+  "primary": "TabPFN_TwoTreeBlend",
+  "exploratory_best": "TabPFN_ExtraTreesBlend",
+  "fit_role": "development only",
+  "rows": 1507,
+  "groups": 128,
+  "seed": 2026,
+  "tabpfn_catalog": [
+    {
+      "representation": "small",
+      "n_estimators": 2
+    },
+    {
+      "representation": "small",
+      "n_estimators": 4
+    },
+    {
+      "representation": "full",
+      "n_estimators": 2
+    },
+    {
+      "representation": "full",
+      "n_estimators": 4
+    }
+  ],
+  "variants": {
+    "TabPFN_TwoTreeBlend": [
+      "TabPFN",
+      "RichExtraTrees",
+      "RichCatBoost"
+    ],
+    "TabPFN_ExtraTreesBlend": [
+      "TabPFN",
+      "RichExtraTrees"
+    ]
+  },
+  "selection": "3-fold development parent GroupKFold, seed2026; nonnegative simplex step.25 parent macro MAE",
+  "prediction": "mean",
+  "checkpoint_sha256": "2ab5a07d5c41dfe6db9aa7ae106fc6de898326c2765be66505a07e2868c10736",
+  "nested_protocol_sha256": "25a654c1376111a63d2209230d5eaecf95d701f1022f57abee99742b7343a9b6",
+  "source_sha256": "5cf4cecfb556dba5fe10d57ffebe337090cdee07cca6327ec7375cf84c79290d",
+  "export_code_sha256": "72a739c8a35b80d9da741d029d0a3fd711012a38b197978bf8849a4f33a99eef",
+  "reused_full_development_inputs": {
+    "artifacts/combination_v3/full_development_search/RichExtraTrees/selected.json": "b56802ccb16ab1cf30846f782cf16919078dc6cbd0a8df05fc98d3789c2fc631",
+    "artifacts/combination_v3/full_development_search/RichExtraTrees/predictions_03.csv": "441316fb24a8eb203b1cf1864abfb1378d7023490dec42e8c313b2dfa45c3da2",
+    "artifacts/combination_v3/full_development_search/RichCatBoost/selected.json": "be8a1dcdedb37efd32d1ead07610387f98191fd8416e605053106d71cfaa842f",
+    "artifacts/combination_v3/full_development_search/RichCatBoost/predictions_03.csv": "ca4b397ef6e2caea5883e99f58d59d21a978676e7e84691ab28df28870c4fa51",
+    "artifacts/combination_v3/full_development_search/MultiViewKernel/selected.json": "f4b364bcd71eede8e6f1ddbac89df4944967e094549c0da38765b39e2d3db794",
+    "artifacts/combination_v3/full_development_search/MultiViewKernel/predictions_00.csv": "63b504ae1acfd34e4a94fe0b3eff406f18e0bfd8e2b17e4daf3b30b5a045168b",
+    "artifacts/combination_v3/full_development_search/TabM/selected.json": "ec25eae6348da3bf4b2d79593caab9b71653e039542bd50a53cae2b6680e252a",
+    "artifacts/combination_v3/full_development_search/TabM/predictions_00.csv": "02f659dc982ba2975eebbbe1662bfd826e0f5e476899e20c9a4b80822de33cea"
+  },
+  "dependencies": {
+    "tabpfn": "6.4.1",
+    "torch": "2.15.0",
+    "scikit-learn": "1.9.1",
+    "numpy": "2.5.5",
+    "pandas": "3.1.1",
+    "rdkit": "2026.9.2",
+    "joblib": "1.6.0"
+  },
+  "historical_holdout_evaluated": false,
+  "report_modified": false,
+  "app_replaced": false,
+  "attribution": "Built with PriorLabs-TabPFN"
+}

@@ -1,0 +1,25 @@
+{
+  "stage": "second-round exploratory branch after v3 results; not confirmatory",
+  "model": "TabPFN-v2 Nature 2025 original public regressor checkpoint",
+  "params": {
+    "model_path": "/Users/hyr/Downloads/MPU-Class/机器学习/小组作业/MPU-ML-Project3-Drug-Solubility-Prediction/artifacts/combination_v3/tabpfn_probe/tabpfn-v2-regressor.ckpt",
+    "device": "mps",
+    "n_estimators": 2,
+    "n_preprocessing_jobs": 1,
+    "random_state": 2026,
+    "memory_saving_mode": "auto"
+  },
+  "rows": 1507,
+  "parents": 128,
+  "source_sha256": "5cf4cecfb556dba5fe10d57ffebe337090cdee07cca6327ec7375cf84c79290d",
+  "code_sha256": "11e64a7ce7002e5b6a9990b34f20c97b360a26190d5f4fda5b872d59fd2deb8f",
+  "checkpoint_sha256": "2ab5a07d5c41dfe6db9aa7ae106fc6de898326c2765be66505a07e2868c10736",
+  "split": "GroupKFold(3, shuffle=True, random_state=2026), development parents only",
+  "holdout_used": false,
+  "telemetry_disabled": true,
+  "local_inference_only": true,
+  "tabpfn_version": "6.4.1",
+  "torch_version": "2.15.0",
+  "weighting": "No sample weighting; native ICL implementation has no sample_weight argument",
+  "primary_output": "median, targets MAE; mean retained as a prespecified comparison"
+}

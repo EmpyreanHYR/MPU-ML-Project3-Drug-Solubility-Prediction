@@ -1,0 +1,15 @@
+{
+  "families": [
+    "RichCatBoost",
+    "MultiViewKernel",
+    "TabM"
+  ],
+  "weights": {
+    "RichCatBoost": 0.5,
+    "MultiViewKernel": 0.5,
+    "TabM": 0.0
+  },
+  "inner_parent_macro_MAE": 0.6954051182983378,
+  "selection_rows": 1175,
+  "outer_validation_used": false
+}

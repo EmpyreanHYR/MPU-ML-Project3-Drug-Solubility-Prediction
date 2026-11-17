@@ -1,0 +1,42 @@
+{
+  "model": "MultiViewBlend",
+  "seed": 2026,
+  "training_rows": 1507,
+  "training_groups": 128,
+  "weights": {
+    "RichExtraTrees": 0.5,
+    "RichCatBoost": 0.0,
+    "MultiViewKernel": 0.5,
+    "TabM": 0.0
+  },
+  "params": {
+    "RichExtraTrees": {
+      "family": "extra",
+      "representation": "interaction",
+      "weight_power": 1.0,
+      "iterations": 300,
+      "depth": null,
+      "min_samples_leaf": 2,
+      "max_features": 0.7
+    },
+    "RichCatBoost": {
+      "family": "catboost",
+      "representation": "full",
+      "weight_power": 0.5,
+      "loss": "RMSE",
+      "iterations": 500,
+      "depth": 5,
+      "learning_rate": 0.04
+    },
+    "MultiViewKernel": {
+      "features": "full",
+      "gamma": 1.0,
+      "alpha": 0.03
+    },
+    "TabM": {
+      "d_block": 64
+    }
+  },
+  "historical_test_evaluated": false,
+  "sha256": "22a219f569d8f554be618a79516651b2c242c4623301167b2995356d6c524cc9"
+}

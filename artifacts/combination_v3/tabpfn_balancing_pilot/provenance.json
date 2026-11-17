@@ -1,0 +1,19 @@
+{
+  "purpose": "exploratory parent-balanced TabPFN context; no nested follow-up in this script",
+  "development_rows": 1507,
+  "development_parents": 128,
+  "protocol": "GroupKFold(3, shuffle=True, random_state=2026)",
+  "reserved_holdout_scored": false,
+  "representation": "small (23 features)",
+  "n_estimators": 4,
+  "model_seed": 2026,
+  "sampling_seed": 2026,
+  "sampling": "within each training fold, keep lowest SHA256(seed|parent|data_row) ranks per parent",
+  "sampling_uses_targets": false,
+  "validation_subsampled": false,
+  "adapter_sha256": "9413b4e65d84a6c79a20ece5cc8deb25c74bc83559f49aa32b271c067762a003",
+  "checkpoint_sha256": "2ab5a07d5c41dfe6db9aa7ae106fc6de898326c2765be66505a07e2868c10736",
+  "data_sha256": "5cf4cecfb556dba5fe10d57ffebe337090cdee07cca6327ec7375cf84c79290d",
+  "local_inference_only": true,
+  "device": "mps"
+}
