@@ -28,7 +28,7 @@ def test_comparison_and_curve_share_inputs():
     assert np.isclose(mid,r['curve_a']['lines'][0]['values'][30])
 
 def test_invalid_requests_and_model_registry():
-    assert len(models()['models'])==12
+    assert len(models()['models'])==14
     q=sample()|{'model_id':'AdaptiveHybrid'}
     for change in [{'model_id':'missing'},{'drug_id':'missing'},{'temperature':1001}]:assert client.post('/api/predict',json=q|change).status_code==422
     assert client.post('/api/compare',json=q|{'model_b':'AdaptiveHybrid'}).status_code==422
@@ -39,8 +39,37 @@ def test_invalid_requests_and_model_registry():
 
 def test_restored_v2_registry():
     r=client.get('/api/models').json()
-    assert r['default']=='AdaptiveHybrid'
-    assert {m['id'] for m in r['models'] if m['group'].startswith('Proposed')}=={'AdaptiveHybrid','InteractionConditional'}
+    assert r['default']=='TabPFN_ExtraTreesBlend'
+    assert {m['id'] for m in r['models'] if m['group'].startswith('SOLAR controls')}=={'AdaptiveHybrid','InteractionConditional'}
     scores={m['id']:m['metrics']['parent_macro_MAE'] for m in r['models']}
     assert np.isclose(scores['AdaptiveHybrid'],0.7164050568926572)
     assert np.isclose(scores['ExtraTrees'],0.7469181701937112)
+
+
+def test_fusion_inference_and_report_metrics():
+    import json
+    import pandas as pd
+    from src.data import ROOT
+    from webapp.server import MAIN_MODEL
+    registry=client.get('/api/models').json()
+    assert registry['default']==MAIN_MODEL
+    assert registry['comparator']=='AdaptiveHybrid'
+    report=pd.read_csv(ROOT/'artifacts/combination_v3/all_nested_comparison.csv').set_index('model')
+    record=next(m for m in registry['models'] if m['id']==MAIN_MODEL)
+    for k in ['MAE','RMSE','R2','parent_macro_MAE']:
+        assert np.isclose(record['metrics'][k],report.loc[MAIN_MODEL,k],atol=1e-12)
+    q=sample()|{'model_id':MAIN_MODEL}
+    r=client.post('/api/predict',json=q);assert r.status_code==200,r.text
+    r=r.json();model,meta=get_model(MAIN_MODEL)
+    frame=pd.DataFrame({'Drug SMILES':[lookup('Drug',q['drug_id'])['smiles']],'Solvent SMILES':[lookup('Solvent',q['solvent_id'])['smiles']],'Temperature':[25.]})
+    assert np.isclose(r['log_solubility'],model.predict(frame)[0])
+    assert 'base' not in r and 'temperature_component' not in r
+    assert np.isclose(sum(v['contributions'][0] for v in r['components'].values()),r['log_solubility'])
+    assert {k:v['weight'] for k,v in r['components'].items()}==meta['weights']
+    comp=client.post('/api/compare',json=q|{'model_b':'AdaptiveHybrid','temperature_min':10.,'temperature_max':40.})
+    assert comp.status_code==200,comp.text
+    comp=comp.json();assert len(comp['group_errors']['ids'])==128
+    assert np.isclose(comp['metrics_a']['parent_macro_MAE'],report.loc[MAIN_MODEL,'parent_macro_MAE'])
+    assert len(comp['curve_a']['lines'][0]['values'])==61
+    batch=client.post('/api/batch',json={'model_id':MAIN_MODEL,'rows':[sample(),sample()|{'temperature':'bad'}]})
+    assert batch.status_code==200 and batch.json()['success_count']==1 and batch.json()['error_count']==1
