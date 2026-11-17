@@ -1,0 +1,90 @@
+\section{实验设置}
+\subsection{评价协议与模型选择}
+主要评价在1507条开发记录、128个母体上进行。外层沿用固定的五折母体划分，每折均将验证母体整体排除在训练之外；内层采用三折分组验证选择参数，随机种子为2026。每个可调方法预设12个候选配置，均值预测器只有一个配置。每个外层折在参数确定后以2026、17、42三个种子重新训练并评价。内层验证采用合并折外预测的母体等权MAE选模，不简单平均各折分数。
+
+描述符标准化、温度中心化、目标归一化、母体权重和温度对均仅从当前训练部分计算。397条固定评价记录用于检验不同划分下的预测表现，主要比较依据嵌套分组验证。部署配置通过完整开发集上的三折分组验证确定，并以种子2026训练。
+
+\subsection{比较模型与参数预算}
+比较包含均值预测、Ridge、随机森林、ExtraTrees、直方图梯度提升（HGB）、TabM、RealMLP、普通MLP、温度差分MLP及两条提出路线，其中混合路线包含固定增益对照SOLAR-H$_0$与自适应收缩模型SOLAR-H，共12种方法。SOLAR-H$_0$采用$\gamma=1$并独立搜索其余超参数；单因素温度增益对照另在SOLAR-H的固定配置下开展。全部使用相同23维基础描述符输入；提出方法在内部构造交互。普通MLP和温度差分MLP采用两个同宽隐藏层，后者仅增加差分监督，为网络路线提供直接控制。
+
+TabM采用官方参数高效集成实现，固定120轮；RealMLP采用官方PyTabKit实现，固定128轮，并关闭内部验证及提前停止。SOLAR-N固定160轮。各方法获得相同数量的参数候选，但单次拟合计算量不同，因此同时报告训练与推理耗时。
+
+各模型的参数范围如表\ref{tab:searchspace}所示。
+\begin{table}[htbp]\centering\small
+\caption{参数搜索范围。除均值预测外，每类方法使用12个候选；较大的离散空间按固定种子抽样，SOLAR-H遍历12种组合；参数仅由内层验证选择。}\label{tab:searchspace}
+\begin{tabularx}{\linewidth}{lX}\toprule
+模型 & 参数范围\\\midrule
+Ridge & $\alpha$为$10^{-3}$至$10^4$的12个对数等距值\\
+随机森林、ExtraTrees & 200棵树；深度$\{8,16,\mathrm{None}\}$；叶节点$\{1,2,4,8\}$；特征比例$\{0.7,1.0\}$\\
+HGB & 200轮；叶节点$\{7,15,31\}$；学习率$\{0.03,0.07\}$；正则化$\{0.1,1,10\}$\\
+TabM & 宽度$\{64,128\}$；dropout $\{0,0.1,0.2\}$；学习率$\{0.001,0.003\}$；16个成员\\
+RealMLP & 宽度$\{64,96,128,192\}$；隐藏层数$\{1,2,3\}$\\
+普通MLP & 宽度$\{32,64,128\}$；学习率$\{0.001,0.003\}$；权重衰减$\{0.001,0.01\}$\\
+温度差分MLP、SOLAR-N & 宽度$\{32,64\}$；学习率$\{0.001,0.003\}$；差分权重$\{0.1,1,3\}$\\
+SOLAR-H$_0$ & 200棵树；深度$\{8,16,\mathrm{None}\}$；叶节点$\{1,2\}$；斜率惩罚$\{1,10,100,1000\}$\\SOLAR-H & 温度增益$\{0,0.1,0.3,1\}$；深度$\{8,16,\mathrm{None}\}$；200棵树、叶节点1、斜率惩罚1000\\\bottomrule
+\end{tabularx}\end{table}
+
+\subsection{指标、消融与不确定性}
+记评价集包含$N$条记录、$G$个药物母体，$y_i$与$\hat y_i$分别为观测值和预测值，$n_g$为母体$g$的记录数，$\bar y=N^{-1}\sum_i y_i$。所有误差基于溶解度的log10尺度计算。
+
+母体等权平均绝对误差为
+\begin{equation}
+\mathrm{MAE}_{\mathrm{parent}}=\frac1G\sum_{g=1}^G\frac1{n_g}
+\sum_{i:g_i=g}|y_i-\hat y_i|.
+\end{equation}
+该指标给予每个母体相同权重，衡量模型在不同药物间的平均预测表现，数值越小越好。
+
+逐行平均绝对误差为
+\begin{equation}
+\mathrm{MAE}=\frac1N\sum_{i=1}^{N}|y_i-\hat y_i|.
+\end{equation}
+MAE表示每条观测的平均偏差，数值越小越好；记录较多的母体在这一指标中贡献更大。
+
+均方根误差为
+\begin{equation}
+\mathrm{RMSE}=\sqrt{\frac1N\sum_{i=1}^{N}(y_i-\hat y_i)^2}.
+\end{equation}
+平方项提高了大残差的权重，因此RMSE用于考察极端预测误差，数值越小越好。
+
+决定系数为
+\begin{equation}
+R^2=1-\frac{\sum_{i=1}^{N}(y_i-\hat y_i)^2}{\sum_{i=1}^{N}(y_i-\bar y)^2}.
+\end{equation}
+$R^2$衡量相对于观测均值预测的误差缩减，数值越大越好，理想值为1；负值表示平方误差超过均值参照。
+
+计算效率采用平均拟合时间与每条记录的批量推理时间：
+\begin{equation}
+\bar t_{\mathrm{fit}}=\frac1K\sum_{k=1}^{K}t_{\mathrm{fit},k},\qquad
+\bar t_{\mathrm{pred}}=\frac1K\sum_{k=1}^{K}\frac{1000t_{\mathrm{pred},k}}{N_k},
+\end{equation}
+其中$K=15$对应五折外层评价与三个种子，$t$以秒计，$N_k$为第$k$次验证的记录数，两个指标分别以秒和毫秒/条表示，数值越小表示相同设备下开销越低。
+
+消融表中的误差变化定义为
+\begin{equation}
+\Delta\mathrm{MAE}_{\mathrm{parent}}=
+\mathrm{MAE}_{\mathrm{parent}}^{\mathrm{variant}}-
+\mathrm{MAE}_{\mathrm{parent}}^{\mathrm{reference}}.
+\end{equation}
+负值表示变体误差低于对应完整模型。每个种子先合并五折预测计算指标，再平均三个种子的指标；母体配对区间采用2000次母体bootstrap估计。
+
+消融固定各外层折选出的配置，分别关闭母体均衡、交互项、温度分支及差分损失，另加入仅母体均衡的普通MLP。学习曲线在每个外层训练集中按母体抽取25\%、50\%和75\%的数据，验证部分保持不变。灵敏度实验分别改变差分权重、网络宽度与斜率正则化，其他参数沿用该折配置。
+
+\subsection{训练环境}
+训练环境如表\ref{tab:environment}所示。
+\begin{table}[H]\centering
+\caption{训练环境。}\label{tab:environment}
+\begin{tabular}{ll}\toprule
+项目 & 值\\\midrule
+处理器 & Apple M4\\
+内存 & 24 GiB\\
+操作系统 & macOS 27.2.1（arm64）\\
+计算设备 & CPU\\
+数值线程数 & 2\\
+Python & 3.12.12\\
+环境管理 & uv\\
+NumPy / pandas & 2.5.5 / 3.1.1\\
+scikit-learn & 1.9.1\\
+RDKit & 2026.9.2\\
+PyTorch & 2.15.0\\
+TabM / PyTabKit & 0.0.3 / 1.8.0\\
+\bottomrule\end{tabular}\end{table}

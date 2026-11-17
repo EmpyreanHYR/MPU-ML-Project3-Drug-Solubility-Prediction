@@ -1,0 +1,115 @@
+\FloatBarrier
+\section{基于母体均衡与自适应温度收缩的溶解度预测方法}
+\subsection{任务定义与条件分解}
+设数据集为$\mathcal D=\{(d_i,s_i,T_i,y_i,g_i,c_i)\}_{i=1}^{N}$，其中$d_i$和$s_i$为药物及溶剂结构，$g_i$为药物母体，$c_i$为精确药物--溶剂组合。模型在预测时仅使用$(d,s,T)$；$g$与$c$用于组织训练目标。本文以未见母体上的平均预测误差最小化为目标。
+
+结构与温度分解写为
+\begin{equation}\label{eq:decomp}
+\hat y_i=b_\theta(z_{d_is_i})+\gamma\tau_i r_\phi(z_{d_is_i}),\qquad
+\tau_i=\frac{T_i-T_0}{s_T},
+\end{equation}
+其中$\gamma\in[0,1]$为温度分支的收缩强度，$T_0$为训练折温度中位数，$s_T$为四分位距，退化时取1。$b_\theta$描述参考温度下的结构基线，$r_\phi$描述由结构决定的温度响应。由式\eqref{eq:decomp}可得
+\begin{equation}
+\frac{\partial\hat y}{\partial T}=\frac{\gamma r_\phi(z_{ds})}{s_T}.
+\end{equation}
+这一表达把温度敏感性显式关联到分子组合，同时将同一组合的响应限定为线性近似。斜率的符号与大小由数据学习。
+
+如图\ref{fig:v2architecture}所示，SOLAR的两条实现路线共享结构基线与温度响应的分解形式。
+\begin{figure}[htbp]\centering
+\includegraphics[width=\linewidth]{revision_v2/v2_architecture.pdf}
+\caption{两条方法路线。\textbf{a} SOLAR-H以组合内去均值回归估计条件斜率，通过内层验证选择温度增益，再用母体均衡树集成学习结构基线。\textbf{b} SOLAR-N以双编码器生成交互表示，通过逐点损失与组合差分损失联合训练结构及温度分支。两条路线采用相同的输出分解。结构和条件分支的分离使温度贡献可以独立调节，为降低跨母体响应迁移误差提供结构基础。}
+\label{fig:v2architecture}\end{figure}
+
+\subsection{母体均衡训练}
+普通经验风险按记录数赋予药物不同权重。若母体$g$有$n_g$条记录，则其在普通平均损失中的总权重为$n_g/N$。本文采用
+\begin{equation}\label{eq:balanced}
+\mathcal L_{\mathrm{bal}}=\frac1G\sum_{g=1}^{G}\frac1{n_g}
+\sum_{i:g_i=g}\rho_\delta(y_i-\hat y_i),
+\end{equation}
+使每个母体的总权重相同。实现中使用$w_i\propto n_{g_i}^{-1}$并归一到均值1。树模型在分裂和叶节点拟合时使用该样本权重；神经网络将其乘入逐点损失。
+树分支采用加权平方误差准则，神经网络采用Huber损失：
+\begin{equation}
+\rho_\delta(e)=\begin{cases}\frac12e^2,&|e|\leq\delta,\\
+\delta(|e|-\frac12\delta),&|e|>\delta.
+\end{cases}
+\end{equation}
+训练目标先按训练折均值和标准差归一化，取$\delta=1$；输出再恢复到原始log10尺度。该损失对较小残差保持二次优化，对较大残差采用线性增长。
+
+\subsection{SOLAR-H混合模型}
+令$x_d,x_s\in\mathbb R^{11}$为标准化描述符，构造
+\begin{equation}\label{eq:explicit}
+z_{ds}=[x_d;x_s;x_d\odot x_s;|x_d-x_s|]\in\mathbb R^{44}.
+\end{equation}
+乘积表达对应性质的联合变化，绝对差表达两分子在同类性质上的差异。该表示保留单分子信息，并显式加入对应性质的耦合。
+
+对于组合$c$，定义$\Delta\tau_i=\tau_i-\bar\tau_c$和$\Delta y_i=y_i-\bar y_c$。由于$z_c$在组合内固定，结构基线可通过去均值消去。先以未收缩的温度分支估计斜率，再对其施加增益$\gamma$。令$\tilde z_c=[1;z_c]$，温度响应取$r_\phi(z_c)=\tilde z_c^\top\phi$，估计为
+\begin{equation}\label{eq:slope}
+\hat\phi=\arg\min_\phi\sum_{i:\Delta\tau_i\ne0}w_i
+\left[\Delta y_i-\Delta\tau_i\tilde z_{c_i}^{\top}\phi\right]^2
++\alpha\|\phi\|_2^2.
+\end{equation}
+其闭式解为$\hat\phi=(A^\top WA+\alpha I)^{-1}A^\top W\Delta y$，其中$A_i=\Delta\tau_i\tilde z_{c_i}^{\top}$。正则化约束结构相关斜率的方差，温度不变的组合用于结构基线训练。
+
+随后计算调整目标$y_i^*=y_i-\gamma\tau_i\tilde z_{c_i}^{\top}\hat\phi$，使用母体均衡ExtraTrees拟合
+\begin{equation}
+\hat b(z)=\frac1K\sum_{k=1}^{K}h_k(z;y^*,w),\qquad
+\hat y=\hat b(z)+\gamma\tau\tilde z^\top\hat\phi.
+\end{equation}
+模型以低维线性模块学习组合内变化，以非线性树集成学习结构差异，从而分别使用两类信息。固定增益对照设定$\gamma=1$；自适应实现通过内层母体分组验证从$\{0,0.1,0.3,1\}$选择收缩强度，并与树深联合搜索。当温度响应难以迁移到未见药物时，模型可自动减弱该分支；$\gamma=0$时退化为母体均衡的交互结构模型。
+令$\mathcal V_k$为内层第$k$折验证母体集合，$\hat f^{(-k)}_{\gamma,H}$为其余内层母体训练的模型，则联合选择规则为
+\begin{equation}
+(\hat\gamma,\hat H)=\arg\min_{\gamma,H}\frac1{G_{\rm in}}
+\sum_k\sum_{g\in\mathcal V_k}\frac1{n_g}\sum_{i:g_i=g}
+|y_i-\hat f^{(-k)}_{\gamma,H}(d_i,s_i,T_i)|,
+\end{equation}
+其中$H$为树深，$G_{\rm in}$为内层全部验证母体数。该目标在母体层面汇总所有内层折，使收缩选择与最终推广指标一致。
+
+
+\subsection{SOLAR-N交互网络}
+交互网络固定$\gamma=1$，双分子编码器分别得到$h_d=E_d(x_d)$和$h_s=E_s(x_s)$，每个编码器包含宽度为$W$和$W/2$的两个隐藏层，采用SiLU激活和dropout。其交互表示为
+\begin{equation}
+z=[h_d;h_s;h_d\odot h_s;|h_d-h_s|].
+\end{equation}
+结构头使用宽度$W$的隐藏层，斜率头使用宽度$W/2$的隐藏层，二者各输出一个标量，并按式\eqref{eq:decomp}组成预测。
+
+为直接约束条件变化，将同一组合的观测按温度排序。按第3章的处理规则，对相同温度的目标取均值后构造相邻温度差分。记$P_c$为组合$c$的相邻温度对，$C_g$为母体$g$中可构造差分的组合集合，则
+\begin{equation}\label{eq:delta}
+\mathcal L_\Delta=\frac1{G_\Delta}\sum_g\frac1{|C_g|}\sum_{c\in C_g}
+\frac1{|P_c|}\sum_{(i,j)\in P_c}
+\rho_\delta\left[(y_j-y_i)-(\hat y_j-\hat y_i)\right].
+\end{equation}
+在结构化网络中，$\hat y_j-\hat y_i=(\tau_j-\tau_i)r_\phi(z_c)$，结构头被差分消去，辅助目标因而直接监督温度头。按照母体、组合和温度对逐层平均，可以避免长温度序列主导这一目标。
+
+数据拟合损失为
+\begin{equation}\label{eq:loss}
+\mathcal L=\mathcal L_{\mathrm{bal}}+\lambda_\Delta\mathcal L_\Delta.
+\end{equation}
+采用AdamW更新参数，并以$\lambda_w$执行解耦权重衰减。若$\tilde\Theta_{t+1}$为自适应梯度更新后的参数，则$\Theta_{t+1}=\tilde\Theta_{t+1}-\eta_t\lambda_w\Theta_t$，其中$\eta_t$为学习率。逐点损失启用dropout，计算差分时关闭dropout以保证相同结构具有一致编码；两部分梯度共同更新参数。训练采用固定160轮的全批更新。
+
+\subsection{训练流程与计算量}
+\begin{algorithm}[htbp]
+\floatname{algorithm}{Algorithm}
+\caption{Training and inference with parent-balanced conditional decomposition}
+\begin{algorithmic}[1]
+\Require Training fold $\mathcal D_{\rm tr}$, model route, hyperparameters
+\State Fit feature, temperature and target transformations on $\mathcal D_{\rm tr}$
+\State Compute parent-balanced sample weights
+\If{the hybrid route is selected}
+\State Construct molecular interactions using Eq.~\eqref{eq:explicit}
+\State Center temperature and target within each molecular pair
+\State Estimate the ridge slope using Eq.~\eqref{eq:slope}
+\State Compute adjusted targets with the selected temperature gain
+\State Fit the weighted ExtraTrees structural baseline
+\Else
+\State Construct adjacent-temperature pairs within $\mathcal D_{\rm tr}$
+\State Initialize molecular encoders and prediction heads
+\For{each training epoch}
+\State Evaluate the objective in Eq.~\eqref{eq:loss}
+\State Backpropagate and update parameters with AdamW
+\EndFor
+\EndIf
+\State Save fitted transformations and model parameters
+\State Predict new inputs using Eq.~\eqref{eq:decomp}
+\end{algorithmic}\end{algorithm}
+
+设交互维度为$p$，斜率岭回归的主要开销为$O(Np^2+p^3)$，存储量为$O(Np+p^2)$。树基线的训练量随树数、参与分裂的特征数和树深增长，单次预测约需$O(KH+p)$。对于宽度$W$、训练轮数$E$的网络，主要计算量为$O(ENW^2)$；相邻温度对数不超过记录量级，因此差分监督不会引入所有温度两两配对的二次增长。本文同时记录实际耗时，用以比较算法收益与实现成本。
