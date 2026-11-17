@@ -16,3 +16,6 @@ Assignment_Report/*.synctex.gz
 Assignment_Report/*.bbl
 Assignment_Report/*.blg
 Assignment_Report/*.xdv
+
+# Local browser automation session state
+.playwright-cli/

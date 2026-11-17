@@ -23,6 +23,7 @@ dependencies = [
   "fastapi>=0.163.1",
   "uvicorn>=0.54.0",
   "httpx>=0.28.1",
+  "tabpfn==6.4.1",
 ]
 
 [tool.pytest.ini_options]
