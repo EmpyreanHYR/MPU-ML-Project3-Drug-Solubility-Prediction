@@ -33,3 +33,4 @@ testpaths = ["tests"]
 
 [tool.uv]
 package = false
+python-preference = "only-managed"

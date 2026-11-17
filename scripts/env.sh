@@ -8,6 +8,8 @@ fi
 TASK_REPO_ROOT="$(cd "$(dirname "$TASK_ENV_FILE")/.." && pwd)"
 export UV_CACHE_DIR="$TASK_REPO_ROOT/.cache/uv"
 export UV_PYTHON_INSTALL_DIR="$TASK_REPO_ROOT/.cache/python"
+# Ignore PATH shims that may point into another disposable checkout.
+export UV_PYTHON_PREFERENCE=only-managed
 export TMPDIR="$TASK_REPO_ROOT/.cache/tmp"
 export MPLCONFIGDIR="$TASK_REPO_ROOT/.cache/matplotlib"
 export XDG_CACHE_HOME="$TASK_REPO_ROOT/.cache"

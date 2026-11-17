@@ -38,6 +38,8 @@ uv sync --frozen
 uv run --frozen python scripts/launch_studio.py
 ```
 
+`scripts/env.sh` 将 Python 安装与依赖缓存限定在当前仓库，并使用 `only-managed` 解释器选择策略，避免 PATH 中的 Python 符号链接指向其他将被删除的项目目录。直接执行 uv 时，`pyproject.toml` 也声明同一策略。首次安装需要下载解释器和锁定依赖。
+
 打开 <http://127.0.0.1:8502/>。macOS 和 Windows 也可使用根目录对应的 `启动Studio` 文件。命令行启动服务可使用 `bash scripts/start_web.sh`；更改端口可设置 `PORT`。
 
 Studio 提供单点预测、同条件模型比较、温度与溶剂探索、批量 CSV、数据与模型证据和互动学习。先选择药物、溶剂、温度和模型，再运行；批量 CSV 列名为 `drug,solvent,temperature`，分子须来自应用目录。界面显示的指标来自保存的嵌套评价，不是当前单条预测的误差。
