@@ -15,6 +15,7 @@
 !/configs/
 !/assets/
 !/Assignment_Report/
+!/Assignment_Report_v2/
 !/Question/
 !/bibliography/
 !/models/
@@ -92,6 +93,26 @@ __pycache__/
 !/Assignment_Report/figures/revision_v2/*.drawio
 /Assignment_Report/figures/revision_v4/*
 !/Assignment_Report/figures/revision_v4/*.jpg
+
+# Version 2 report and its reproducible supporting evidence.
+/Assignment_Report_v2/*
+!/Assignment_Report_v2/.latexmkrc
+!/Assignment_Report_v2/Assignment-main.tex
+!/Assignment_Report_v2/Assignment-main.pdf
+!/Assignment_Report_v2/assignment.cls
+!/Assignment_Report_v2/README.md
+!/Assignment_Report_v2/references.bib
+!/Assignment_Report_v2/sections/
+!/Assignment_Report_v2/figures/
+!/Assignment_Report_v2/analysis/
+/Assignment_Report_v2/sections/*
+!/Assignment_Report_v2/sections/*.tex
+/Assignment_Report_v2/figures/*
+!/Assignment_Report_v2/figures/*.pdf
+!/Assignment_Report_v2/figures/*.jpg
+/Assignment_Report_v2/analysis/*
+!/Assignment_Report_v2/analysis/*.py
+!/Assignment_Report_v2/analysis/*.json
 
 # Unused variable font; the static font and its license are sufficient.
 /assets/fonts/NotoSansSC-VF.ttf

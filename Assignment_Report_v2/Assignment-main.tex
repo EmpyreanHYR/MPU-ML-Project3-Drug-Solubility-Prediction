@@ -1,0 +1,56 @@
+% !TeX program = xelatex
+\documentclass{assignment}
+\usepackage[UTF8,scheme=chinese,fontset=none]{ctex}
+\setCJKmainfont[Path=../assets/fonts/,BoldFont=FandolSong-Bold.otf,ItalicFont=FandolKai-Regular.otf]{FandolSong-Regular.otf}
+\setCJKsansfont[Path=../assets/fonts/,BoldFont=FandolHei-Bold.otf]{FandolHei-Regular.otf}
+\setCJKmonofont[Path=../assets/fonts/]{FandolHei-Regular.otf}
+\usepackage{cite}
+\graphicspath{{figures/}{../Assignment_Report/figures/}}
+\geometry{a4paper}
+\floatname{algorithm}{算法}
+\crefname{figure}{图}{图}
+\crefname{table}{表}{表}
+\crefname{equation}{式}{式}
+\crefname{section}{节}{节}
+\renewcommand{\figurename}{图}
+\renewcommand{\tablename}{表}
+\renewcommand{\contentsname}{目录}
+\renewcommand{\refname}{参考文献}
+\setlength{\parindent}{2em}
+\setlength{\parskip}{0.3em}
+\makeatletter
+\setlength{\@fptop}{0pt}
+\setlength{\@fpsep}{12pt}
+\setlength{\@fpbot}{0pt plus 1fil}
+\makeatother
+\renewcommand{\topfraction}{0.95}
+\renewcommand{\bottomfraction}{0.95}
+\renewcommand{\textfraction}{0.04}
+\setlength{\textfloatsep}{12pt plus 2pt minus 2pt}
+
+\hypersetup{pdftitle={面向未见药物母体的条件溶解度预测},pdfauthor={COMP6133课程项目}}
+
+\title{面向未见药物母体的条件溶解度预测\\基于丰富描述符 ExtraTrees 与 TabPFN 的融合}
+\author{COMP6133 机器学习课程项目}
+\date{2026年11月18日}
+\begin{document}
+\maketitle
+\tableofcontents
+\clearpage
+\input{sections/00_abstract}
+\input{sections/01_introduction}
+\input{sections/02_related_work}
+\input{sections/03_data}
+\input{sections/04_methods}
+\input{sections/05_experiments}
+\input{sections/06_results}
+\input{sections/07_explanations}
+\input{sections/08_causal}
+\input{sections/09_application}
+\input{sections/10_discussion}
+\input{sections/11_conclusion}
+\FloatBarrier
+\newcommand{\BIBdecl}{\fontsize{10}{13}\selectfont\setlength{\itemsep}{0.1em}\setlength{\parsep}{0pt}}
+\bibliographystyle{IEEEtran}
+\bibliography{references}
+\end{document}

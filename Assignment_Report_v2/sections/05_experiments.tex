@@ -1,0 +1,65 @@
+\section{实验设计与评价方法}
+\label{sec:v2-experiments}
+
+\subsection{数据划分与历史保留集用途}
+数据划分将同一标准化药物母体的全部记录保留在同一部分。开发集包含 1507 条记录、128 个母体，历史保留集包含 397 条记录、33 个母体，两部分没有母体重叠。历史保留集曾用于早期模型的次级评价。本轮丰富特征与融合方案的结果来自开发集折外预测。
+
+\subsection{嵌套选择、预处理与随机性}
+采用固定的外层五折母体划分。每轮留出一折供评价，在其余四折内重新按母体分三折，分组打乱使用种子 2026。内层每次用两折拟合需要学习的数据变换和候选模型，在第三折生成预测。汇合三个内层验证折的预测后，分别选择分支配置，再按式\eqref{eq:v2-blend-selection}确定该外层折的融合权重。嵌套验证将配置选择置于外层训练部分，外层留出的母体为该流程提供误差估计\cite{varma2006}。
+
+配置及权重由种子 2026 的内层预测确定，外层拟合采用 2026、17 和 42 三个种子，各种子使用相同划分与所选配置。多视角核回归的固定配置在同一折上复用确定性预测。特征填补、筛选、训练样本权重和 TabPFN 的带标签上下文均按当前训练折计算。
+
+\subsection{对照模型与候选设置}
+基础描述符 ExtraTrees 提供树集成基准，丰富描述符 ExtraTrees 和 TabPFN 提供与双分支直接对应的单模型对照，同时比较丰富树之间的融合及包含更多学习器的组合。表\ref{tab:v2-experiment-matrix}概括候选范围和比较目的。基础树与丰富树使用各自的树配置和搜索预算，二者的差值衡量整体建模流程的变化。丰富树的候选空间允许在同一表示下改变 $q$，也允许在固定 $q$ 时比较表示，两类候选在相同的内层数据上评分。主表的丰富树采用各折选出的配置，其得分同时反映表示与计权的选择。
+
+\begin{table}[htbp]
+  \centering\small
+  \caption{主要比较对象及各外层训练部分的搜索范围。}
+  \label{tab:v2-experiment-matrix}
+  \begin{tabularx}{\linewidth}{@{}lX@{}}
+    \toprule
+    对象 & 配置与比较目的 \\
+    \midrule
+    基础 ExtraTrees & 12 项树配置，使用由基础描述符和温度组成的 23 维输入。 \\
+    丰富描述符 ExtraTrees & 三种特征表示、两种计权方式，组成 6 项配置。 \\
+    TabPFN v2 & 两种输入维度、两种分支内部成员数，组成 4 项配置。 \\
+    其他单模型 & 丰富特征 CatBoost\cite{catboost2018}、多视角核回归和 TabM\cite{tabm2025}分别比较 6、10 和 2 项配置。 \\
+    融合方案 & 基于所选分支预测搜索步长为 0.25 的非负权重，权重和为 1。对照包括不同分支数与组成。 \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+比较先从丰富表示与多视角组合展开，再加入 TabPFN。第二轮预先选定的主比较方案为 TabPFN 与丰富特征 ExtraTrees、CatBoost 的三分支组合。完整流程的选择继续参考这两轮的开发集外层结果，双分支方案在比较后进入后续诊断和部署。
+
+\subsection{指标、汇总与配对不确定性}
+对种子 $r$，将五个外层验证折拼接为覆盖 1507 条开发记录的折外预测，记 $e_i^{(r)}=\widehat y_i^{(r)}-y_i$，$I_g$ 为母体 $g$ 的记录集合，$G=128$，$N=\sum_g |I_g|=1507$。每个母体先计算其平均绝对误差，再对母体等权平均，
+\begin{equation}
+    A_g^{(r)}=\frac{1}{|I_g|}\sum_{i\in I_g}|e_i^{(r)}|,
+    \qquad
+    \mathrm{MAE}_{\mathrm{parent}}^{(r)}=\frac1G\sum_{g=1}^G A_g^{(r)}.
+    \label{eq:v2-parent-mae}
+\end{equation}
+该量是主指标，衡量为每个母体赋予相同重要性时的预测误差。逐行 MAE 衡量每条记录的平均绝对偏差，均方根误差（RMSE）对大误差更敏感，
+\begin{align}
+    \mathrm{MAE}^{(r)} &= \frac1N\sum_{i=1}^N|e_i^{(r)}|
+     =\sum_{g=1}^G\frac{|I_g|}{N}A_g^{(r)},\\
+    \mathrm{RMSE}^{(r)} &= \sqrt{\frac1N\sum_{i=1}^N (e_i^{(r)})^2}.
+\end{align}
+上述三项指标以目标的对数尺度计量，越低表示误差越小。决定系数衡量相对于观测均值基准的平方误差变化，
+\begin{equation}
+    (R^2)^{(r)}=1-\frac{\sum_{i=1}^N(e_i^{(r)})^2}{\sum_{i=1}^N(y_i-\bar y)^2},
+    \qquad \bar y=\frac1N\sum_{i=1}^N y_i.
+\end{equation}
+对于任一指标 $M$，取 $\overline M=\tfrac13\sum_r M^{(r)}$ 作为报告值。逐行分层误差沿用相同的逐行 MAE 公式，平均有符号误差使用该组内 $e_i^{(r)}$ 的算术平均。比较对照 $C$ 与融合方案 $F$ 时，MAE 的相对降幅为 $100\%\times(\overline M_C-\overline M_F)/\overline M_C$。
+
+母体配对比较在同一母体、同一种子上计算两种方法的差值，
+\begin{equation}
+    d_g=\frac13\sum_r\left(A_{g,F}^{(r)}-A_{g,C}^{(r)}\right),
+    \qquad
+    \Delta=\frac1G\sum_{g=1}^G d_g.
+    \label{eq:v2-paired-delta}
+\end{equation}
+负值表示融合方案误差较低。以种子 2026 有放回地从 128 个母体索引中抽取 128 个，每次计算对应 $d_g$ 的均值，共重复 10000 次，取其第 2.5 与第 97.5 百分位数作为 95\% 配对 bootstrap 区间。重采样使用已保存的折外预测，区间反映既定方案下母体误差差值的抽样变动。
+
+\subsection{运行环境与复现材料}
+丰富树与融合实验采用 Python 3.12、RDKit 2026.9.2、scikit-learn 1.9.1、TabPFN 6.4.1 和 PyTorch 2.15.0，TabPFN v2 在 Apple Silicon 的 MPS 设备上运行。项目保留原始行号到母体与验证折的映射、候选配置和折级选权记录、按行与种子保存的预测、部署模型及其配置元数据。

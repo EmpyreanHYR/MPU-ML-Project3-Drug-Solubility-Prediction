@@ -1,0 +1,55 @@
+\section{模型设计与改进方法}
+\label{sec:v2-methods}
+
+\subsection{基础 ExtraTrees}
+记第 $i$ 条记录的药物和溶剂为 $d_i$ 和 $s_i$，其温度为 $T_i$，标准化药物母体为 $g_i$。目标 $y_i$ 为记录中的对数溶解度。基础模型分别计算每种分子的 11 项描述符，涵盖分子量、MolLogP、拓扑极性表面积、氢键供受体数、可旋转键数、环数、芳香环数、重原子数、$sp^3$ 碳比例和形式电荷。药物与溶剂描述符加上温度形成 23 维输入。
+
+ExtraTrees 在树节点中随机提出特征和切分点，并按平方误差下降幅度选择切分\cite{extratrees2006}。样本沿节点划分到叶，叶内目标均值给出该树的预测，集成预测取各树的平均。基础模型采用 200 棵树，按记录等权训练。候选配置改变树的深度上限、叶节点最小记录数和节点切分时的候选特征比例。这一基线用于评价仅以基础结构性质和温度为输入的树集成表现。
+
+\subsection{丰富描述符与人工交互}
+设 $D_i=\phi(d_i)$、$S_i=\phi(s_i)$。$\phi$ 按实验环境的 RDKit 描述符顺序计算 217 项属性。直接拼接的输入为 $[D_i;S_i;T_i]$，维数为 $2\times217+1=435$。为显式表示同名属性的共同取值与差异，构造
+\begin{equation}
+    x_i^{\mathrm{int}}=[D_i;S_i;T_i;D_i\odot S_i;|D_i-S_i|],
+    \qquad \dim x_i^{\mathrm{int}}=4\times217+1=869.
+\end{equation}
+例如，MolLogP 的乘积和绝对差与两个原值共同输入树，允许节点分别按原始属性、共同取值或差异大小切分。第三种丰富表示在交互向量末尾加入标准化药物母体的 217 项描述符，共 1086 维。维数均指筛选前。丰富树在当前训练折中按列拟合中位数插补及零方差筛选，再将同一变换应用于相应验证数据。
+
+\subsection{母体加权与叶节点预测}
+对当前训练折 $\mathcal T$，令 $N_{\mathcal T}$ 为记录数，$G_{\mathcal T}$ 为母体数，$n_{g,\mathcal T}$ 为母体 $g$ 的记录数。为比较逐行等权与母体等权两种拟合，设置
+\begin{equation}
+    w_i(q)=
+    \frac{n_{g_i,\mathcal T}^{-q}}
+         {N_{\mathcal T}^{-1}\sum_{j\in\mathcal T} n_{g_j,\mathcal T}^{-q}},
+    \qquad q\in\{0,1\}.
+    \label{eq:v2-train-weight}
+\end{equation}
+$q=0$ 时 $w_i=1$。$q=1$ 时，分母为 $G_{\mathcal T}/N_{\mathcal T}$，因此每个母体的总权重均为 $N_{\mathcal T}/G_{\mathcal T}$。例如对全部开发记录拟合时，母体的总权重为 $1507/128\approx11.77$，同一母体的记录共享这份权重。
+
+对节点中的记录集合 $L$，令节点拟合值为 $v$，平方误差为 $J_L(v)=\sum_{i\in L}w_i(q)(y_i-v)^2$。令 $\partial J_L/\partial v=0$，得到叶预测
+\begin{equation}
+    \widehat v_L=\frac{\sum_{i\in L}w_i(q)y_i}{\sum_{i\in L}w_i(q)}.
+\end{equation}
+对每个候选切分，比较父节点最小损失与两个子节点最小损失之和，选取降幅最大的切分。基础树的叶均值对应 $q=0$ 的情况。丰富描述符 ExtraTrees 固定 300 棵树，树深不设上限，叶节点至少含 2 条记录，节点候选特征比例为 0.7。三种丰富表示与两个 $q$ 值组成六项候选，采用母体等权平均绝对误差选择配置。节点拟合的加权平方误差与候选选择的绝对误差分别承担不同的计算任务。
+
+\subsection{TabPFN 补充分支}
+TabPFN v2 将当前训练折的特征与标签作为上下文，用固定的预训练权重对待预测记录推断其对数溶解度\cite{tabpfn2025}。令上下文为 $\mathcal C_{\mathcal T}=\{(x_i,y_i):i\in\mathcal T\}$，分支输出为预测分布的均值 $f_{\mathrm{PFN}}(x)=\mathbb E_{\theta}[Y\mid x,\mathcal C_{\mathcal T}]$。输入比较 23 维基础表示和 435 维丰富拼接表示，各自配置 2 或 4 个内部集成成员。两条预测分支均以原始对数溶解度标签为目标，树分支通过节点切分拟合本数据的非线性规律，TabPFN 通过训练折内的带标签上下文推断。
+
+\subsection{分阶段配置选择与折外融合}
+先在相同的内层母体划分上分别选择两条分支的配置，再按原始数据行对齐所选配置的折外预测。令 $p_i$、$t_i$ 分别为记录 $i$ 的 TabPFN 与 ExtraTrees 折外预测。采用 TabPFN 权重 $\alpha$ 时，预测为 $t_i+\alpha(p_i-t_i)$，残差可写成 $(y_i-t_i)-\alpha(p_i-t_i)$。这样可直接计算候选权重怎样改变树预测与观测值的距离。对内层折外集合中的 $G_{\rm in}$ 个母体，令 $I_g$ 为母体 $g$ 的记录集合，选权问题为
+\begin{equation}
+    \widehat\alpha
+    =\arg\min_{\alpha\in\{0,0.25,0.5,0.75,1\}}
+    \frac{1}{G_{\rm in}}\sum_g \frac{1}{|I_g|}\sum_{i\in I_g}
+    \left|(y_i-t_i)-\alpha(p_i-t_i)\right|.
+    \label{eq:v2-blend-selection}
+\end{equation}
+端点对应两条单分支。配置和权重选定后，在完整的外层训练部分重新拟合两条分支。验证记录的最终预测为
+\begin{equation}
+    \widehat y(x)=(1-\widehat\alpha)f_{\mathrm{ET}}(x)
+                  +\widehat\alpha f_{\mathrm{PFN}}(x).
+    \label{eq:v2-prediction-blend}
+\end{equation}
+部署模型在全开发集上重新执行三折配置与权重选择，随后使用全部 1507 条记录拟合。部署端固定使用交互表示、$q=1$ 的 ExtraTrees 和 23 维、2 成员的 TabPFN，分支权重分别为 0.75 和 0.25。外层评价中的权重由各折分别选定。
+
+\subsection{替代设计与最终取舍}
+早期探索比较过将结构基线与线性温度响应分开的 SOLAR-H。该模型用同一组合内的温度变化估计温度项，再在扣除温度项后的目标上拟合结构树。SOLAR-H 纳入同协议的历史对照。候选方案还包括先标准化再计算交互、限制每个母体的 TabPFN 上下文记录数，以及加入 CatBoost 等分支。部署方案保留原尺度交互和完整训练上下文，原尺度交互的选择参考同一三折划分下的筛查，最佳母体等权 MAE 为 0.6760，先标准化后计算交互的最佳结果为 0.6817。上下文与分支数量的比较见结果部分。

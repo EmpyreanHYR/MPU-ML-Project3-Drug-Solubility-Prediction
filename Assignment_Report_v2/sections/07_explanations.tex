@@ -1,0 +1,41 @@
+\section{模型可解释性与温度响应}\label{sec:deployment-explanations}
+
+\subsection{解释对象与样本}
+分析对象为使用完整开发集拟合的部署模型。对其丰富特征 ExtraTrees 分支，在原始分子特征经过部署时的插补与筛选后，使用 TreeSHAP 分解树的对数溶解度预测\cite{treeshap2020}。采用树路径依赖设定，背景权重取自已拟合树记录的训练样本覆盖，无需另取显式背景样本。用种子 2026 在每个开发母体内无放回抽取至多两条记录，得到覆盖全部 128 个开发母体的 227 条解释样本。
+
+\subsection{全局特征组归因}
+将保留的 665 个特征按其输入位置分为药物描述符、溶剂描述符、温度及人工交互四组。对记录 $i$，将特征级归因 $\phi_{ij}$ 在第 $h$ 组内带符号相加得到 $\Phi_{ih}=\sum_{j\in h}\phi_{ij}$。再按母体等权汇总各组的绝对净归因
+\begin{equation}
+I_h=\frac{1}{128}\sum_g\frac{1}{m_g}\sum_{i\in S_g}|\Phi_{ih}|,
+\end{equation}
+其中 $S_g$ 为母体 $g$ 的解释记录集合，$m_g=|S_g|$。四组有符号归因加上背景预测值 $-1.1632$，可重构 ExtraTrees 的预测输出，最大绝对重构差低于 $1.3\times10^{-13}$。药物描述符与人工交互的平均绝对净归因分别为 0.466 和 0.432，高于溶剂描述符的 0.084 和温度的 0.033（图~\ref{fig:deployment-explanations}A）。这一排序表明，在所解释的部署样本上，树分支的输出偏移更多分配到了药物描述符及其交互特征。
+
+\subsection{局部分支修正}
+在模型序列化验证所用的 20 条开发记录中，按补充分支相对树预测的修正量 $\Delta_{\mathrm{PFN}}=0.25(f_{\mathrm{PFN}}-f_{\mathrm{ET}})$ 排序，取最小值和最大值对应的两条记录（表~\ref{tab:deployment-examples}）。两条记录的树预测均低于其背景值，药物描述符与人工交互是主要负向归因。TabPFN 对赤藓糖醇案例下调树预测 0.055，对 Dane 盐案例上调 0.020，说明补充预测可沿不同方向修正树输出。这两条记录用于拆解部署结果，对应的实测值来自开发训练数据。
+
+\begin{table}[htbp]
+\centering\small
+\caption{部署模型的两条局部解释记录。两例溶剂均为丙酮，温度采用 CSV 原始尺度。实测和预测均为对数溶解度。}
+\label{tab:deployment-examples}
+\begin{tabular}{lrrrrrr}
+\toprule
+药物（数据行号） & 温度 & 实测 & ExtraTrees & TabPFN & 融合 & $\Delta_{\rm PFN}$\\
+\midrule
+赤藓糖醇（23） & 13.2 & $-2.692$ & $-2.495$ & $-2.716$ & $-2.551$ & $-0.055$\\
+对羟基苯甘氨酸 Dane 盐（3） & 70.2 & $-1.843$ & $-1.927$ & $-1.847$ & $-1.907$ & $+0.020$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{固定组合的温度预测响应}
+按开发集中不同温度的数量选取示例，数量相同时按观测温度跨度排序。所选的洛伐他汀--乙酸丁酯组合有 20 条观测，覆盖 20 个不同温度。固定两种分子结构后，在其观测范围 $[5.95,50.2]$ 内等距扫描 61 个温度点。融合预测从左端的 $-1.587$ 变化至右端的 $-1.074$。两支预测均随输入温度发生变化，其中树分支呈分段响应（图~\ref{fig:deployment-explanations}B）。散点用于显示部署训练时的实测覆盖。
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\linewidth]{deployment_explanations.pdf}
+\caption{部署模型的归因与温度响应。A 为丰富特征 ExtraTrees 分支的母体等权绝对净归因。B 为洛伐他汀--乙酸丁酯组合的两支预测、加权结果及开发集观测。}
+\label{fig:deployment-explanations}
+\end{figure}
+
+\subsection{解释范围}
+描述符及其乘积和绝对差相互依赖，组内正负贡献可以相抵，归因排序须结合分组和背景读解。特征组归因针对 ExtraTrees 分支，分支修正量描述凸组合中的数值变化。温度扫描给出模型的输入响应，下一节用实测记录估计同一药物--溶剂组合内的温度关联。
