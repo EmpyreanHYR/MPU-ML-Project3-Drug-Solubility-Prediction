@@ -73,3 +73,31 @@ def test_fusion_inference_and_report_metrics():
     assert len(comp['curve_a']['lines'][0]['values'])==61
     batch=client.post('/api/batch',json={'model_id':MAIN_MODEL,'rows':[sample(),sample()|{'temperature':'bad'}]})
     assert batch.status_code==200 and batch.json()['success_count']==1 and batch.json()['error_count']==1
+
+
+def test_molecule_screen_and_diagnostics():
+    q=sample()
+    mol=client.get('/api/molecule/'+q['drug_id'])
+    assert mol.status_code==200,mol.text
+    mb=mol.json()
+    assert mb['formula']=='C8H10N4O2'
+    assert 'MolWt' in mb['properties'] and 'MolLogP' in mb['properties']
+    assert client.get('/api/molecule/D999999').status_code==422
+
+    scr=client.post('/api/screen',json={'model_id':'ExtraTrees','drug_id':q['drug_id'],'temperature':25.})
+    assert scr.status_code==200,scr.text
+    sb=scr.json()
+    assert len(sb['results'])==49
+    vals=[x['log_solubility'] for x in sb['results']]
+    assert vals==sorted(vals,reverse=True)
+    match=next(x for x in sb['results'] if x['solvent_id']==q['solvent_id'])
+    direct=client.post('/api/predict',json=q|{'model_id':'ExtraTrees'}).json()
+    assert np.isclose(match['log_solubility'],direct['log_solubility'])
+
+    diag=client.get('/api/model_diagnostics/ExtraTrees')
+    assert diag.status_code==200,diag.text
+    db=diag.json()
+    assert db['n_parents']==128
+    assert len(db['residual_histogram'])==15
+    assert len(db['scatter'])>0
+    assert client.get('/api/model_diagnostics/missing').status_code==422

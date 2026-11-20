@@ -209,7 +209,12 @@
       button.setAttribute('aria-pressed', String(isChosen));
       // Keep controls focusable after answering, while locking the first answer.
       button.setAttribute('aria-disabled', String(answered));
-      button.append(make('span', 'quiz-letter', String.fromCharCode(65 + index)), make('span', '', text));
+      const textSpan = make('span', 'btn-stack quiz-option-text');
+      const [en, zh] = window.StudioLanguage ? window.StudioLanguage.split(text) : [text, ''];
+      textSpan.innerHTML = zh
+        ? `<span lang="en" class="btn-text-en">${en}</span><span lang="zh-CN" class="btn-text-zh">${zh}</span>`
+        : `<span lang="en" class="btn-text-en">${en}</span>`;
+      button.append(make('span', 'quiz-letter', String.fromCharCode(65 + index)), textSpan);
       if (answered && index === q.correct) button.append(make('span', 'quiz-status', '✓ Correct answer / 正确答案'));
       else if (answered && isChosen) button.append(make('span', 'quiz-status', '× Your selection / 你的选择'));
       button.addEventListener('click', () => {
@@ -251,6 +256,7 @@
     next.addEventListener('click', () => changeQuestion((state.active + 1) % questions.length));
     actions.append(previous, counter, next);
     target.append(actions);
+    window.StudioLanguage?.normalize(target);
   }
   function changeQuestion(index) {
     state.active = index;
@@ -296,7 +302,12 @@
       button.type = 'button';
       button.dataset.concept = String(index);
       button.setAttribute('aria-controls', 'solar-learn-concept');
-      button.append(make('span', 'learn-node-number', String(index + 1).padStart(2, '0')), make('strong', '', concept.title));
+      const titleStrong = make('strong', 'btn-stack learn-node-title');
+      const [enTitle, zhTitle] = window.StudioLanguage ? window.StudioLanguage.split(concept.title) : [concept.title, ''];
+      titleStrong.innerHTML = zhTitle
+        ? `<span lang="en" class="btn-text-en">${enTitle}</span><span lang="zh-CN" class="btn-text-zh">${zhTitle}</span>`
+        : `<span lang="en" class="btn-text-en">${enTitle}</span>`;
+      button.append(make('span', 'learn-node-number', String(index + 1).padStart(2, '0')), titleStrong);
       button.addEventListener('click', () => { state.concept = index; renderConcept(); });
       flow.append(button);
     });
@@ -347,6 +358,7 @@
     renderConcept();
     renderTasks();
     renderQuiz();
+    window.StudioLanguage?.normalize(host);
   }
 
   readState();
