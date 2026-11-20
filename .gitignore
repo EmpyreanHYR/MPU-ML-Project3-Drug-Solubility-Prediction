@@ -16,6 +16,7 @@
 !/assets/
 !/Assignment_Report/
 !/Assignment_Report_v2/
+!/Assignment_Report_v2_en/
 !/Question/
 !/bibliography/
 !/models/
@@ -113,6 +114,16 @@ __pycache__/
 /Assignment_Report_v2/analysis/*
 !/Assignment_Report_v2/analysis/*.py
 !/Assignment_Report_v2/analysis/*.json
+
+# English manuscript of the report (LaTeX, Markdown, Word).
+/Assignment_Report_v2_en/*
+!/Assignment_Report_v2_en/Assignment-main-en.tex
+!/Assignment_Report_v2_en/Assignment_Report_en.md
+!/Assignment_Report_v2_en/Assignment_Report_en.docx
+!/Assignment_Report_v2_en/references.bib
+!/Assignment_Report_v2_en/sections/
+/Assignment_Report_v2_en/sections/*
+!/Assignment_Report_v2_en/sections/*.tex
 
 # Unused variable font; the static font and its license are sufficient.
 /assets/fonts/NotoSansSC-VF.ttf

@@ -1,0 +1,37 @@
+\section{Model Comparison and Generalisation Analysis}
+
+\subsection{Experimental Setup and Baselines}
+
+To assess generalisation and design effectiveness fairly, every model is evaluated under the outer five-fold parent split established in Section~\ref{sec:v2-experiments}. All candidates share exactly the same training and held-out parent partitions, are refit under three independent seeds (2026, 17, 42), and report the average of the three seeds.
+
+To form a multi-level, multi-paradigm benchmark, we assemble the comparison matrix in Table~\ref{tab:v2-experiment-matrix}.
+
+\begin{table}[htbp]
+  \centering\small
+  \caption{Comparison matrix of models and their hyperparameter search spaces.}
+  \label{tab:v2-experiment-matrix}
+  \begin{tabularx}{\linewidth}{@{}lllX@{}}
+    \toprule
+    Category & Model & Input dimension & Tuning space and mechanism \\
+    \midrule
+    \multirow{2}{*}{Conventional single models}
+    & Base ExtraTrees baseline & 23 (base descriptors + temperature) & 12 tree-hyperparameter combinations (depth 8--unbounded, leaf 1--4, feature ratio 0.5--1.0). \\
+    & Feature-rich ExtraTrees & 869 (explicit interactions) & 3 representations $\times$ 2 weightings ($q \in \{0, 1\}$), 6 configurations. \\
+    \midrule
+    Physical decomposition & SOLAR-H & 45 (augmented) & 4 temperature gains ($\gamma \in \{0, 0.1, 0.3, 1.0\}$) $\times$ 3 tree depths, 12 configurations. \\
+    \midrule
+    \multirow{3}{*}{Recent single models}
+    & TabPFN v2 & 23 / 435 & 2 input dimensions $\times$ 2 internal ensemble sizes (2, 4), 4 configurations. \\
+    & CatBoost & 869 (interactions) & 6 depth/learning-rate combinations (symmetric depth 4--8, L2 1--10)\cite{catboost2018}. \\
+    & TabM deep tabular network & 869 (interactions) & parameter-efficient multi-head tabular architecture (2 hidden-layer settings)\cite{tabm2025}. \\
+    & Multi-view kernel ridge & multiple topological and physicochemical kernels & graph fingerprints plus physicochemical kernels, 10 regularisation values. \\
+    \midrule
+    \multirow{3}{*}{Ensembles}
+    & \textbf{ExtraTrees--TabPFN (ours)} & heterogeneous two-branch & adaptive non-negative convex weight $\alpha \in [0, 1]$ on inner OOF predictions (step 0.25). \\
+    & Three-branch blend & ET + CatBoost + TabPFN & Dirichlet grid search over the three non-negative convex weights. \\
+    & Five-branch blend & all candidate learners & full search over two tree ensembles, the deep tabular network, kernels, and TabPFN. \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+All hyperparameter tuning and weight selection are sealed inside the inner three-fold loop, so the out-of-fold predictions on the 128 outer test parents are genuinely blind. This protocol keeps the comparison conclusions highly reliable.

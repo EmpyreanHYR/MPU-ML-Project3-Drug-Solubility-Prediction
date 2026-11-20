@@ -1,0 +1,17 @@
+\section{Conclusion and Outlook}
+
+\subsection{Summary of Work and Contributions}
+
+Predicting the solubility of unseen drug parents across solvents and temperatures is a long-standing challenge in drug discovery and green pharmaceutical processing. Against the cross-record leakage, long-tailed sampling, and temperature confounding that pervade observational data, this work constructs and validates, under a nested cross-validation that physically isolates parents, two modelling routes that combine physical insight with data-driven methods.
+
+The work makes substantive advances in four respects. On physical interpretability, SOLAR-H decomposes the structure--temperature relationship, cancels the nonlinear structural baseline by within-combination de-meaning, and estimates the local temperature slope from within-system variation with an adaptive gain. On nonlinear fitting in complex chemical space, ExtraTrees--TabPFN unites 869-dimensional explicit interactions, parent-equal tree splitting, and the TabPFN v2 foundation model through an out-of-fold convex blend. On trust and causality, TreeSHAP shows that explicit intermolecular interactions and drug descriptors dominate, and a fixed-effects analysis resolves the Simpson's paradox, with a partial-$R^2$ sensitivity bound that certifies the positive temperature slope. On practical use, an interactive prediction system integrating molecular parsing, single-point prediction, model comparison, dynamic scanning, and coverage warnings was developed and delivered, achieving zero-error numerical reproduction.
+
+\subsection{Key Findings}
+
+Careful ablation and comparison distill three broadly useful insights.
+
+Explicit interaction features and sample weighting are strongly synergistic. Naive concatenation cannot guide a tree model toward higher-order thermodynamic interactions; explicit polarity-mismatch and product features inject physical priors directly, and parent-equal weighting overturns the head parents' dominance. Together they produce a qualitative jump in parent-level error.
+
+Orthogonal tree splits and the continuous attention of a tabular foundation model are heterogeneous complements. ExtraTrees controls global variance in high-dimensional sparse space, while the autoregressive-Transformer-pretrained TabPFN supplies smooth local metrics and nonlinear attention. An out-of-fold convex blend converts their residual orthogonality into a deterministic generalisation gain, giving the blend clear dominance over all 128 unseen test parents (parent MAE 0.6668, $R^2$ 0.5234).
+
+Modelling observational data demands a causal-first discipline. In non-randomly assigned data, treating association as causation inevitably teaches the learner spurious shortcuts. Within-combination de-meaning is not only the mathematical tool that removes the main structural confounding but also the touchstone that verifies physical consistency.
