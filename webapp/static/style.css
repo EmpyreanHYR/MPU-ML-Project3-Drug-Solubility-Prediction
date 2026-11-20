@@ -1553,6 +1553,209 @@ svg.icon{fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;str
   color: var(--teal-dark);
 }
 
+/* Out-of-Distribution (OOD) Real-Time Warning Box */
+.ood-warning-box {
+  margin: 4px 0 8px;
+  padding: 8px 10px;
+  border-radius: 7px;
+  font-size: 10px;
+  line-height: 1.45;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  animation: viewFadeIn 0.2s ease-out;
+}
+.ood-warning-box strong {
+  font-size: 10.5px;
+  font-weight: 700;
+}
+.ood-warning-box.ood-critical {
+  background: #fef2f2;
+  border: 1px solid #fca5a5;
+  border-left: 3.5px solid #dc2626;
+  color: #991b1b;
+}
+.ood-warning-box.ood-amber {
+  background: #fffbeb;
+  border: 1px solid #fcd34d;
+  border-left: 3.5px solid #d97706;
+  color: #92400e;
+}
+
+/* Top-5 Recommended Solvents Banner (Solvent Screening Enhancement) */
+.top5-solvents-strip {
+  background: #ffffff;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 10px 14px;
+  margin-bottom: 10px;
+  box-shadow: 0 1px 4px rgba(18, 44, 59, 0.04);
+}
+.top5-strip-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 8px;
+  font-size: 11.5px;
+  color: #1e293b;
+}
+.top5-solvents-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+}
+.top5-solvent-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 3px;
+  padding: 8px 10px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-top: 3px solid var(--teal);
+  border-radius: 7px;
+  text-align: left;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+}
+.top5-solvent-card:hover {
+  background: #f0f7f4;
+  border-color: #9fc4b6;
+  transform: translateY(-1px);
+  box-shadow: 0 3px 8px rgba(45, 139, 118, 0.12);
+}
+.top5-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+.top5-rank {
+  font: 700 10px var(--mono);
+  color: var(--teal-dark);
+  background: #e6f2ed;
+  padding: 1px 5px;
+  border-radius: 4px;
+}
+.top5-name {
+  font-size: 11.5px;
+  color: #0f172a;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+.top5-val {
+  font: 10.5px var(--mono);
+  color: var(--teal-dark);
+}
+.top5-val b {
+  font-size: 12px;
+}
+.top5-meta {
+  font-size: 9px;
+  color: #64748b;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+/* Manual-Run Pending State & Stale Parameter Banner */
+.pending-run-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 20px 22px;
+  background: linear-gradient(135deg, #ffffff 0%, #f4faf8 100%);
+  border: 1.5px dashed rgba(45, 139, 118, 0.45);
+  border-radius: 12px;
+  margin-top: 4px;
+}
+.pending-run-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  background: #e6f4f0;
+  color: var(--teal-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.pending-run-icon svg {
+  width: 20px;
+  height: 20px;
+}
+.pending-run-body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.pending-run-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.pending-run-header h3 {
+  margin: 0;
+  font-size: 15px;
+  color: #0f172a;
+}
+.pending-desc-en {
+  margin: 0;
+  font-size: 13px;
+  color: #1e293b;
+  line-height: 1.45;
+}
+.pending-desc-zh {
+  margin: 0;
+  font-size: 12px;
+  color: #475569;
+  line-height: 1.5;
+}
+.pending-param-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 2px;
+}
+.pending-run-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 6px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(148, 163, 184, 0.25);
+}
+.pending-hint {
+  font-size: 12px;
+  color: var(--teal-dark);
+}
+.stale-notice-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 14px;
+  margin-bottom: 6px;
+  background: #fffbeb;
+  border: 1px solid #f59e0b;
+  border-radius: 8px;
+  font-size: 11.5px;
+  color: #92400e;
+  flex-shrink: 0;
+}
+.stale-notice-bar strong {
+  color: #78350f;
+}
+
 @media (max-width: 899px) {
   html, body {
     height: auto !important;
@@ -1571,6 +1774,9 @@ svg.icon{fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;str
   #insights-content .evidence-grid {
     grid-template-columns: 1fr;
     height: auto;
+  }
+  .top5-solvents-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
   .deck-pane,
   .deck-split-col,

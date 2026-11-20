@@ -3,7 +3,14 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#122c3b"><link rel="icon" type="image/svg+xml" href="/static/favicon.svg">
 <title>SOLAR Studio · COMP6133 Drug Solubility Prediction System / 药物条件溶解度预测系统</title>
-<link rel="stylesheet" href="/static/style.css?v=studio-5-clean"><script src="/static/language.js?v=studio-5-clean" defer></script><script src="/static/learning.js?v=studio-5-clean" defer></script><script src="/static/app.js?v=studio-5-clean" defer></script>
+<link rel="stylesheet" href="/static/style.css?v=studio-6-manual">
+<script src="/static/language.js?v=studio-6-manual" defer></script>
+<script src="/static/learning.js?v=studio-6-manual" defer></script>
+<script src="/static/modules/store.js?v=studio-6-manual" defer></script>
+<script src="/static/modules/api.js?v=studio-6-manual" defer></script>
+<script src="/static/modules/charts.js?v=studio-6-manual" defer></script>
+<script src="/static/modules/evidence.js?v=studio-6-manual" defer></script>
+<script src="/static/app.js?v=studio-6-manual" defer></script>
 </head>
 <body>
 <a href="#main" class="skip-link">Skip to main content / 跳到主要内容</a>
@@ -80,6 +87,7 @@
 <div class="field"><label for="tmax">T end / 终点</label><input id="tmax" type="number" step="any" value="45" min="-1000" max="1000"></div>
 </div>
 </div>
+<div id="ood-warning" class="ood-warning-box" role="status" hidden></div>
 <fieldset id="multi-wrap" class="solvent-picker" hidden>
 <legend>Compare solvents / 多溶剂对比 <span>Max 6</span></legend>
 <div id="solvent-chips"></div>
