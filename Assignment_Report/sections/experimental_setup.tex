@@ -1,21 +1,50 @@
 \section{实验设置}
-\subsection{数据划分与模型选择}
-开发集包含1507条记录、128个母体，外层采用固定五折母体划分；内层使用三折GroupKFold，打乱母体顺序并固定随机种子2026。所有拟合变换与训练上下文仅来自对应训练部分。397条保留记录不参与本文融合模型的选参、选权或评分。该集合并非从未被检查的独立外部数据，本文不据其作独立验证结论。
+\subsection{数据划分与对比方法}
+主表使用 1507 条开发记录、128 个药物母体。外层采用固定的五折母体划分，内层采用三折 GroupKFold，打乱分组时使用种子 2026。每次拟合的变换、上下文和权重只使用相应的训练部分。另有 397 条记录、33 个母体构成历史保留集。本轮融合比较使用开发集折外预测。
 
-模型比较包含20种单模型及组合方案，覆盖丰富描述符ExtraTrees、CatBoost、多视角KRR/SVR、TabM、TabPFN及其子集融合。候选模型族经开发集筛查确定，主方法依据同一开发集的外层误差排序选取。因此，该排序属于探索性证据，评价中须同时考虑多方案选择产生的乐观偏差；仍需通过独立来源数据确认其泛化能力。
+主表包含 18 种方法，汇总 SOLAR-H、基础描述符回归器、丰富特征单模型及融合方案。基础回归器以 23 维表示为起点，交互模型按各自方法扩展特征。丰富特征 ExtraTrees、CatBoost\cite{catboost2018}、多视角核回归（KRR/SVR）\cite{smola2004}、TabM\cite{tabm2025} 和 TabPFN 分别使用 6、6、10、2 和 4 项候选。其他通用对照包括 RealMLP\cite{realmlp2024}。双树指丰富特征 ExtraTrees 与 CatBoost 的组合，五分支在此基础上加入 TabPFN、多视角核与 TabM。各融合流程均使用步长为 0.25 的非负权重，权重之和为 1。各方法采用同一外层划分，特征和搜索预算按各自流程设定。
 
-\subsection{对比方法与搜索预算}
-基础描述符对比方法以23维基础表示进行独立选参，包含交互的对比方法在内部扩展特征。丰富描述符ExtraTrees使用6项候选、CatBoost使用6项、多视角核使用10项、TabM使用2项；TabPFN使用4项。各模型的候选数和表示并不完全相同，因此比较反映整个建模流程，不能将全部收益归因于融合操作。
+实验先比较丰富特征模型和组合，再引入 TabPFN。第二轮事先指定的主比较方案是 TabPFN＋双树。本文依据同一开发集上的组合比较选出观测误差最低的 TabPFN＋ExtraTrees，作为后续误差分析和应用部署的模型。
 
-TabPFN＋双树、TabPFN＋CatBoost、五分支组合，以及其他子集组合均在各自外层训练部分选择非负、和为1、步长0.25的权重。基模型参数只由内层母体等权MAE选择。SOLAR与通用回归器在相同外层母体划分下分别完成参数选择。
-
-\subsection{指标与不确定性}
-主要指标为母体等权绝对误差
-\begin{equation}
-\mathrm{MAE}_{\rm parent}=\frac1G\sum_g\frac1{n_g}\sum_{i:g_i=g}|y_i-\hat y_i|.
+\subsection{回归评价指标}
+对一个随机种子，合并五个外层验证折，得到每条开发记录的一次折外预测。记 $e_i=\hat y_i-y_i$，$I_g$ 为母体 $g$ 的记录集合，$n_g=|I_g|$，$G=128$，$N=\sum_g n_g=1507$。先求母体内的平均绝对误差 $A_g$，再对母体等权平均：
+\begin{equation}\label{eq:parentmae}
+A_g=\frac{1}{n_g}\sum_{i\in I_g}|e_i|,\qquad
+\mathrm{MAE}_{\rm parent}=\frac{1}{G}\sum_{g=1}^{G} A_g .
 \end{equation}
-同时报告逐行MAE、RMSE和决定系数$R^2$。每个种子先合并五折预测计算指标，再平均三个种子指标；不将其混同于先平均三个种子预测后的指标。确定性核分支复用同一预测，不视为三次独立随机实验。
+母体等权 MAE 为主指标，用于回答新母体的平均误差问题。逐行平均绝对误差（MAE）与均方根误差（RMSE）分别为
+\begin{align}
+\mathrm{MAE}&=\frac{1}{N}\sum_{i=1}^{N}|e_i|
+=\sum_{g=1}^{G}\frac{n_g}{N}A_g,\\
+\mathrm{RMSE}&=\sqrt{\frac{1}{N}\sum_{i=1}^{N}e_i^2}.
+\end{align}
+逐行 MAE 衡量单条记录的平均绝对偏差，高频母体在其中占更大权重。RMSE 对较大的偏差更敏感。三项误差均以目标的 $\log_{10}$ 尺度计量，数值越小越好。决定系数 $R^2$ 定义为
+\begin{equation}
+R^2=1-\frac{\sum_{i=1}^{N} e_i^2}{\sum_{i=1}^{N}(y_i-\bar y)^2},
+\qquad \bar y=\frac1N\sum_{i=1}^{N}y_i.
+\end{equation}
+$R^2$ 无量纲，表示相对于恒用观测均值预测的平方误差改善程度，负值表示平方误差更大。设 $M^{(r)}$ 为种子 $r$ 在合并折外记录上计算的任一指标，主表报告 $\overline M=\tfrac13\sum_{r} M^{(r)}$。确定性核模型在三个种子下复用同一组预测。
 
-不确定性分析先在每个母体内对行和种子的绝对误差取平均，再对128个母体进行10000次配对bootstrap，种子2026。区间描述固定已拟合折上的母体抽样不确定性，不包含重新训练或反复开发选模的全部不确定性，也不以三个训练种子作为独立样本单位。
+\subsection{配对比较与误差诊断}
+比较融合方案 $F$ 与对照 $C$ 时，先计算每个母体跨种子的平均误差差值，再计算母体等权差值与相对降幅：
+\begin{equation}
+d_g=\frac13\sum_r\big(A^{(r)}_{g,F}-A^{(r)}_{g,C}\big),\qquad
+\Delta=\frac1G\sum_g d_g,\qquad
+\text{相对降幅}=100\%\frac{\overline M_C-\overline M_F}{\overline M_C}.
+\end{equation}
+相对降幅用于两类 MAE，$\Delta<0$ 表示融合母体 MAE 较低。用种子 2026 进行 $B=10000$ 次重采样。第 $b$ 次从母体索引中有放回抽取 $G$ 个索引 $g_{b,1},\ldots,g_{b,G}$，计算
+\begin{equation}
+\Delta_b^*=\frac{1}{G}\sum_{j=1}^{G}d_{g_{b,j}},\qquad
+\mathrm{CI}_{95\%}=[Q_{0.025}(\Delta^*),\,Q_{0.975}(\Delta^*)],
+\end{equation}
+其中 $Q_p$ 为 $B$ 个重采样均值的第 $p$ 分位数。该区间刻画已保存折外预测在母体重采样下的变动，模型筛选过程保持固定。
 
-实现使用Python 3.12、RDKit 2026.9.2、scikit-learn 1.9.1、TabPFN 6.4.1与PyTorch 2.15.0。TabPFN明确固定v2权重身份；程序记录代码、数据划分、模型和权重文件哈希。参数配置、逐行预测与模型元数据保存在\texttt{artifacts/combination\_v3/}。
+误差分层使用观测溶解度划定记录子集，并在子集内按逐行 MAE 公式计算。分支误差及记录数与误差的关联采用 Pearson 相关系数：
+\begin{equation}
+r(u,v)=\frac{\sum_j(u_j-\bar u)(v_j-\bar v)}
+{\sqrt{\sum_j(u_j-\bar u)^2\sum_j(v_j-\bar v)^2}} .
+\end{equation}
+此处 $j$ 为母体，各分支的 $u_j$ 或 $v_j$ 为跨种子平均后的母体 MAE。探索性数据分析中的 Spearman 系数则以开发记录为单位，对两列的秩使用同一公式，并列值取平均秩。
+
+\subsection{运行环境}
+实现使用 Python 3.12、RDKit 2026.9.2、scikit-learn 1.9.1、TabPFN 6.4.1 与 PyTorch 2.15.0，TabPFN v2 在本机 MPS 设备运行。代码、划分清单、保存的折外预测和部署模型随项目材料提供。

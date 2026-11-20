@@ -1,62 +1,57 @@
-\section{TabPFN与ExtraTrees融合方法}
-\subsection{任务与双分支结构}
-设$\mathcal D=\{(d_i,s_i,T_i,y_i,g_i)\}_{i=1}^N$，其中$d_i,s_i$分别为药物与溶剂结构，$T_i$为CSV原始尺度温度，$y_i$为溶解度log10值，$g_i$为药物母体。预测仅使用结构与温度；母体键只用于划分、加权和评价。定义
-\begin{equation}\label{eq:newblend}
-\hat y(x)=a f_{\rm PFN}(x)+(1-a)f_{\rm ET}(x),\qquad a\in\{0,0.25,0.5,0.75,1\}.
-\end{equation}
-两分支分别完成输入处理与预测，再在相同目标尺度融合。$a$允许取端点，使内部验证可以舍弃不提供收益的分支。
-
-\begin{center}\fbox{\begin{minipage}{0.91\linewidth}
-结构与温度$\longrightarrow$基础/全部描述符$\longrightarrow$TabPFN预测\\[3pt]
-结构与温度$\longrightarrow$丰富描述符及交互$\longrightarrow$加权ExtraTrees预测\\[3pt]
-内层母体折外预测$\longrightarrow$凸权重选择$\longrightarrow$外层未见母体评价
-\end{minipage}}\end{center}
-
-\subsection{分子表示与树分支}
-基础表示包含药物和溶剂各11个描述符与温度，共23维；完整表示包含每个分子217项RDKit描述符与温度，共435维。对于完整描述符$d,s\in\mathbb R^{217}$，交互候选为
+\section{TabPFN 与 ExtraTrees 融合方法}
+\subsection{条件回归与原始模型}
+记第 $i$ 条记录的药物和溶剂结构为 $d_i$ 与 $s_i$，温度为 $T_i$，母体分组为 $g_i$。模型使用两种结构和 CSV 原始温度预测对数溶解度 $y_i$。同一药物--溶剂组合在多个温度下有观测时，两种分子结构保持固定。原始模型 SOLAR-H 利用这一点，将预测写为
 \begin{equation}
-z=[d;s;d\odot s;|d-s|;T]\in\mathbb R^{869}.
+\hat y_{{\rm H},i}=b(z_i)+\gamma\,\tau_i\,\beta^\top u_i,\qquad u_i=[1;z_i],
 \end{equation}
-另一候选额外加入药物母体结构的217项描述符，形成1086维输入。交互直接从原始描述符计算，不先按两侧分别标准化。中位数插补和零方差筛选仅在当前训练折拟合，实际有效维度随训练折变化。
-
-树模型使用300棵ExtraTrees、无限制深度、最小叶节点样本数2、每次切分特征比例0.7。候选组合比较完整、交互和含母体表征三种表示，以及权重指数$q\in\{0,1\}$。样本权重定义为
+其中 $z_i$ 为结构特征，$\tau_i$ 为按训练折标准化的温度，$b$ 为 ExtraTrees 结构基线，$\gamma$ 为内层验证选择的温度增益。同一组合 $c$ 的 $z_i$ 固定，在组合内中心化可以消去 $b$。代码据此用有效温度偏差 $|\tau_i-\bar\tau_c|>10^{-9}$ 的记录拟合岭回归，得到 $\beta$：
 \begin{equation}
-w_i=\frac{n_{g_i}^{-q}}{N^{-1}\sum_jn_{g_j}^{-q}},
+\hat\beta=\arg\min_\beta
+\sum_i w_i\big[(y_i-\bar y_{c(i)})-(\tau_i-\bar\tau_{c(i)})\,\beta^\top u_i\big]^2
++\lambda\|\beta\|_2^2 .
 \end{equation}
-其中$n_g$仅由当前训练折计数。$q=1$时各母体的训练总权重相同，$q=0$时为普通等权训练。树使用加权平方误差进行分裂与叶节点拟合。
+求和仅覆盖上述有效记录，$\bar y_c$ 与 $\bar\tau_c$ 为该组合在训练折内的均值。给定 $\gamma$ 后，树在温度修正后的目标 $y_i-\gamma\tau_i\hat\beta^\top u_i$ 上拟合结构基线。后续的融合方法将温度与分子描述符一并输入两个学习器，由树切分和表格上下文建模条件关系。
 
-\subsection{TabPFN分支}
-TabPFN使用公开原始v2回归checkpoint，预测输出取模型分布均值\cite{tabpfn2025}。内层比较23维和435维输入，以及2或4个内部集成成员，共4项候选。推理在本机MPS设备执行，不调用外部推理API。训练上下文只包含当前训练折的结构特征与目标值，外层母体及其标签不会进入上下文。
+\subsection{分子描述符与交互特征}
+令 $\phi_k(m)$ 为分子 $m$ 的 $k$ 项描述符。每条记录的基础特征为 $[\phi_{11}(d_i);\phi_{11}(s_i);T_i]$，共 $2\times11+1=23$ 维。额外纳入完整 RDKit 描述符时，令 $D_i=\phi_{217}(d_i)$、$S_i=\phi_{217}(s_i)$，则基础拼接扩展至 $2\times217+1=435$ 维。为显式表示同类描述符的共同变化及差异，在此基础上拼接逐元素乘积与绝对差：
+\begin{equation}
+x_i^{\rm int}
+=[D_i;S_i;T_i;D_i\odot S_i;|D_i-S_i|]
+\in\mathbb R^{869}.
+\end{equation}
+例如，药物和溶剂各自的 MolLogP 除原始值外，还生成乘积和绝对差两列。两种交互各增加 217 维。再加入标准化药物母体结构的 217 项描述符，得到 1086 维的候选表示。树分支对当前训练折拟合缺失描述符的中位数插补和零方差筛选，并将同一变换应用于验证折。
 
-该适配器不支持样本权重，因此本文不称其为母体加权TabPFN；母体均衡体现在参数和组合权重的评价目标。其内部集成成员数也不等于外部融合分支数。该配置是本任务中的模型应用，不是原论文默认基准配置的复现。
+\subsection{按母体加权的 ExtraTrees 候选}
+单纯按记录计数时，训练折中含 $n_g$ 条记录的母体会贡献 $n_g$ 次损失。对训练折 $\mathcal T$，记 $n_g(\mathcal T)$ 为母体 $g$ 的记录数，$N_{\mathcal T}$ 和 $G_{\mathcal T}$ 分别为总记录数和母体数。将样本权重设为
+\begin{equation}
+w_i(q)=\frac{n_{g_i}(\mathcal T)^{-q}}
+{N_{\mathcal T}^{-1}\sum_{j\in\mathcal T}n_{g_j}(\mathcal T)^{-q}},
+\qquad q\in\{0,1\}.
+\end{equation}
+当 $q=0$ 时每条记录权重为 1。当 $q=1$ 时，分母为 $G_{\mathcal T}/N_{\mathcal T}$，同一母体的权重之和为 $N_{\mathcal T}/G_{\mathcal T}$。在完整开发集上，每个母体的总权重为 $1507/128\approx 11.77$。
 
-\subsection{内层折外选参与融合}
-外层训练集内部再按母体分成三折。对每个分支的候选参数，在三折中生成完整折外预测，以合并后的母体等权MAE选择参数。随后将两分支所选候选的内层折外预测对齐，选择
+对树节点中的记录集合 $L$，加权平方损失为 $J_L(v)=\sum_{i\in L}w_i(y_i-v)^2$。令 $J_L'(v)=0$，得到叶预测 $\hat v_L=\sum_{i\in L}w_i y_i/\sum_{i\in L}w_i$。对候选切分 $L=L_{\rm left}\cup L_{\rm right}$，比较母节点与两子节点各自最小平方损失的差，选择降幅最大的候选切分。最终输出 300 棵树的叶预测均值。每棵树不限制深度，叶节点至少含 2 条记录，每次切分考虑 0.7 比例的特征。完整、交互及含母体描述符三种表示与两个 $q$ 值组合成六项候选，内层按母体等权绝对误差选择。该指标与树拟合时的平方损失分别用于模型选择和节点拟合。
+
+\subsection{TabPFN 的上下文预测}
+TabPFN 分支使用公开 v2 回归权重 $\theta$。对一个验证样本 $x$，其上下文 $\mathcal C_{\mathcal T}=\{(x_j,y_j):j\in\mathcal T\}$ 由当前训练折的描述符、温度及对数溶解度构成。点预测取条件预测分布的均值\cite{tabpfn2025}：
+\begin{equation}
+f_{\rm PFN}(x)=\mathbb E_{\theta}[Y\mid x,\mathcal C_{\mathcal T}].
+\end{equation}
+模型权重固定，上下文的训练记录等权输入。内层比较 23 维与 435 维表示，并为每种表示比较 2 或 4 个内部集成成员。
+
+\subsection{内层折外选参和融合}
+对每个外层训练集，按母体重新划分三折。每个分支的每项候选均对三折中的验证记录生成折外预测。合并三折后，分别以母体等权 MAE（式\ref{eq:parentmae}）选择两分支配置。记内层记录 $i$ 对应的所选分支预测为 $p_i$ 和 $t_i$。试用 TabPFN 权重 $a$ 时，该记录的误差为
+\begin{equation}
+y_i-\big[a p_i+(1-a)t_i\big]=(y_i-t_i)-a(p_i-t_i).
+\end{equation}
+因此，融合是否减少一条记录的绝对误差，取决于分支预测差 $p_i-t_i$ 对树分支残差 $y_i-t_i$ 的修正。以 $I_g$ 表示内层折外记录中属于母体 $g$ 的行，按母体汇总该绝对误差，得到选权问题
 \begin{equation}\label{eq:selectblend}
-\hat a=\arg\min_a\frac1{G_{\rm in}}\sum_g\frac1{n_g}\sum_{i:g_i=g}
-\left|y_i-a\hat y^{\rm OOF}_{{\rm PFN},i}-(1-a)\hat y^{\rm OOF}_{{\rm ET},i}\right|.
+\hat a=\arg\min_{a\in\{0,\,0.25,\,0.5,\,0.75,\,1\}}
+\frac{1}{G_{\rm in}}\sum_{g=1}^{G_{\rm in}}
+\frac{1}{|I_g|}\sum_{i\in I_g}|(y_i-t_i)-a(p_i-t_i)|.
 \end{equation}
-参数和权重确定后，分别用整个外层训练集拟合两分支，在外层验证母体上按式\eqref{eq:newblend}预测。三个随机种子共享该折用种子2026选择的配置和权重，随后分别拟合与评价。外层标签不用于选权。
-
-\begin{algorithm}[htbp]
-\caption{TabPFN与ExtraTrees的分组融合验证}
-\begin{algorithmic}[1]
-\Require 开发数据、固定母体五折、候选配置、随机种子
-\For{每个外层折}
-\State 将该折验证母体及标签整体排除
-\State 在外层训练部分生成三折母体划分
-\State 为每个分支各候选生成内层折外预测
-\State 按母体等权MAE分别选择分支配置
-\State 按式\eqref{eq:selectblend}选择凸组合权重
-\For{种子2026、17、42}
-\State 在全部外层训练数据上拟合分支并预测外层母体
-\State 保存逐行预测、参数和权重
-\EndFor
-\EndFor
-\State 按种子合并五折计算指标，再平均种子指标
-\end{algorithmic}\end{algorithm}
-
-\subsection{完整开发集拟合与对比方法}
-完整开发集上重新执行三折选参和选权，最终研究产物选择23维、2成员TabPFN，以及869维交互、$q=1$的ExtraTrees；权重分别为0.25和0.75。该权重属于完整开发集拟合模型，不代替各外层折实际使用的权重。完整开发集拟合使用种子2026；主表为三个种子的评价均值，两者不是同一个预测器。
-
-SOLAR-H以结构树基线加可收缩温度回归进行预测，SOLAR-N以双编码器和温度差分监督联合训练；二者作为结构--温度分解对照，其具体目标与架构见附录。
+离散网格仅需比较五项候选，两个端点对应单分支。选定配置和权重后，以整个外层训练集分别拟合两分支，在外层验证母体上输出
+\begin{equation}\label{eq:newblend}
+\hat y(x)=\hat a f_{\rm PFN}(x)+(1-\hat a)f_{\rm ET}(x).
+\end{equation}
+每折由种子 2026 选定配置和权重，再以种子 2026、17、42 分别拟合并评分。部署时在完整开发集上重复三折选参和选权，得到 23 维、2 成员的 TabPFN 与 869 维、$q=1$ 的 ExtraTrees，权重分别为 0.25 和 0.75。
