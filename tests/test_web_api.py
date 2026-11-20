@@ -101,3 +101,35 @@ def test_molecule_screen_and_diagnostics():
     assert len(db['residual_histogram'])==15
     assert len(db['scatter'])>0
     assert client.get('/api/model_diagnostics/missing').status_code==422
+
+
+def test_caching_concurrency_and_rate_limiting():
+    from concurrent.futures import ThreadPoolExecutor
+    q=sample()|{'model_id':'ExtraTrees','temperature':27.5}
+    r1=client.post('/api/predict',json=q)
+    r2=client.post('/api/predict',json=q)
+    assert r1.status_code==200 and r2.status_code==200
+    assert r2.json()['cached'] is True
+    assert np.isclose(r1.json()['log_solubility'],r2.json()['log_solubility'],atol=1e-12)
+    assert 'X-RateLimit-Limit' in r2.headers and 'X-RateLimit-Remaining' in r2.headers
+
+    # RDKit structure SVG caching
+    s1=client.get('/api/structure/'+q['drug_id'])
+    s2=client.get('/api/structure/'+q['drug_id'])
+    assert s1.status_code==200 and s2.status_code==200
+    assert s2.headers.get('X-Structure-Cache')=='HIT'
+    assert 'max-age=86400' in s2.headers.get('Cache-Control','')
+
+    # Concurrent multi-model inference without global lock contention
+    model_names=['ExtraTrees','RandomForest','Ridge','AdaptiveHybrid']
+    with ThreadPoolExecutor(max_workers=4) as pool:
+        res_list=list(pool.map(lambda m:client.post('/api/predict',json=sample()|{'model_id':m,'temperature':31.0}),model_names))
+    assert all(r.status_code==200 for r in res_list)
+
+    # Rate limit enforcement via custom test limit header
+    headers={'X-RateLimit-Test-Limit':'2'}
+    assert client.post('/api/predict',json=q,headers=headers).status_code==200
+    assert client.post('/api/predict',json=q,headers=headers).status_code==200
+    blocked=client.post('/api/predict',json=q,headers=headers)
+    assert blocked.status_code==429
+    assert blocked.headers.get('Retry-After')=='60'

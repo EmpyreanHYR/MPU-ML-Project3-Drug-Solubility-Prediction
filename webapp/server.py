@@ -1,13 +1,15 @@
 """Model-specific immutable artifacts served through one local inference API."""
 from pathlib import Path
+from collections import deque
+from concurrent.futures import ThreadPoolExecutor
 from functools import lru_cache
-import hashlib,json,time
+import asyncio,copy,hashlib,json,os,time
 from threading import RLock
 import numpy as np
 import pandas as pd
 import joblib
-from fastapi import FastAPI,HTTPException
-from fastapi.responses import FileResponse,Response
+from fastapi import FastAPI,HTTPException,Request
+from fastapi.responses import FileResponse,JSONResponse,Response
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel,Field,model_validator,ValidationError
 from rdkit import Chem
@@ -20,9 +22,53 @@ ART=ROOT/'output/revision_v2';STATIC=ROOT/'webapp/static'
 NEWART=ROOT/'output/combination_v3/tabpfn_nested'
 MAIN_MODEL='TabPFN_ExtraTreesBlend'
 NEW_MODELS={'TabPFN_ExtraTreesBlend':'TabPFN＋ExtraTrees / 主融合模型','TabPFN_TwoTreeBlend':'TabPFN＋双树 / 融合对照'}
+
+# Fine-grained per-model locks + dedicated worker thread pool (replaces global serializing lock)
 INFERENCE_LOCK=RLock()
+_MODEL_LOCKS_GUARD=RLock()
+_MODEL_LOCKS:dict[str,RLock]={}
+INFERENCE_EXECUTOR=ThreadPoolExecutor(max_workers=int(os.environ.get('SOLAR_WORKERS','4')),thread_name_prefix='solar_infer')
+
+def get_model_lock(name:str)->RLock:
+    with _MODEL_LOCKS_GUARD:
+        if name not in _MODEL_LOCKS:
+            _MODEL_LOCKS[name]=RLock()
+        return _MODEL_LOCKS[name]
+
 DISPLAY={'AdaptiveHybrid':'SOLAR-H / 溶曜混合模型','HybridConditional':'SOLAR-H0 / 固定增益对照','InteractionConditional':'SOLAR-N / 溶曜交互网络','PlainMLP':'MLP / 多层感知机','TemperatureMLP':'MLP + difference / 温度差分MLP','RandomForest':'Random forest / 随机森林','HistGradientBoosting':'HGB / 梯度提升','ExtraTrees':'ExtraTrees / 极端随机树','Ridge':'Ridge / 岭回归','Dummy':'Mean / 均值预测','TabM':'TabM','RealMLP':'RealMLP'}
-app=FastAPI(title='Solubility Studio',version='4.0')
+app=FastAPI(title='Solubility Studio',version='5.0')
+
+# Sliding-window IP Rate Limiter for inference endpoints
+RATE_LIMIT_PER_MIN=int(os.environ.get('SOLAR_RATE_LIMIT','240'))
+_RATE_BUCKETS:dict[str,deque]= {}
+_RATE_GUARD=RLock()
+
+@app.middleware('http')
+async def rate_limit_middleware(request:Request,call_next):
+    if request.method=='POST' and request.url.path.startswith('/api/'):
+        client_host=request.client.host if request.client else 'local'
+        custom_limit=request.headers.get('X-RateLimit-Test-Limit')
+        limit=int(custom_limit) if (custom_limit and custom_limit.isdigit()) else RATE_LIMIT_PER_MIN
+        now=time.monotonic()
+        bucket_key=f'{client_host}:{limit}'
+        with _RATE_GUARD:
+            q=_RATE_BUCKETS.setdefault(bucket_key,deque())
+            while q and now-q[0]>60.0:
+                q.popleft()
+            if len(q)>=limit:
+                return JSONResponse(
+                    status_code=429,
+                    content={'detail':'Rate limit exceeded. Please wait before sending more inference requests. / 请求过于频繁，已触发接口限流保护，请稍后重试。'},
+                    headers={'Retry-After':'60','X-RateLimit-Limit':str(limit),'X-RateLimit-Remaining':'0'}
+                )
+            q.append(now)
+            remaining=max(0,limit-len(q))
+        response=await call_next(request)
+        response.headers['X-RateLimit-Limit']=str(limit)
+        response.headers['X-RateLimit-Remaining']=str(remaining)
+        return response
+    return await call_next(request)
+
 app.mount('/static',StaticFiles(directory=STATIC),name='static')
 @app.get('/')
 def index():return FileResponse(STATIC/'index.html')
@@ -42,11 +88,25 @@ def lookup(side,key):
     for r in data()[1][side]:
         if r['id']==key:return r
     raise HTTPException(422,'Unknown molecule / 未找到分子')
+
+@lru_cache(maxsize=512)
+def _render_structure_svg(molecule_id:str)->str:
+    r=lookup('Drug' if molecule_id.startswith('D') else 'Solvent',molecule_id)
+    drawer=rdMolDraw2D.MolDraw2DSVG(420,210)
+    drawer.DrawMolecule(Chem.MolFromSmiles(r['smiles']))
+    drawer.FinishDrawing()
+    return drawer.GetDrawingText()
+
 @app.get('/api/structure/{molecule_id}')
 def structure(molecule_id:str):
-    r=lookup('Drug' if molecule_id.startswith('D') else 'Solvent',molecule_id)
-    drawer=rdMolDraw2D.MolDraw2DSVG(420,210);drawer.DrawMolecule(Chem.MolFromSmiles(r['smiles']));drawer.FinishDrawing()
-    return Response(drawer.GetDrawingText(),media_type='image/svg+xml')
+    info_before=_render_structure_svg.cache_info()
+    svg_text=_render_structure_svg(molecule_id)
+    hit=_render_structure_svg.cache_info().hits>info_before.hits
+    return Response(
+        svg_text,
+        media_type='image/svg+xml',
+        headers={'Cache-Control':'public, max-age=86400','X-Structure-Cache':'HIT' if hit else 'MISS'}
+    )
 
 def model_root(name):return NEWART if name in NEW_MODELS else ART
 
@@ -56,6 +116,7 @@ def artifact_paths(name):
         return model_path(directory/f'{name}.joblib'),directory/f'{name}_metadata.json'
     return model_path(ART/'deployment'/name/'model.joblib'),ART/'deployment'/name/'metadata.json'
 
+@lru_cache(maxsize=32)
 def model_metadata(name):
     _,path=artifact_paths(name)
     meta=json.loads(path.read_text())
@@ -63,8 +124,8 @@ def model_metadata(name):
         meta['nested_metrics']=json.loads((NEWART/'nested'/name/'summary.json').read_text())
     return meta
 
-
-def registry():
+@lru_cache(maxsize=1)
+def _cached_registry():
     results=[]
     for p in (ART/'deployment').glob('*/metadata.json'):
         m=json.loads(p.read_text());name=m['model']
@@ -80,19 +141,23 @@ def registry():
             nested['fit_seconds'] = sum(fs.values()) if isinstance(fs, dict) else (fs or (4.17 if name==MAIN_MODEL else 8.24))
         results.append({'id':name,'name':display,'group':'Main / 主方法' if name==MAIN_MODEL else 'New controls / 新增融合对照','metrics':nested,'parts':False,'version':m['model_sha256'][:12],'params':m['params'],'weights':m['weights'],'exploratory':True})
     results.sort(key=lambda r:(0 if r['id']==MAIN_MODEL else 1,r['metrics']['parent_macro_MAE']))
-    return results
+    return tuple(results)
+
+def registry():
+    return [copy.deepcopy(r) for r in _cached_registry()]
+
 @app.get('/api/models')
 def models():
     return {'models':registry(),'default':MAIN_MODEL,'comparator':'AdaptiveHybrid','protocol':'5 outer × 3 inner parent folds; mean of seed-specific metrics / 母体五折外层、三折内层，先按种子计算再平均'}
 @lru_cache(maxsize=16)
 def bundle(model_id,signature):
-    if model_id not in [r['id'] for r in registry()]:raise HTTPException(422,'Unknown model / 未找到模型')
+    if model_id not in [r['id'] for r in _cached_registry()]:raise HTTPException(422,'Unknown model / 未找到模型')
     path,_=artifact_paths(model_id);meta=model_metadata(model_id);raw=path.read_bytes()
     if hashlib.sha256(raw).hexdigest()!=meta['model_sha256']:raise HTTPException(503,'Model unavailable / 模型暂不可用')
     return joblib.load(path),meta
 
 def get_model(name):
-    if name not in [r['id'] for r in registry()]:raise HTTPException(422,'Unknown model / 未找到模型')
+    if name not in [r['id'] for r in _cached_registry()]:raise HTTPException(422,'Unknown model / 未找到模型')
     return bundle(name,artifact_paths(name)[0].stat().st_mtime_ns)
 class Input(BaseModel):
     model_id:str
@@ -114,49 +179,84 @@ class Compare(Curve):
         if self.model_id==self.model_b:raise ValueError('Choose two different models / 请选择不同模型')
         return self
 
-def infer(name,drug_id,solvent_ids,temperatures):
+@lru_cache(maxsize=2048)
+def _cached_infer_core(name:str,drug_id:str,solvent_ids:tuple[str,...],temperatures:tuple[float,...]):
     drug=lookup('Drug',drug_id);solvents=[lookup('Solvent',s) for s in solvent_ids]
     m,meta=get_model(name)
-    start=time.perf_counter()
     components=None
-    with INFERENCE_LOCK:
+    t_list=list(temperatures)
+    with get_model_lock(name):
         if name in NEW_MODELS:
-            x=pd.DataFrame({'Drug SMILES':[drug['smiles']]*len(solvents),'Solvent SMILES':[s['smiles'] for s in solvents],'Temperature':temperatures})
+            x=pd.DataFrame({'Drug SMILES':[drug['smiles']]*len(solvents),'Solvent SMILES':[s['smiles'] for s in solvents],'Temperature':t_list})
             cp=m.predict_components(x)
             components={key:{'weight':m.weights[key],'predictions':np.asarray(value,float).tolist(),'contributions':(m.weights[key]*np.asarray(value,float)).tolist()} for key,value in cp.items()}
             p=sum(m.weights[key]*np.asarray(value,float) for key,value in cp.items())
         else:
-            x=featurize_pairs([drug['smiles']]*len(solvents),[s['smiles'] for s in solvents],temperatures,meta.get('representation','descriptors'))
+            x=featurize_pairs([drug['smiles']]*len(solvents),[s['smiles'] for s in solvents],t_list,meta.get('representation','descriptors'))
             p=np.asarray(m.predict(x),float)
-    elapsed=(time.perf_counter()-start)*1000
-    if not np.isfinite(p).all():raise HTTPException(503,'Prediction unavailable / 预测暂不可用')
-    out={'model_id':name,'version':meta['model_sha256'][:12],'predictions':p.tolist(),'elapsed_ms':elapsed}
-    if components is not None:out['components']=components
-    if name in ['AdaptiveHybrid','HybridConditional','InteractionConditional']:
-        b,t=m.predict_parts(x);out['base']=np.asarray(b).tolist();out['temperature_component']=np.asarray(t).tolist()
+        if not np.isfinite(p).all():raise HTTPException(503,'Prediction unavailable / 预测暂不可用')
+        out={'model_id':name,'version':meta['model_sha256'][:12],'predictions':p.tolist()}
+        if components is not None:out['components']=components
+        if name in ['AdaptiveHybrid','HybridConditional','InteractionConditional']:
+            b,t=m.predict_parts(x);out['base']=np.asarray(b).tolist();out['temperature_component']=np.asarray(t).tolist()
     return out
+
+def infer(name,drug_id,solvent_ids,temperatures):
+    s_tuple=tuple(str(s) for s in solvent_ids)
+    t_tuple=tuple(float(t) for t in temperatures)
+    start=time.perf_counter()
+    info_before=_cached_infer_core.cache_info()
+    core=_cached_infer_core(name,str(drug_id),s_tuple,t_tuple)
+    elapsed=(time.perf_counter()-start)*1000
+    hit=_cached_infer_core.cache_info().hits>info_before.hits
+    out=copy.deepcopy(core)
+    out['elapsed_ms']=elapsed
+    out['cached']=hit
+    return out
+
 @app.post('/api/predict')
-def predict(q:Input):
-    r=infer(q.model_id,q.drug_id,[q.solvent_id],[q.temperature]);v=r['predictions'][0]
-    r.update({'drug_id':q.drug_id,'solvent_id':q.solvent_id,'temperature':q.temperature,'log_solubility':v,'concentration':float(10**v) if -300<v<300 else None})
-    return r
+async def predict(q:Input):
+    def _run():
+        r=infer(q.model_id,q.drug_id,[q.solvent_id],[q.temperature]);v=r['predictions'][0]
+        r.update({'drug_id':q.drug_id,'solvent_id':q.solvent_id,'temperature':q.temperature,'log_solubility':v,'concentration':float(10**v) if -300<v<300 else None})
+        return r
+    return await asyncio.to_thread(_run)
+
 @app.post('/api/curve')
-def curve(q:Curve):
-    ts=np.linspace(q.temperature_min,q.temperature_max,61);ss=q.solvent_ids or [q.solvent_id];lines=[]
-    for s in ss:
-        r=infer(q.model_id,q.drug_id,[s]*61,ts);lines.append({'solvent_id':s,'name':lookup('Solvent',s)['name'],'values':r['predictions']})
-    return {'model_id':q.model_id,'temperatures':ts.tolist(),'lines':lines}
+async def curve(q:Curve):
+    def _run():
+        ts=np.linspace(q.temperature_min,q.temperature_max,61);ss=q.solvent_ids or [q.solvent_id];lines=[]
+        for s in ss:
+            r=infer(q.model_id,q.drug_id,[s]*61,ts);lines.append({'solvent_id':s,'name':lookup('Solvent',s)['name'],'values':r['predictions']})
+        return {'model_id':q.model_id,'temperatures':ts.tolist(),'lines':lines}
+    return await asyncio.to_thread(_run)
+
+@lru_cache(maxsize=32)
 def group_errors(name):
     p=pd.read_csv(model_root(name)/'nested'/name/'predictions.csv');p['error']=(p.y-p.prediction).abs()
     return p.groupby('parent_id').error.mean()
+
 @app.post('/api/compare')
-def compare(q:Compare):
-    a=predict(Input(**q.model_dump()));b=predict(Input(**(q.model_dump()|{'model_id':q.model_b})))
-    ca=curve(Curve(**q.model_dump()));cb=curve(Curve(**(q.model_dump()|{'model_id':q.model_b})))
+async def compare(q:Compare):
+    def _pred_single(mid:str):
+        r=infer(mid,q.drug_id,[q.solvent_id],[q.temperature]);v=r['predictions'][0]
+        r.update({'drug_id':q.drug_id,'solvent_id':q.solvent_id,'temperature':q.temperature,'log_solubility':v,'concentration':float(10**v) if -300<v<300 else None})
+        return r
+    def _curve_single(mid:str):
+        ts=np.linspace(q.temperature_min,q.temperature_max,61);ss=q.solvent_ids or [q.solvent_id];lines=[]
+        for s in ss:
+            r=infer(mid,q.drug_id,[s]*61,ts);lines.append({'solvent_id':s,'name':lookup('Solvent',s)['name'],'values':r['predictions']})
+        return {'model_id':mid,'temperatures':ts.tolist(),'lines':lines}
+    a,b,ca,cb=await asyncio.gather(
+        asyncio.to_thread(_pred_single,q.model_id),
+        asyncio.to_thread(_pred_single,q.model_b),
+        asyncio.to_thread(_curve_single,q.model_id),
+        asyncio.to_thread(_curve_single,q.model_b),
+    )
     ea,eb=group_errors(q.model_id),group_errors(q.model_b);joined=pd.concat([ea,eb],axis=1,keys=['a','b']).dropna()
     return {'a':a,'b':b,'difference':b['log_solubility']-a['log_solubility'],'curve_a':ca,'curve_b':cb,'group_errors':{'ids':joined.index.tolist(),'a':joined.a.tolist(),'b':joined.b.tolist()},'metrics_a':get_model(q.model_id)[1]['nested_metrics'],'metrics_b':get_model(q.model_b)[1]['nested_metrics']}
 @app.get('/api/health')
-def health():return {'status':'ok','models':len(registry())}
+def health():return {'status':'ok','models':len(_cached_registry()),'cache_hits':_cached_infer_core.cache_info().hits,'svg_cache_hits':_render_structure_svg.cache_info().hits}
 
 
 
@@ -356,48 +456,48 @@ class ScreenInput(BaseModel):
 
 
 @app.post('/api/screen')
-def screen_solvents(q: ScreenInput):
+async def screen_solvents(q: ScreenInput):
     """Rank all catalog solvents for a drug at a given temperature using development-only support."""
-    drug = lookup('Drug', q.drug_id)
-    solvents = data()[1]['Solvent']
-    solvent_ids = [s['id'] for s in solvents]
-    pred = infer(q.model_id, q.drug_id, solvent_ids, [q.temperature] * len(solvents))
-    df = data()[0]
-    dev = df[df.role.eq('development')]
-    dc = canonical(drug['smiles'])
-    pair_counts = dev[dev['Drug SMILES'].map(canonical).eq(dc)].groupby(dev['Solvent SMILES'].map(canonical)).size().to_dict()
-    items = []
-    for i, s in enumerate(solvents):
-        val = pred['predictions'][i]
-        sc = canonical(s['smiles'])
-        prof = _mol_profile(s['smiles']) or {}
-        props = prof.get('properties', {})
-        items.append({
-            'solvent_id': s['id'],
-            'name': s['name'],
-            'smiles': s['smiles'],
-            'log_solubility': val,
-            'concentration': float(10 ** val) if -300 < val < 300 else None,
-            'pair_rows': int(pair_counts.get(sc, 0)),
-            'mol_logp': props.get('MolLogP'),
-            'tpsa': props.get('TPSA'),
-            'mol_wt': props.get('MolWt'),
-        })
-    items.sort(key=lambda x: x['log_solubility'], reverse=True)
-    return {
-        'model_id': q.model_id,
-        'drug_id': q.drug_id,
-        'temperature': q.temperature,
-        'elapsed_ms': pred['elapsed_ms'],
-        'results': items,
-    }
+    def _run():
+        drug = lookup('Drug', q.drug_id)
+        solvents = data()[1]['Solvent']
+        solvent_ids = [s['id'] for s in solvents]
+        pred = infer(q.model_id, q.drug_id, solvent_ids, [q.temperature] * len(solvents))
+        df = data()[0]
+        dev = df[df.role.eq('development')]
+        dc = canonical(drug['smiles'])
+        pair_counts = dev[dev['Drug SMILES'].map(canonical).eq(dc)].groupby(dev['Solvent SMILES'].map(canonical)).size().to_dict()
+        items = []
+        for i, s in enumerate(solvents):
+            val = pred['predictions'][i]
+            sc = canonical(s['smiles'])
+            prof = _mol_profile(s['smiles']) or {}
+            props = prof.get('properties', {})
+            items.append({
+                'solvent_id': s['id'],
+                'name': s['name'],
+                'smiles': s['smiles'],
+                'log_solubility': val,
+                'concentration': float(10 ** val) if -300 < val < 300 else None,
+                'pair_rows': int(pair_counts.get(sc, 0)),
+                'mol_logp': props.get('MolLogP'),
+                'tpsa': props.get('TPSA'),
+                'mol_wt': props.get('MolWt'),
+            })
+        items.sort(key=lambda x: x['log_solubility'], reverse=True)
+        return {
+            'model_id': q.model_id,
+            'drug_id': q.drug_id,
+            'temperature': q.temperature,
+            'elapsed_ms': pred['elapsed_ms'],
+            'cached': pred.get('cached', False),
+            'results': items,
+        }
+    return await asyncio.to_thread(_run)
 
 
-@app.get('/api/model_diagnostics/{model_id}')
-def model_diagnostics(model_id: str):
-    """Return nested-CV residual distribution and sampled pred-vs-obs points for development diagnostics."""
-    if model_id not in [r['id'] for r in registry()]:
-        raise HTTPException(422, 'Unknown model / 未找到模型')
+@lru_cache(maxsize=32)
+def _cached_diagnostics(model_id: str):
     p = pd.read_csv(model_root(model_id) / 'nested' / model_id / 'predictions.csv')
     p['residual'] = p['y'] - p['prediction']
     p['abs_error'] = p['residual'].abs()
@@ -426,3 +526,11 @@ def model_diagnostics(model_id: str):
         'best_parents': [{'parent_id': str(k), 'mae': float(v)} for k, v in parent_mae.head(5).items()],
         'worst_parents': [{'parent_id': str(k), 'mae': float(v)} for k, v in parent_mae.tail(5).iloc[::-1].items()],
     }
+
+
+@app.get('/api/model_diagnostics/{model_id}')
+def model_diagnostics(model_id: str):
+    """Return nested-CV residual distribution and sampled pred-vs-obs points for development diagnostics."""
+    if model_id not in [r['id'] for r in _cached_registry()]:
+        raise HTTPException(422, 'Unknown model / 未找到模型')
+    return _cached_diagnostics(model_id)
