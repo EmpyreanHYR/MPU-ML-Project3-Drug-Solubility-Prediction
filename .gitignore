@@ -23,6 +23,8 @@
 !/output/
 !/启动Studio.bat
 !/启动Studio.command
+!/SOLAR_Studio_Demo_Bilingual.mp4
+!/SOLAR_Studio_Demo_Bilingual.srt
 
 # Local environments and generated intermediates anywhere in allowed directories.
 .DS_Store
