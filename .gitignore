@@ -118,6 +118,8 @@ __pycache__/
 # English manuscript of the report (LaTeX, Markdown, Word).
 /Assignment_Report_v2_en/*
 !/Assignment_Report_v2_en/Assignment-main-en.tex
+!/Assignment_Report_v2_en/Assignment-main-en.pdf
+!/Assignment_Report_v2_en/build.command
 !/Assignment_Report_v2_en/Assignment_Report_en.md
 !/Assignment_Report_v2_en/Assignment_Report_en.docx
 !/Assignment_Report_v2_en/references.bib

@@ -388,9 +388,15 @@ The jump from single models to the blend shows the complementarity dividend. Ext
 
 SOLAR-H reaches a parent MAE of 0.7164. It trails the blend but beats the base tree baseline clearly (paired difference $+0.0496$), and by cleanly decoupling the conditional solubility into an interpretable physical temperature response and a structural baseline, it supplies the theoretical reference that the later causal analysis relies on.
 
+To render the multi-metric standing of each model at a glance, Figure 4 shows the same comparison as a normalised radar profile.
+
+**Figure 4.** Normalised radar comparison of the models across the four metrics (all axes are normalised to $[0,1]$ with a larger radius always better; the three error metrics are inverted).
+
 ### 6.3 Ablation Analysis
 
-**Figure 4.** Performance gains and weight sensitivity of the ExtraTrees–TabPFN blend. (a) paired differences in parent-weighted MAE against the baselines (negative means the blend is better); (b) parent MAE as a function of a fixed global weight $\alpha$.
+Figure 5a shows the paired gains of the blend over its baselines together with the bootstrap intervals.
+
+**Figure 5.** Performance gains and weight sensitivity of the ExtraTrees–TabPFN blend. (a) paired differences in parent-weighted MAE against the baselines (negative means the blend is better); (b) parent MAE as a function of a fixed global weight $\alpha$.
 
 Tracing the whole technical trajectory, three core refinements drive the gains: the leap from 23 base features to 869 explicit interaction features, which feeds polarity matching directly and narrows the error; the parent-equal sample weighting ($q=1$), which removes the head-parent bias and cuts the error by a further 0.023; and the context-attention TabPFN branch, which applies a local continuous correction and locks the parent MAE at the global optimum of 0.6668.
 
@@ -417,7 +423,7 @@ In the extreme band ($y \le -4$, 23 records over 8 parents), both models' errors
 
 Across the outer five folds, the adaptively chosen TabPFN blend weights $\widehat\alpha$ are 0.25, 0.25, 0.0, 0.25, 0.50 (averaging about 0.25), and the ExtraTrees weighting exponent $q$ consistently prefers 1.
 
-On weight robustness, Figure 4b fixes the out-of-fold predictions and sweeps a constant global $\alpha$. Over $\alpha \in [0.25, 0.75]$ the parent-weighted MAE is 0.6734, 0.6708, 0.6732—a very flat basin that beats both single-branch endpoints (0.6831 at $\alpha=0$ and 0.6827 at $\alpha=1$). The blending gain is therefore tolerant of weight changes rather than depending on a brittle optimum.
+On weight robustness, Figure 5b fixes the out-of-fold predictions and sweeps a constant global $\alpha$. Over $\alpha \in [0.25, 0.75]$ the parent-weighted MAE is 0.6734, 0.6708, 0.6732—a very flat basin that beats both single-branch endpoints (0.6831 at $\alpha=0$ and 0.6827 at $\alpha=1$). The blending gain is therefore tolerant of weight changes rather than depending on a brittle optimum.
 
 On seed sensitivity, holding the same five-fold parent split and reporting seeds 17, 42, and 2026, the blend's parent-weighted MAEs are 0.6635, 0.6679, and 0.6690—a spread of only 0.0055. This low random variance confirms the stability of both the training strategy and the ensemble.
 
@@ -449,9 +455,9 @@ For any fixed combination $c$ the temperature derivative is constant, $\partial 
 
 For the ExtraTrees branch we use the tree-path-dependent TreeSHAP algorithm (Lundberg et al. 2020), drawing 227 explanation samples that evenly cover the chemical space of the 128 development parents. TreeSHAP satisfies the local-accuracy axiom to floating-point precision (reconstruction bias below $1.3\times10^{-13}$), with a background expectation of $-1.1632$.
 
-The 665 retained features are grouped by physicochemical role into four groups—drug descriptors, solvent descriptors, temperature, and explicit intermolecular interactions—and each group's signed attribution is averaged equally over the 128 parents (Figure 5A).
+The 665 retained features are grouped by physicochemical role into four groups—drug descriptors, solvent descriptors, temperature, and explicit intermolecular interactions—and each group's signed attribution is averaged equally over the 128 parents (Figure 6A).
 
-**Figure 5.** Feature attribution and dynamic temperature response of the deployed model. (A) parent-equal absolute net attribution of the four feature groups; (B) predicted curve for the lovastatin–butyl acetate combination over its observed temperature window (markers are measurements, the solid line is the blend, dashed lines are the single branches).
+**Figure 6.** Feature attribution and dynamic temperature response of the deployed model. (A) parent-equal absolute net attribution of the four feature groups; (B) predicted curve for the lovastatin–butyl acetate combination over its observed temperature window (markers are measurements, the solid line is the blend, dashed lines are the single branches).
 
 The attribution lays bare the chemical logic. Drug descriptors (mean absolute attribution 0.466) and explicit interaction features (0.432) are the twin pillars of the solubility decision. This matches solution physicochemical principles: drug molecules are large and complex (molecular weights usually 200–800), and their lattice energy and solid-state cohesion form the first thermodynamic barrier to dissolution; the explicit solute–solvent interactions (polarity matching and hydrogen bonding) then decide whether solvation can overcome that lattice energy. Solvent descriptors (0.084) and temperature (0.033) only fine-tune the prediction. Because the solvent library is small (49 common industrial solvents) and its structures are regular, the solvent's standalone contribution is concentrated and acts mostly as a conditional perturbation on the structural baseline.
 
@@ -470,7 +476,7 @@ The two cases illustrate the ensemble's adaptive calibration. For erythritol, Ex
 
 ### 7.4 Dynamic Temperature Response
 
-To check physical plausibility under continuous temperature change, we fix the lovastatin–butyl acetate system (20 dense temperature points in the development set, spanning $[5.95^\circ\text{C}, 50.2^\circ\text{C}]$) and scan the temperature densely (Figure 5B).
+To check physical plausibility under continuous temperature change, we fix the lovastatin–butyl acetate system (20 dense temperature points in the development set, spanning $[5.95^\circ\text{C}, 50.2^\circ\text{C}]$) and scan the temperature densely (Figure 6B).
 
 The scan is telling: ExtraTrees produces a staircase of piecewise segments, the typical discreteness of an axis-split tree, whereas the blend traces a smooth, monotone upward curve whose log-solubility rises steadily from $-1.587$ at $5.95^\circ$C to $-1.074$ at $50.2^\circ$C. The curve passes through the middle of the observed scatter and matches the macroscopic endothermic-dissolution behaviour of most solid solutes, confirming that the model has learned a physically consistent temperature response.
 
@@ -480,7 +486,7 @@ The scan is telling: ExtraTrees produces a staircase of piecewise segments, the 
 
 In uncontrolled observational data, equating a statistical association with a physical temperature effect is risky. We therefore frame the analysis with a structural causal model (SCM) (Pearl 2009). Let $D$ and $S$ denote the drug and solvent structures, $T$ the temperature, $Y$ the log-solubility, and $U$ the unrecorded environmental and experimental confounders (measurement protocol, solid-state polymorph transitions, equilibration time, and so on).
 
-**Figure 6.** Causal DAG for the temperature effect. Solid circles are observed variables, the dashed circle is the unmeasured confounder; the red arrow $T \to Y$ is the target causal path and the grey arrows are backdoor paths.
+**Figure 7.** Causal DAG for the temperature effect. Solid circles are observed variables, the dashed circle is the unmeasured confounder; the red arrow $T \to Y$ is the target causal path and the grey arrows are backdoor paths.
 
 In this graph the path $T \to Y$ is the true causal response of interest—the thermodynamic displacement in log-solubility when the temperature changes. Two serious backdoor paths exist: the drug and solvent structures correlate with the temperature window chosen, giving the structural backdoor $T \leftarrow (D, S) \to Y$; and experiments at different temperatures may differ in their instrument protocols, giving the environmental backdoor $T \leftarrow U \to Y$.
 
@@ -488,7 +494,7 @@ In this graph the path $T \to Y$ is the true causal response of interest—the t
 
 To block the structural backdoor, we keep all complete drug–solvent combinations with at least two distinct temperatures: 157 combinations, 73 parents, and 1118 records (median temperature span $27.1^\circ$C).
 
-On this set, contrasting two regressions exposes the distortion. The pooled ordinary least squares (OLS) yields $\widehat\beta_{\mathrm{pooled}} = -0.00746$ (Figure 7), a negative correlation that contradicts endothermic dissolution and betrays a Simpson's paradox. The sign flip stems from the correlation between temperature and insolubility in the sample: poorly soluble systems are measured more often at higher temperatures, which manufactures a spurious negative correlation at the pooled level.
+On this set, contrasting two regressions exposes the distortion. The pooled ordinary least squares (OLS) yields $\widehat\beta_{\mathrm{pooled}} = -0.00746$ (Figure 8), a negative correlation that contradicts endothermic dissolution and betrays a Simpson's paradox. The sign flip stems from the correlation between temperature and insolubility in the sample: poorly soluble systems are measured more often at higher temperatures, which manufactures a spurious negative correlation at the pooled level.
 
 Within-combination fixed-effects regression, by contrast, fits $Y_{ic} = \alpha_c + \beta_{\mathrm{within}} T_{ic} + \varepsilon_{ic}$, with the slope estimated from within-group variation only. De-meaning within each combination removes the structural intercept $\alpha_c$ entirely, blocking all temperature-invariant drug and solvent confounding.
 
@@ -500,7 +506,7 @@ $$\widehat\beta_{\mathrm{within}} = +0.01538.$$
 
 That is, each $1^\circ$C increase raises the mean log-solubility by 0.01538, a net molar-solubility gain of about 3.6%.
 
-**Figure 7.** Statistical association and causal identification between temperature and measured log-solubility. The first row is the pooled OLS regression; the second and third rows are the within-combination fixed-effects slope and its confidence intervals.
+**Figure 8.** Statistical association and causal identification between temperature and measured log-solubility. The first row is the pooled OLS regression; the second and third rows are the within-combination fixed-effects slope and its confidence intervals.
 
 Three uncertainty analyses back the effect. With parent-clustered robust errors, the 95% interval is strictly positive, $[0.0121, 0.0186]$; a parent-clustered bootstrap with 2000 resamples gives the percentile interval $[0.01236, 0.01902]$; and a leave-one-parent-out jackknife over the 73 parents keeps the slope within $[0.01424, 0.01599]$. All are positive, so the effect is robust across parents.
 
@@ -526,7 +532,7 @@ To put the proposed algorithms to practical use in drug discovery and crystallis
 
 The system uses a cohesive, loosely coupled layered architecture. The presentation layer offers molecule lookup, single-point prediction, side-by-side model comparison, temperature scanning, and batch CSV. The service layer, built on FastAPI, handles contract validation and asynchronous concurrency. The feature engine assembles descriptors and explicit interaction vectors on the fly with RDKit. The inference engine keeps the models resident on CPU and GPU for millisecond-level responses.
 
-**Figure 8.** End-to-end pipeline of the solubility prediction system: user input → FastAPI contract validation and injection filtering → RDKit parsing (SMILES standardisation → 217 descriptors → 869 explicit interaction vector) → model dispatch (ExtraTrees tree branch ∥ TabPFN context attention ∥ SOLAR-H decomposition) → output assembly and concentration back-transform ($S = 10^{\widehat y}$ mol/L → branch-weight breakdown → historical coverage indicator).
+**Figure 9.** End-to-end pipeline of the solubility prediction system: user input → FastAPI contract validation and injection filtering → RDKit parsing (SMILES standardisation → 217 descriptors → 869 explicit interaction vector) → model dispatch (ExtraTrees tree branch ∥ TabPFN context attention ∥ SOLAR-H decomposition) → output assembly and concentration back-transform ($S = 10^{\widehat y}$ mol/L → branch-weight breakdown → historical coverage indicator).
 
 ### 8.2 Model Deployment
 
@@ -538,7 +544,7 @@ The front end reports both the logarithmic scale and the physical molar concentr
 
 ### 8.3 Core Functionality
 
-**Figure 9.** Screenshot of the single-point conditional-solubility prediction and decision-support interface.
+**Figure 10.** Screenshot of the single-point conditional-solubility prediction and decision-support interface.
 
 In the single-point module, users either pick from 186 built-in drugs and 49 common industrial solvents via drop-down menus or type a custom SMILES. For lovastatin in acetone at $25^\circ$C, the model returns its answer in 1.7 s: a log-solubility of $-0.7270$, i.e. $0.1875\ \mathrm{mol/L}$. The interface shows the ExtraTrees branch output ($-0.7270$) alongside the TabPFN contribution, keeping the whole prediction transparent.
 
