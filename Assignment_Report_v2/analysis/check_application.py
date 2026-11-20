@@ -41,8 +41,10 @@ def main():
         support = checked(client.get("/api/evidence", params={
             key: query[key] for key in ("drug_id", "solvent_id", "temperature")
         }))
+        solar = checked(client.post("/api/predict", json=query | {"model_id": "AdaptiveHybrid"}))
+        assert abs(solar["base"][0] + solar["temperature_component"][0] - solar["log_solubility"]) < 1e-8
         compare = checked(client.post("/api/compare", json=query | {
-            "model_b": "ExtraTrees", "temperature_min": 10.0, "temperature_max": 40.0
+            "model_b": "AdaptiveHybrid", "temperature_min": 10.0, "temperature_max": 40.0
         }))
         assert compare["curve_a"]["temperatures"] == compare["curve_b"]["temperatures"]
         assert len(compare["curve_a"]["temperatures"]) == 61
@@ -67,7 +69,11 @@ def main():
         "development_pair_rows": support["support"]["pair_rows"],
         "development_pair_temperature_range": support["range"],
         "offline_api_absolute_difference": error,
-        "comparison_companion": "ExtraTrees",
+        "comparison_companion": "AdaptiveHybrid",
+        "solar_prediction": solar["log_solubility"],
+        "solar_structure_term": solar["base"][0],
+        "solar_temperature_term": solar["temperature_component"][0],
+        "solar_curve_span": float(np.ptp(compare["curve_b"]["lines"][0]["values"])),
         "curve_single_point_absolute_difference": curve_single_point_difference,
         "comparison_points_per_curve": len(compare["curve_a"]["temperatures"]),
         "comparison_common_oof_parents": len(compare["group_errors"]["ids"]),

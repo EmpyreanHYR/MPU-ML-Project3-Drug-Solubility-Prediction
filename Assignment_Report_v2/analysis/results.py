@@ -17,6 +17,7 @@ RESULTS = ROOT / "output" / "combination_v3"
 KEYS = ["data_row", "parent_id", "fold", "seed"]
 SEEDS = {17, 42, 2026}
 SOURCES = {
+    "solar_h": ROOT / "output/revision_v2/nested/AdaptiveHybrid",
     "basic": ROOT / "output/revision_v2/nested/ExtraTrees",
     "rich_tree": RESULTS / "nested/RichExtraTrees",
     "tabpfn": RESULTS / "tabpfn_nested/nested/TabPFN",
@@ -159,6 +160,8 @@ def main():
                 n_parents=int(errors.index.get_level_values("parent_id").nunique()),
                 mae=errors.abs().mean(),
                 bias=errors.mean(),
+                solar_mae=residuals.loc[errors.index, "solar_h"].abs().mean(),
+                solar_bias=residuals.loc[errors.index, "solar_h"].mean(),
             )
         )
 
@@ -198,6 +201,7 @@ def main():
         "metrics": overall,
         "seed_metrics": per_seed,
         "paired": paired,
+        "parent_solar_quantiles": parent_error["solar_h"].quantile([0.5, 0.9, 1]).to_dict(),
         "parent_fusion_quantiles": parent_error["fusion"].quantile([0.5, 0.9, 1]).to_dict(),
         "signed_residual_pearson": residuals["rich_tree"].corr(residuals["tabpfn"]),
         "observed_bands": bands,

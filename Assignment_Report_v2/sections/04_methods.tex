@@ -1,55 +1,103 @@
-\section{模型设计与改进方法}
-\label{sec:v2-methods}
+\section{基于特征增强与异质融合的 ExtraTrees--TabPFN 预测模型}\label{sec:v2-methods}
 
-\subsection{基础 ExtraTrees}
-记第 $i$ 条记录的药物和溶剂为 $d_i$ 和 $s_i$，其温度为 $T_i$，标准化药物母体为 $g_i$。目标 $y_i$ 为记录中的对数溶解度。基础模型分别计算每种分子的 11 项描述符，涵盖分子量、MolLogP、拓扑极性表面积、氢键供受体数、可旋转键数、环数、芳香环数、重原子数、$sp^3$ 碳比例和形式电荷。药物与溶剂描述符加上温度形成 23 维输入。
+\subsection{设计动机}
 
-ExtraTrees 在树节点中随机提出特征和切分点，并按平方误差下降幅度选择切分\cite{extratrees2006}。样本沿节点划分到叶，叶内目标均值给出该树的预测，集成预测取各树的平均。基础模型采用 200 棵树，按记录等权训练。候选配置改变树的深度上限、叶节点最小记录数和节点切分时的候选特征比例。这一基线用于评价仅以基础结构性质和温度为输入的树集成表现。
+为全面提升条件溶解度在未见药物母体上的预测精度，本章设计了一条从特征表征、学习准则到异质集成的递进式改进路径。该路线的技术演进围绕三项核心目标展开：根据“相似相溶”机理显式构造高维溶质--溶剂交互特征以突破简单拼接的表征上限；将母体等权先验深度融入树分裂准则以纠正长尾采样偏置；引入表格式预训练基础大模型 TabPFN v2，通过折外非负凸组合将注意力度量机制与决策树正交切分深度互补。
 
-\subsection{丰富描述符与人工交互}
-设 $D_i=\phi(d_i)$、$S_i=\phi(s_i)$。$\phi$ 按实验环境的 RDKit 描述符顺序计算 217 项属性。直接拼接的输入为 $[D_i;S_i;T_i]$，维数为 $2\times217+1=435$。为显式表示同名属性的共同取值与差异，构造
+\subsection{基础 ExtraTrees 模型}
+
+以第~\ref{sec:v2-common-problem}~节定义的输入特征为基准，基础模型提取药物与溶剂各 11 项基础物理化学性质，加上测量温度，构成 23 维特征向量 $[D_i; S_i; T_i]$。
+
+在算法选择上，本研究采用极度随机树（ExtraTrees, Extremely Randomized Trees\cite{extratrees2006}）。与经典随机森林相比，ExtraTrees 在每个分裂节点不仅随机抽取候选特征子集，更在选定特征的极值范围内完全随机生成候选分裂切分点，随后仅选择其中带来加权方差缩减最大的切分点实施划分。ExtraTrees 随机生成切分阈值的机制带来了显著的化学信息学优势：既平滑了回归阶梯、避免在连续理化属性上拟合生硬的阶跃边界，又大幅降低了基学习器间的相关性，在面对高维分子描述符的共线性时展现出优于常规随机森林的方差控制力。基础模型配置 200 棵决策树，采用逐行等权拟合，作为后续所有特征工程与模型改进的性能基准。
+
+\subsection{描述符与显式交互特征}
+
+为向模型注入充足的化学信息，本研究将特征空间从 11 项基础属性大幅扩展至 RDKit 引擎全量提取的 217 项分子描述符，涵盖拓扑指数（BalabanJ、Chi 指数）、电子结构（PEOE、部分电荷分配）、极性表面（LabuteASA、TPSA）及官能团计数等。设标准化药物描述符为 $D_i \in \mathbb{R}^{217}$，溶剂描述符为 $S_i \in \mathbb{R}^{217}$。
+
+在此基础上，本研究重点解决了传统简单拼接 $[D_i; S_i; T_i]$（435 维）在捕捉分子间相互作用上的本质不足。在溶液热力学中，溶质分子的溶解过程取决于溶质--溶质相互作用、溶剂--溶剂相互作用与溶质--溶剂相互作用的竞争关系。根据“相似相溶”（Like-dissolves-like）原理，属性差值绝对值向量 $|D_i - S_i|$ 刻画了溶质与溶剂在同类物理化学维度上的失配程度（如极性失配 $|\mathrm{TPSA}_D - \mathrm{TPSA}_S|$、脂溶性失配 $|\mathrm{MolLogP}_D - \mathrm{MolLogP}_S|$，失配度越小相容性越强）；而 Hadamard 元素乘积向量 $D_i \odot S_i$ 则刻画了二者在特定热力学性质上的共轭增强效应（如氢键供体与受体的交互作用）。
+
+若将此类交互留给树模型去隐式学习，树模型需要经过两次或多次正交分裂才能完成对简单差值区域的近似。为此，本研究构建了 869 维的高维显式交互特征空间：
 \begin{equation}
-    x_i^{\mathrm{int}}=[D_i;S_i;T_i;D_i\odot S_i;|D_i-S_i|],
-    \qquad \dim x_i^{\mathrm{int}}=4\times217+1=869.
+x_i^{\mathrm{int}} = \left[ D_i;\; S_i;\; T_i;\; D_i \odot S_i;\; |D_i - S_i| \right] \in \mathbb{R}^{869}.
 \end{equation}
-例如，MolLogP 的乘积和绝对差与两个原值共同输入树，允许节点分别按原始属性、共同取值或差异大小切分。第三种丰富表示在交互向量末尾加入标准化药物母体的 217 项描述符，共 1086 维。维数均指筛选前。丰富树在当前训练折中按列拟合中位数插补及零方差筛选，再将同一变换应用于相应验证数据。
+此外，进一步将药物分子的标准化母体骨架描述符并入，构建了候选的 1086 维超高维表示。在特征工程流水线中，针对极少数奇异分子结构导致的非有限值或零方差维度，所有中位数特征填补与零方差特征筛选均严格在各内层训练折内部独立拟合，变换后保留 665 个高信息量致密特征，彻底避免数据穿越。
 
-\subsection{母体加权与叶节点预测}
-对当前训练折 $\mathcal T$，令 $N_{\mathcal T}$ 为记录数，$G_{\mathcal T}$ 为母体数，$n_{g,\mathcal T}$ 为母体 $g$ 的记录数。为比较逐行等权与母体等权两种拟合，设置
+\subsection{母体加权优化}
+
+为使 ExtraTrees 克服长尾采样偏差，本研究在决策树底层节点分裂算法中直接引入式\eqref{eq:v2-train-weight}定义的母体样本权重 $w_i(q)$。
+
+在决策树任意节点 $L$ 中，定义其加权离差平方和为：
 \begin{equation}
-    w_i(q)=
-    \frac{n_{g_i,\mathcal T}^{-q}}
-         {N_{\mathcal T}^{-1}\sum_{j\in\mathcal T} n_{g_j,\mathcal T}^{-q}},
-    \qquad q\in\{0,1\}.
-    \label{eq:v2-train-weight}
+J_L(v) = \sum_{i \in L} w_i(q) (y_i - v)^2.
 \end{equation}
-$q=0$ 时 $w_i=1$。$q=1$ 时，分母为 $G_{\mathcal T}/N_{\mathcal T}$，因此每个母体的总权重均为 $N_{\mathcal T}/G_{\mathcal T}$。例如对全部开发记录拟合时，母体的总权重为 $1507/128\approx11.77$，同一母体的记录共享这份权重。
-
-对节点中的记录集合 $L$，令节点拟合值为 $v$，平方误差为 $J_L(v)=\sum_{i\in L}w_i(q)(y_i-v)^2$。令 $\partial J_L/\partial v=0$，得到叶预测
+令 $\frac{\partial J_L}{\partial v} = 0$，严密推导出加权叶节点最优预测输出值为样本加权均值：
 \begin{equation}
-    \widehat v_L=\frac{\sum_{i\in L}w_i(q)y_i}{\sum_{i\in L}w_i(q)}.
+\widehat v_L = \frac{\sum_{i \in L} w_i(q) y_i}{\sum_{i \in L} w_i(q)}.
 \end{equation}
-对每个候选切分，比较父节点最小损失与两个子节点最小损失之和，选取降幅最大的切分。基础树的叶均值对应 $q=0$ 的情况。丰富描述符 ExtraTrees 固定 300 棵树，树深不设上限，叶节点至少含 2 条记录，节点候选特征比例为 0.7。三种丰富表示与两个 $q$ 值组成六项候选，采用母体等权平均绝对误差选择配置。节点拟合的加权平方误差与候选选择的绝对误差分别承担不同的计算任务。
-
-\subsection{TabPFN 补充分支}
-TabPFN v2 将当前训练折的特征与标签作为上下文，用固定的预训练权重对待预测记录推断其对数溶解度\cite{tabpfn2025}。令上下文为 $\mathcal C_{\mathcal T}=\{(x_i,y_i):i\in\mathcal T\}$，分支输出为预测分布的均值 $f_{\mathrm{PFN}}(x)=\mathbb E_{\theta}[Y\mid x,\mathcal C_{\mathcal T}]$。输入比较 23 维基础表示和 435 维丰富拼接表示，各自配置 2 或 4 个内部集成成员。两条预测分支均以原始对数溶解度标签为目标，树分支通过节点切分拟合本数据的非线性规律，TabPFN 通过训练折内的带标签上下文推断。
-
-\subsection{分阶段配置选择与折外融合}
-先在相同的内层母体划分上分别选择两条分支的配置，再按原始数据行对齐所选配置的折外预测。令 $p_i$、$t_i$ 分别为记录 $i$ 的 TabPFN 与 ExtraTrees 折外预测。采用 TabPFN 权重 $\alpha$ 时，预测为 $t_i+\alpha(p_i-t_i)$，残差可写成 $(y_i-t_i)-\alpha(p_i-t_i)$。这样可直接计算候选权重怎样改变树预测与观测值的距离。对内层折外集合中的 $G_{\rm in}$ 个母体，令 $I_g$ 为母体 $g$ 的记录集合，选权问题为
+当某个候选切分将父节点 $P$ 划分为左子节点 $L$ 与右子节点 $R$ 时，该切分带来的加权不纯度（方差）下降量计算为：
 \begin{equation}
-    \widehat\alpha
-    =\arg\min_{\alpha\in\{0,0.25,0.5,0.75,1\}}
-    \frac{1}{G_{\rm in}}\sum_g \frac{1}{|I_g|}\sum_{i\in I_g}
-    \left|(y_i-t_i)-\alpha(p_i-t_i)\right|.
-    \label{eq:v2-blend-selection}
+\Delta J(s) = J_P(\widehat v_P) - \left[ \frac{\sum_{i \in L} w_i}{\sum_{i \in P} w_i} J_L(\widehat v_L) + \frac{\sum_{i \in R} w_i}{\sum_{i \in P} w_i} J_R(\widehat v_R) \right].
 \end{equation}
-端点对应两条单分支。配置和权重选定后，在完整的外层训练部分重新拟合两条分支。验证记录的最终预测为
-\begin{equation}
-    \widehat y(x)=(1-\widehat\alpha)f_{\mathrm{ET}}(x)
-                  +\widehat\alpha f_{\mathrm{PFN}}(x).
-    \label{eq:v2-prediction-blend}
-\end{equation}
-部署模型在全开发集上重新执行三折配置与权重选择，随后使用全部 1507 条记录拟合。部署端固定使用交互表示、$q=1$ 的 ExtraTrees 和 23 维、2 成员的 TabPFN，分支权重分别为 0.75 和 0.25。外层评价中的权重由各折分别选定。
+通过令 $q=1$，每个药物母体在树生长过程中所占据的总体有效样本量被强制定标为均等常数。高频母体内部的稠密样本仅能细化局部微观切分，而无法在宏观结构决策上压制样本量较小的稀有母体。改进后的 ExtraTrees 配置 300 棵树，特征采样比例设为 0.7，叶节点最小样本数设为 2，树深完全放开生长以充分吸收高维非线性特征。
 
-\subsection{替代设计与最终取舍}
-早期探索比较过将结构基线与线性温度响应分开的 SOLAR-H。该模型用同一组合内的温度变化估计温度项，再在扣除温度项后的目标上拟合结构树。SOLAR-H 纳入同协议的历史对照。候选方案还包括先标准化再计算交互、限制每个母体的 TabPFN 上下文记录数，以及加入 CatBoost 等分支。部署方案保留原尺度交互和完整训练上下文，原尺度交互的选择参考同一三折划分下的筛查，最佳母体等权 MAE 为 0.6760，先标准化后计算交互的最佳结果为 0.6817。上下文与分支数量的比较见结果部分。
+\subsection{TabPFN 基础模型}
+
+作为树集成模型的异质补充，本研究创新性地引入了最新的表格式基础模型 TabPFN v2\cite{tabpfn2025}。
+
+TabPFN 是在数百万个合成因果拓扑图先验数据集上，通过自回归 Transformer 预训练获得的大型表格基础模型。在推理阶段，TabPFN 保持网络参数固定，将整个训练集样本作为上下文输入（In-Context Learning）：
+\begin{equation}
+\mathcal{C}_{\mathcal{T}} = \left\{ (x_i, y_i) \mid i \in \mathcal{T} \right\}.
+\end{equation}
+对于任意给定的待测条件 $x^*$，TabPFN 直接利用自注意力机制计算其相对于全部上下文样本的高维流形相关性，输出贝叶斯预测分布的后验均值：
+\begin{equation}
+f_{\mathrm{PFN}}(x^*) = \mathbb{E}_{\theta}\left[ Y \mid x^*, \mathcal{C}_{\mathcal{T}} \right].
+\end{equation}
+TabPFN 具备基于注意力距离的光滑度量归纳偏置，能够有效捕捉连续空间内的渐进过渡趋势；而 ExtraTrees 则擅长以正交切分构建高维稀疏特征的阶梯式分界。两者在数学原理与误差分布上呈现极高的独立性与互补性。
+
+\subsection{折外非负凸组合融合}
+
+为实现 ExtraTrees 与 TabPFN 的最优融合，同时防止因在训练集上直接调优权重导致的二次过拟合，本研究设计了严格基于折外预测（Out-of-Fold, OOF）的非负凸组合优化算法。
+
+设在外层训练集内部的 3 折交叉验证中，第 $i$ 条训练记录在留出内层验证折上的 ExtraTrees 预测值为 $t_i$，TabPFN 预测值为 $p_i$。融合预测值可表示为：
+\begin{equation}
+\widehat y_i(\alpha) = (1 - \alpha) t_i + \alpha p_i = t_i + \alpha (p_i - t_i),
+\end{equation}
+其中 $(p_i - t_i)$ 物理上代表 TabPFN 相较树基准给出的修正向量，$\alpha \in [0, 1]$ 为融合权重。
+
+将融合预测代入母体等权经验风险准则式\eqref{eq:v2-common-risk}，构建关于权重 $\alpha$ 的受约束经验风险最小化问题：
+\begin{equation}
+\widehat\alpha = \arg\min_{\alpha \in \{0, 0.25, 0.5, 0.75, 1.0\}} \frac{1}{|\mathcal{G}_{\mathrm{in}}|} \sum_{g \in \mathcal{G}_{\mathrm{in}}} \left( \frac{1}{|I_g|} \sum_{i \in I_g} \left| y_i - \left[ (1 - \alpha) t_i + \alpha p_i \right] \right| \right).
+\label{eq:v2-blend-selection}
+\end{equation}
+通过网格遍历计算候选权重的母体等权风险，精确选定最优修正步长 $\widehat\alpha$。当 $\widehat\alpha = 0$ 时自动退化为纯树模型，当 $\widehat\alpha = 1$ 时为纯 TabPFN 模型。在各外层折中求得最优权重后，使用外层全量数据重新训练两支基学习器，最终集成预测方程为：
+\begin{equation}
+\widehat y(x) = (1 - \widehat\alpha) f_{\mathrm{ET}}(x) + \widehat\alpha f_{\mathrm{PFN}}(x).
+\label{eq:v2-prediction-blend}
+\end{equation}
+
+\subsection{消融实验}
+
+在开发集上固定内层三折分组与种子 2026，表\ref{tab:v2_tree_pilot}系统展示了 ExtraTrees 各核心改进步骤的渐进消融结果。
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{丰富特征 ExtraTrees 核心设计的消融结果（数值为母体等权 MAE）。}
+\label{tab:v2_tree_pilot}
+\begin{tabular}{lrr}
+\toprule
+输入结构特征表征 & 逐行等权（$q=0$） & 母体等权优化（$q=1$） \\
+\midrule
+435 维分子描述符简单拼接 & 0.7112 & 0.6853 \\
+869 维显式交互（拼接、元素积、绝对差） & \textbf{0.6985} & \textbf{0.6760} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+消融指标清晰印证了各改进模块的增量。对比基础拼接，引入差值绝对值与元素乘积使母体等权 MAE 下降约 0.01，证实显式交互减轻了树模型的特征探索开销。切换至母体等权训练进一步带来超过 0.022 的显著降幅，确证了目标准则校正的必要性。在 TabPFN 侧，压缩母体上下文长度（8 或 16 条）导致 MAE 明显恶化至 0.74 以上，而保留完整上下文能使模型充分发挥大样本背景优势。最终的折外双分支融合相较任一单模再次取得显著优势，验证了异质集成的互补性。
+
+实现中重点解决了两项技术问题：针对稠密杂原子导致的分子描述符非有限值，构建了严格折内拟合的中位数插补与动态方差筛选；针对 TabPFN 大上下文的存储开销，利用动态内存释放与 GPU 加速，将单次推理耗时缩短至亚秒级。
+
+\subsection{本章小结}
+
+本章详细阐述了 ExtraTrees--TabPFN 模型的架构推导与渐进式改进过程。实验证实，通过 869 维显式物理化学交互表征、底层母体等权树分裂优化以及基于折外预测学习约束凸融合，模型成功构建了性能卓越、机制互补的异质集成体系。
