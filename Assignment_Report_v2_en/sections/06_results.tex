@@ -11,10 +11,16 @@ Under the strict outer cross-validation over 128 unseen parents and 1507 develop
 \toprule
 Model & Parent-weighted MAE & Row-wise MAE & RMSE & $R^2$ \\
 \midrule
+Ridge regression & 0.8746 & 0.9155 & 1.2087 & 0.1094 \\
+TabM deep tabular network & 0.7694 & 0.7679 & 1.0104 & 0.3777 \\
 Base ExtraTrees baseline & 0.7469 & 0.7491 & 0.9730 & 0.4229 \\
+Multi-view kernel ridge & 0.7277 & 0.7388 & 0.9501 & 0.4497 \\
+RBF support-vector regression & 0.7226 & 0.6600 & 0.9125 & 0.4924 \\
 SOLAR-H structure--temperature decomposition & 0.7164 & 0.7520 & 1.0016 & 0.3884 \\
+CatBoost gradient boosting & 0.6931 & 0.7168 & 0.9462 & 0.4542 \\
 Feature-rich ExtraTrees & 0.6831 & 0.6720 & 0.8981 & 0.5083 \\
 TabPFN v2 single branch & 0.6827 & 0.6698 & 0.9117 & 0.4933 \\
+Random forest & 0.6815 & 0.7057 & 0.9254 & 0.4780 \\
 \midrule
 TabPFN + two-tree (ET+CatBoost) three-blend & 0.6729 & 0.6631 & 0.8882 & 0.5191 \\
 Five-branch full blend & 0.6767 & 0.6568 & 0.8899 & 0.5172 \\
@@ -28,6 +34,15 @@ Across all metrics, the proposed ExtraTrees--TabPFN blend leads the field: its p
 The jump from single models to the blend shows the complementarity dividend. ExtraTrees and TabPFN perform similarly alone on unseen parents (MAE 0.6831 versus 0.6827), yet their residual signs disagree 15.0\% of the time and their predictions correlate at only 0.909. The out-of-fold convex combination converts this orthogonality into variance suppression, pushing the parent MAE further down to 0.6668.
 
 SOLAR-H reaches a parent MAE of 0.7164. It trails the blend but beats the base tree baseline clearly (paired difference $+0.0496$), and by cleanly decoupling the conditional solubility into an interpretable physical temperature response and a structural baseline, it supplies the theoretical reference that the later causal analysis relies on.
+
+To render the multi-metric standing of each model at a glance, Figure~\ref{fig:model_radar} shows the same comparison as a normalised radar profile.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.78\linewidth]{model_radar.pdf}
+\caption{Normalised radar comparison of the models across the four metrics (all axes are normalised to $[0,1]$ with a larger radius always better; the three error metrics are inverted).}
+\label{fig:model_radar}
+\end{figure}
 
 \subsection{Ablation Analysis}
 

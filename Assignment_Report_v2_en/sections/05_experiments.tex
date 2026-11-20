@@ -14,9 +14,12 @@ To form a multi-level, multi-paradigm benchmark, we assemble the comparison matr
     \toprule
     Category & Model & Input dimension & Tuning space and mechanism \\
     \midrule
-    \multirow{2}{*}{Conventional single models}
+    \multirow{5}{*}{Conventional single models}
+    & Ridge regression & 23 (base descriptors + temperature) & 4 L2 coefficients ($\alpha \in \{0.1, 1, 10, 100\}$). \\
+    & Random forest & 869 (explicit interactions) & 2 feature ratios $\times$ 2 leaf sizes, 4 configurations. \\
     & Base ExtraTrees baseline & 23 (base descriptors + temperature) & 12 tree-hyperparameter combinations (depth 8--unbounded, leaf 1--4, feature ratio 0.5--1.0). \\
     & Feature-rich ExtraTrees & 869 (explicit interactions) & 3 representations $\times$ 2 weightings ($q \in \{0, 1\}$), 6 configurations. \\
+    & RBF support-vector regression & 869 (explicit interactions) & RBF kernel, 2 regularisation coefficients ($C \in \{1, 10\}$). \\
     \midrule
     Physical decomposition & SOLAR-H & 45 (augmented) & 4 temperature gains ($\gamma \in \{0, 0.1, 0.3, 1.0\}$) $\times$ 3 tree depths, 12 configurations. \\
     \midrule

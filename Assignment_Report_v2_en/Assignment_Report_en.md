@@ -344,8 +344,11 @@ To assess generalisation and design effectiveness fairly, every model is evaluat
 
 | Category | Model | Input dimension | Tuning space and mechanism |
 |---|---|---|---|
-| Conventional single models | Base ExtraTrees baseline | 23 (base descriptors + temperature) | 12 tree-hyperparameter combinations (depth 8–unbounded, leaf 1–4, feature ratio 0.5–1.0) |
+| Conventional single models | Ridge regression | 23 (base descriptors + temperature) | 4 L2 coefficients ($\alpha \in \{0.1, 1, 10, 100\}$) |
+| | Random forest | 869 (explicit interactions) | 2 feature ratios × 2 leaf sizes, 4 configurations |
+| | Base ExtraTrees baseline | 23 (base descriptors + temperature) | 12 tree-hyperparameter combinations (depth 8–unbounded, leaf 1–4, feature ratio 0.5–1.0) |
 | | Feature-rich ExtraTrees | 869 (explicit interactions) | 3 representations × 2 weightings ($q \in \{0,1\}$), 6 configurations |
+| | RBF support-vector regression | 869 (explicit interactions) | RBF kernel, 2 regularisation coefficients ($C \in \{1, 10\}$) |
 | Physical decomposition | SOLAR-H | 45 (augmented) | 4 temperature gains × 3 tree depths, 12 configurations |
 | Recent single models | TabPFN v2 | 23 / 435 | 2 input dimensions × 2 internal ensemble sizes (2, 4), 4 configurations |
 | | CatBoost | 869 (interactions) | 6 depth/learning-rate combinations |
@@ -365,10 +368,16 @@ Under the strict outer cross-validation over 128 unseen parents and 1507 develop
 
 | Model | Parent-weighted MAE | Row-wise MAE | RMSE | $R^2$ |
 |---|---|---|---|---|
+| Ridge regression | 0.8746 | 0.9155 | 1.2087 | 0.1094 |
+| TabM deep tabular network | 0.7694 | 0.7679 | 1.0104 | 0.3777 |
 | Base ExtraTrees baseline | 0.7469 | 0.7491 | 0.9730 | 0.4229 |
+| Multi-view kernel ridge | 0.7277 | 0.7388 | 0.9501 | 0.4497 |
+| RBF support-vector regression | 0.7226 | 0.6600 | 0.9125 | 0.4924 |
 | SOLAR-H structure–temperature decomposition | 0.7164 | 0.7520 | 1.0016 | 0.3884 |
+| CatBoost gradient boosting | 0.6931 | 0.7168 | 0.9462 | 0.4542 |
 | Feature-rich ExtraTrees | 0.6831 | 0.6720 | 0.8981 | 0.5083 |
 | TabPFN v2 single branch | 0.6827 | 0.6698 | 0.9117 | 0.4933 |
+| Random forest | 0.6815 | 0.7057 | 0.9254 | 0.4780 |
 | TabPFN + two-tree (ET+CatBoost) three-blend | 0.6729 | 0.6631 | 0.8882 | 0.5191 |
 | Five-branch full blend | 0.6767 | 0.6568 | 0.8899 | 0.5172 |
 | **ExtraTrees–TabPFN blend (recommended)** | **0.6668** | **0.6510** | **0.8842** | **0.5234** |
