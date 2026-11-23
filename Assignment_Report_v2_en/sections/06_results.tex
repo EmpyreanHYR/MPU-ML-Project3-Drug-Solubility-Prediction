@@ -85,7 +85,7 @@ High ($y > 0$) & 339 & 43 & 0.895 & $-0.873$ & 0.782 & $-0.772$ \\
 
 The stratified errors expose a chemically meaningful ``solubility cliff''.
 
-In the moderate band ($-2 < y \le 0$), which holds 54.7\% of the samples, the blend performs exceptionally well---a row-wise MAE of just 0.465 and a signed bias of $-0.120$---delivering accurate continuous fits for routine pharmaceutical conditions.
+In the moderate band ($-2 < y \le 0$), which holds 54.7\% of the samples, the blend reaches a row-wise MAE of 0.465 and a signed bias of $-0.120$.
 
 In the extreme band ($y \le -4$, 23 records over 8 parents), both models' errors balloon (MAE above 2.2) and both systematically overestimate by more than $+2.2$ orders of magnitude. Take sucrose in chloroform at $25^\circ\text{C}$: the measured log-solubility is $-6.234$, but the model predicts $-2.536$ on average. The mechanism is thermodynamic: solubility depends not only on the liquid-phase solvation free energy (captured by 2D topological descriptors) but also, and more directly, on the lattice energy and solid-state packing of the pure crystal. Sucrose carries abundant hydroxyl groups that form a strong interlocking hydrogen-bond network in the solid, so desolvation and melting must overcome a large lattice-energy barrier, which is why it is so insoluble in chloroform. A pure 2D prediction, without an experimental melting point or three-dimensional unit-cell packing parameters, can only reason from liquid-phase polarity mismatch and therefore overestimates systematically. This is a practically important warning: for compounds predicted near the insoluble edge, solid-state polymorph and melting-point measurement should be scheduled first.
 
@@ -93,9 +93,9 @@ In the extreme band ($y \le -4$, 23 records over 8 parents), both models' errors
 
 Across the outer five folds, the adaptively chosen TabPFN blend weights $\widehat\alpha$ are 0.25, 0.25, 0.0, 0.25, 0.50 (averaging about 0.25), and the ExtraTrees weighting exponent $q$ consistently prefers 1.
 
-On weight robustness, Figure~\ref{fig:v2_prediction_diagnostics}b fixes the out-of-fold predictions and sweeps a constant global $\alpha$. Over $\alpha \in [0.25, 0.75]$ the parent-weighted MAE is 0.6734, 0.6708, 0.6732---a very flat basin that beats both single-branch endpoints (0.6831 at $\alpha=0$ and 0.6827 at $\alpha=1$). The blending gain is therefore tolerant of weight changes rather than depending on a brittle optimum.
+On weight robustness, Figure~\ref{fig:v2_prediction_diagnostics}b fixes the out-of-fold predictions and sweeps a constant global $\alpha$. Over $\alpha \in [0.25, 0.75]$ the parent-weighted MAE is 0.6734, 0.6708, 0.6732, a flat region that beats both single-branch endpoints (0.6831 at $\alpha=0$ and 0.6827 at $\alpha=1$). The blending gain is therefore tolerant of weight changes rather than depending on a brittle optimum.
 
-On seed sensitivity, holding the same five-fold parent split and reporting seeds 17, 42, and 2026, the blend's parent-weighted MAEs are 0.6635, 0.6679, and 0.6690---a spread of only 0.0055. This low random variance confirms the stability of both the training strategy and the ensemble.
+On seed sensitivity, holding the same five-fold parent split and reporting seeds 17, 42, and 2026, the blend's parent-weighted MAEs are 0.6635, 0.6679, and 0.6690, a spread of 0.0055 that indicates stable training.
 
 \subsection{Model Selection and Deployment}
 

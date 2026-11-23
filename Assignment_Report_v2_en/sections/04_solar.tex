@@ -8,7 +8,7 @@ In physical chemistry, dissolution is governed by solid--liquid equilibrium ther
 \end{equation}
 Over a limited operating window, a first-order Taylor approximation implies that the log-solubility depends quasi-linearly on the temperature displacement from a reference point. More importantly, $\Delta H_{\mathrm{sol}}$ is set by the difference between the solute--solvent solvation forces and the solute lattice energy, and is therefore strongly structure-specific.
 
-A conventional regressor that feeds temperature in as one column among many molecular features confuses temperature variation with the absolute solubility differences between parents---temperature occupies only one dimension and each combination is measured over a different range---so the learned temperature response drifts badly on unseen parents. SOLAR-H (Structured Orthogonal Linear \& Additive Regression -- Hybrid) decouples the two: the local temperature slope is estimated orthogonally from within-combination temperature variation, and a tree ensemble then fits the structural baseline on a temperature-corrected target.
+A conventional regressor that feeds temperature in as one column among many molecular features confuses temperature variation with the absolute solubility differences between parents. Temperature occupies only one dimension, and each combination is measured over a different range, so the learned temperature response drifts badly on unseen parents. SOLAR-H (Structured Orthogonal Linear \& Additive Regression -- Hybrid) decouples the two: the local temperature slope is estimated orthogonally from within-combination temperature variation, and a tree ensemble then fits the structural baseline on a temperature-corrected target.
 
 \subsection{Structure--Temperature Decomposition}
 
@@ -65,4 +65,4 @@ The ablation exposes the generalisation mechanism. Turning off parent weighting 
 
 \subsection{Summary}
 
-This chapter built SOLAR-H, a decomposition that is both thermodynamically interpretable and statistically rigorous: within-group fixed effects remove the structural-baseline confounding, a weighted ridge regression yields a closed-form slope, and the nested validation pins down the adaptive gain. The ablations not only justify each component but also point to a methodological rule---extrapolating a physical slope to unseen scaffolds requires adaptive damping.
+This chapter built SOLAR-H, a decomposition that is both thermodynamically interpretable and statistically rigorous: within-group fixed effects remove the structural-baseline confounding, a weighted ridge regression yields a closed-form slope, and the nested validation pins down the adaptive gain. The ablations support each component and suggest a rule: extrapolating a physical slope to unseen scaffolds requires adaptive damping.

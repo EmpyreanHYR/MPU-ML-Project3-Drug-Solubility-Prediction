@@ -108,8 +108,8 @@ We now show the complete two-minute demonstration. The example predicts lovastat
 
 The saved interface checks show agreement between API and offline predictions. Curve and single-point outputs also agree within a small numerical tolerance. The timing dots are five sequential warm requests on the recorded MPS device, averaging about one point seven seconds. They describe that hardware and setup; they do not guarantee the same speed on every computer.
 
-## 18 Reliable evaluation, better predictions and a usable system
+## 18 Evaluation, results and system
 
 50 spoken words. Budget 0:30.
 
-To conclude, parent-disjoint evaluation makes the prediction task meaningful. Rich interactions, parent weighting and heterogeneous fusion improve the reported development results. The application makes those predictions accessible, while the error analysis identifies clear limits. The next priorities are solid-state information and controlled external validation. Thank you. We welcome your questions.
+To conclude, parent-disjoint evaluation tests prediction on drugs the model has not seen. Rich interactions, parent weighting and heterogeneous fusion improve the reported development results. The application makes those predictions accessible, while the error analysis identifies clear limits. The next priorities are solid-state information and controlled external validation. Thank you. We welcome your questions.

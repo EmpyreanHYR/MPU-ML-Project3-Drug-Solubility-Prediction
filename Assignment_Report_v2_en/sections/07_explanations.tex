@@ -19,7 +19,7 @@ For the nonlinear ExtraTrees--TabPFN deployed model, we combine game-theoretic S
 \subsubsection{TreeSHAP Global Feature-Group Attribution}
 For the ExtraTrees branch we use the tree-path-dependent TreeSHAP algorithm\cite{treeshap2020}, drawing 227 explanation samples that evenly cover the chemical space of the 128 development parents. TreeSHAP satisfies the local-accuracy axiom to floating-point precision (reconstruction bias below $1.3\times10^{-13}$), with a background expectation of $-1.1632$.
 
-The 665 retained features are grouped by physicochemical role into four groups---drug descriptors, solvent descriptors, temperature, and explicit intermolecular interactions---and each group's signed attribution is averaged equally over the 128 parents (Figure~\ref{fig:deployment-explanations}A).
+The 665 retained features fall into four groups: drug descriptors, solvent descriptors, temperature, and explicit intermolecular interactions. Each group's signed attribution is averaged equally over the 128 parents (Figure~\ref{fig:deployment-explanations}A).
 
 \begin{figure}[htbp]
 \centering
@@ -28,7 +28,7 @@ The 665 retained features are grouped by physicochemical role into four groups--
 \label{fig:deployment-explanations}
 \end{figure}
 
-The attribution lays bare the chemical logic. Drug descriptors (mean absolute attribution 0.466) and explicit interaction features (0.432) are the twin pillars of the solubility decision. This matches solution physicochemical principles: drug molecules are large and complex (molecular weights usually 200--800), and their lattice energy and solid-state cohesion form the first thermodynamic barrier to dissolution; the explicit solute--solvent interactions (polarity matching and hydrogen bonding) then decide whether solvation can overcome that lattice energy. Solvent descriptors (0.084) and temperature (0.033) only fine-tune the prediction. Because the solvent library is small (49 common industrial solvents) and its structures are regular, the solvent's standalone contribution is concentrated and acts mostly as a conditional perturbation on the structural baseline.
+The attribution is chemically interpretable. Drug descriptors (mean absolute attribution 0.466) and explicit interaction features (0.432) contribute most to the predictions. This matches solution physicochemical principles: drug molecules are large and complex (molecular weights usually 200--800), and their lattice energy and solid-state cohesion are a barrier to dissolution; the explicit solute--solvent interactions (polarity matching and hydrogen bonding) then decide whether solvation can overcome that lattice energy. Solvent descriptors (0.084) and temperature (0.033) only fine-tune the prediction. Because the solvent library is small (49 common industrial solvents) and its structures are regular, the solvent's standalone contribution is concentrated and acts mostly as a conditional perturbation on the structural baseline.
 
 \subsubsection{TabPFN's Local Branch Calibration}
 To see how TabPFN cooperates with ExtraTrees, Table~\ref{tab:deployment-examples} picks two real cases where the TabPFN correction $\Delta_{\mathrm{PFN}} = 0.25 (f_{\mathrm{PFN}} - f_{\mathrm{ET}})$ takes extreme values in opposite directions.
@@ -54,4 +54,4 @@ The two cases illustrate the ensemble's adaptive calibration. For erythritol, Ex
 
 To check physical plausibility under continuous temperature change, we fix the lovastatin--butyl acetate system (20 dense temperature points in the development set, spanning $[5.95^\circ\text{C}, 50.2^\circ\text{C}]$) and scan the temperature densely (Figure~\ref{fig:deployment-explanations}B).
 
-The scan is telling: ExtraTrees produces a staircase of piecewise segments, the typical discreteness of an axis-split tree, whereas the blend traces a smooth, monotone upward curve whose log-solubility rises steadily from $-1.587$ at $5.95^\circ\text{C}$ to $-1.074$ at $50.2^\circ\text{C}$. The curve passes through the middle of the observed scatter and matches the macroscopic endothermic-dissolution behaviour of most solid solutes, confirming that the model has learned a physically consistent temperature response.
+The temperature scan shows different behaviours: ExtraTrees produces a staircase of piecewise segments, as expected from an axis-split tree, while the blend traces a smooth, monotone upward curve whose log-solubility rises from $-1.587$ at $5.95^\circ\text{C}$ to $-1.074$ at $50.2^\circ\text{C}$. The curve passes through the middle of the observed scatter and matches the endothermic-dissolution behaviour of most solid solutes.

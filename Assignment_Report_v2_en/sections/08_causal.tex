@@ -30,7 +30,7 @@ The causal directed acyclic graph (DAG) is shown in Figure~\ref{fig:causal-dag}.
 \caption{Causal DAG for the temperature effect. Solid circles are observed variables, the dashed circle is the unmeasured confounder; the red arrow $T \to Y$ is the target causal path and the grey arrows are backdoor paths.}
 \label{fig:causal-dag}
 \end{figure}
-In this graph the path $T \to Y$ is the true causal response of interest---the thermodynamic displacement in log-solubility when the temperature changes. Two serious backdoor paths exist: the drug and solvent structures correlate with the temperature window chosen, giving the structural backdoor $T \leftarrow (D, S) \to Y$; and experiments at different temperatures may differ in their instrument protocols, giving the environmental backdoor $T \leftarrow U \to Y$.
+In this graph the path $T \to Y$ is the causal response of interest, the change in log-solubility when the temperature changes. Two serious backdoor paths exist: the drug and solvent structures correlate with the temperature window chosen, giving the structural backdoor $T \leftarrow (D, S) \to Y$; and experiments at different temperatures may differ in their instrument protocols, giving the environmental backdoor $T \leftarrow U \to Y$.
 
 \subsubsection{Resolving Simpson's Paradox}
 
@@ -67,8 +67,8 @@ Fixed effects remove all structural invariants, but a temperature-varying unmeas
 \begin{equation}
 r_T^2 = r_Y^2 \approx 0.54.
 \end{equation}
-An unmeasured confounder would have to explain at least 54\% of the residual variance of both temperature and solubility to overturn the positive effect. Such extreme co-variation is implausible for instrument and operational variation in mature solubility measurements. The sensitivity analysis therefore certifies, mathematically, that the positive temperature response found here is causally robust.
+An unmeasured confounder would have to explain at least 54\% of the residual variance of both temperature and solubility to overturn the positive effect. That degree of co-variation is unlikely for instrument and operational variation in these measurements.
 
 \subsection{Summary}
 
-Taken together, these analyses establish a clear interpretive and causal picture. The ExtraTrees--TabPFN decisions rest squarely on the drug's intrinsic structure and on solute--solvent polarity and hydrogen-bond complementarity, in line with the molecular physicochemical mechanism of dissolution. Within-combination de-meaning resolves the Simpson's paradox in the observational data and pins down a trustworthy positive temperature slope ($+0.01538$), which informs process temperature optimisation. It should be clear, however, that for extrapolation to entirely new parents the temperature prediction is a robust conditional statistical response; for a real crystallisation campaign, the critical points should still be verified experimentally under standard operating procedures.
+Taken together, these analyses establish a clear interpretive and causal picture. The ExtraTrees--TabPFN decisions depend mainly on the drug's intrinsic structure and on solute--solvent polarity and hydrogen-bond complementarity, in line with the molecular physicochemical mechanism of dissolution. Within-combination de-meaning resolves the Simpson's paradox in the observational data and pins down a trustworthy positive temperature slope ($+0.01538$), which informs process temperature optimisation. For extrapolation to entirely new parents, the temperature prediction remains a conditional statistical response; in a real crystallisation campaign, the critical points should be checked experimentally under standard operating procedures.
