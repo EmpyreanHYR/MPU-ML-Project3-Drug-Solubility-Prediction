@@ -215,7 +215,7 @@
         ? `<span lang="en" class="btn-text-en">${en}</span><span lang="zh-CN" class="btn-text-zh">${zh}</span>`
         : `<span lang="en" class="btn-text-en">${en}</span>`;
       button.append(make('span', 'quiz-letter', String.fromCharCode(65 + index)), textSpan);
-      if (answered && index === q.correct) button.append(make('span', 'quiz-status', '✓ Correct answer / 正确答案'));
+      if (answered && index === q.correct) button.append(make('span', 'quiz-status', 'Correct answer / 正确答案'));
       else if (answered && isChosen) button.append(make('span', 'quiz-status', '× Your selection / 你的选择'));
       button.addEventListener('click', () => {
         if (state.answers[state.active] !== null) return;

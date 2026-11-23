@@ -35,7 +35,7 @@
 
 <div class="app-shell">
 <header class="topbar">
-<div class="breadcrumb"><strong id="page-title">01 · Point Prediction &amp; Branch Decomposition / 单点溶解度预测与分支拆解</strong></div>
+<div class="breadcrumb"><strong id="page-title"><span class="crumb-en">01 · Point Prediction &amp; Branch Decomposition</span><span class="crumb-zh">单点溶解度预测与分支拆解</span></strong></div>
 <div class="top-kpis" aria-label="Project benchmark summary">
 <span class="top-kpi">Dataset: <b>1,904</b> rows · <b>161</b> parents</span>
 <span class="top-kpi">Dev / Holdout: <b>128</b> / <b>33</b> parents (0 overlap)</span>
@@ -49,7 +49,7 @@
 <div class="workspace-grid">
 <form id="conditions" class="card controls">
 <div class="card-heading">
-<h3><span data-icon="sliders"></span>Experiment Inputs / 实验条件</h3>
+<h3><span data-icon="sliders"></span>Experiment Inputs<span class="heading-zh">实验条件</span></h3>
 <button type="button" id="reset" class="text-button"><span class="btn-stack"><span lang="en" class="btn-text-en">Reset</span><span lang="zh-CN" class="btn-text-zh">重置</span></span></button>
 </div>
 <div class="preset-bar" aria-label="Representative cases / 报告典型案例">
@@ -66,12 +66,12 @@
 </div>
 <div class="field">
 <label for="drug">Drug molecule / 药物分子 <span>186 DRUGS</span></label>
-<div class="search-input"><span data-icon="search"></span><input id="drug-search" type="search" placeholder="Filter drug or SMILES… / 筛选药物…" aria-label="Search drugs"></div>
+<div class="search-input"><span data-icon="search"></span><input id="drug-search" type="search" placeholder="Filter drug or SMILES / 筛选药物" aria-label="Search drugs"></div>
 <select id="drug" required aria-label="Drug molecule"></select>
 </div>
 <div class="field" id="solvent-field">
 <label for="solvent">Solvent / 溶剂 <span>49 SOLVENTS</span></label>
-<div class="search-input"><span data-icon="search"></span><input id="solvent-search" type="search" placeholder="Filter solvent or SMILES… / 筛选溶剂…" aria-label="Search solvents"></div>
+<div class="search-input"><span data-icon="search"></span><input id="solvent-search" type="search" placeholder="Filter solvent or SMILES / 筛选溶剂" aria-label="Search solvents"></div>
 <select id="solvent" required></select>
 </div>
 <div class="field">
@@ -128,7 +128,7 @@
 <div class="batch-grid">
 <div class="card">
 <div class="card-heading">
-<h3>Batch CSV Input (1–100 rows) / 批量CSV输入</h3>
+<h3>Batch CSV Input (1–100 rows)<span class="heading-zh">批量CSV输入</span></h3>
 <div class="action-row">
 <button id="batch-example" class="button outline compact" type="button"><span class="btn-stack"><span lang="en" class="btn-text-en">Load Report Example</span><span lang="zh-CN" class="btn-text-zh">载入报告示例</span></span></button>
 <button id="batch-sweep" class="button outline compact" type="button"><span class="btn-stack"><span lang="en" class="btn-text-en">10-Point T-Sweep</span><span lang="zh-CN" class="btn-text-zh">10点变温扫描</span></span></button>
