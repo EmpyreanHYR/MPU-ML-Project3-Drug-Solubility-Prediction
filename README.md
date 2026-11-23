@@ -8,7 +8,7 @@
 
 [**打开 HTML 汇报**](https://empyreanhyr.github.io/MPU-ML-Project3-Drug-Solubility-Prediction/presentation/) · [汇报文件与离线使用说明](presentation/README.md)
 
-包含 13 页英文主幻灯片、中文讲稿、答辩备用页和完整双语系统录屏。在线汇报由 GitHub Pages 发布。实时预测可在本机启动 SOLAR Studio 后从第 11 页打开。
+包含 18 页英文主幻灯片、中文讲稿、2 页答辩备用页和完整双语系统录屏（第 16 页播放）。在线汇报由 GitHub Pages 发布。实时预测可在本机启动 SOLAR Studio 后实际演示。
 
 ## 亮点速览
 
@@ -145,7 +145,7 @@ bash scripts/build_report.sh                                        # 编译 Ass
 | `scripts/` | 训练、嵌套选参、基线评测、保留集测试、结果汇总、Studio 启动与仓库一致性检查脚本 |
 | `models/` | 全部部署与实验模型权重（`.joblib` / `.ckpt`）、第三方权重许可与 SHA-256 校验清单 `manifest.json` |
 | `output/` | 嵌套验证逐折/逐行预测、参数搜索记录、配对统计检验、因果与归因分析等 CSV/JSON 工件 |
-| `webapp/` | SOLAR Studio v4.0 的 FastAPI 后端（`server.py`）与中英双语前端静态资源（`static/`） |
+| `webapp/` | SOLAR Studio v5.0 的 FastAPI 后端（`server.py`）与中英双语前端静态资源（`static/`） |
 | `Assignment_Report_v2/` | 第二版正式中文报告（LaTeX 源码、分章 `sections/`、矢量图表 `figures/`、复算脚本 `analysis/` 与 `Assignment-main.pdf`） |
 | `Assignment_Report_v2_en/` | 第二版报告的英文手稿（LaTeX 源码、Markdown 与 Word 文档） |
 | `Assignment_Report/` | 初版中文报告（LaTeX 源码、图表与 `Assignment-main.pdf`） |
