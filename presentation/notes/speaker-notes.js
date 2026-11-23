@@ -1,54 +1,82 @@
 const SOLAR_NOTES = {
   "opening": {
     "time": "0:30",
-    "body": "开场用一个问题引入。如果模型训练时从未见过某个药物母体，给定一种溶剂和温度，还能估出它的溶解度吗？这是 COMP6133 的小组项目。我们分别做了物理启发的 SOLAR-H 和预测性能更好的 ExtraTrees–TabPFN，并把结果接到 SOLAR Studio。请先记住，我们评价的是未见母体。"
+    "body": "Good afternoon. Our project predicts drug solubility for drug parents that the model has never seen during training. We compare a physics-guided decomposition with an ExtraTrees and TabPFN ensemble, then connect the models to SOLAR Studio. We will focus on the data, the evaluation, the main results and the application."
   },
   "problem": {
-    "time": "1:05",
-    "body": "在制药结晶或决定优先试哪种溶剂时，通常要在很多药物、溶剂、温度组合上做实验，难以一一测完。我们把这个问题做成回归，输入药物和溶剂的 SMILES 以及数值温度，输出摩尔浓度的常用对数。对数相差一个单位，就是浓度差十倍。报告按摄氏度解释温度，原始 CSV 的单位没有独立校验。这里最难的是将模型用到训练阶段没有遇到的母体。它比随机抽出同一药物的一条测量更接近我们要解决的问题。"
+    "time": "0:36",
+    "body": "Our inputs are the drug structure, the solvent structure and temperature. The output is the base-ten logarithm of molar solubility. A difference of one log unit represents a tenfold concentration difference. This prediction can help prioritise solvent screening and crystallisation experiments. The key challenge is generalisation to a new drug parent, rather than predicting another measurement of a familiar drug."
   },
   "data": {
-    "time": "1:05",
-    "body": "数据共 1,904 条，含 186 个药物名称、168 个规范化结构和 49 种溶剂。名称、分子结构和母体是不同统计口径，按 ChargeParent 归并后是 161 个母体。大家看原图左上，只有 646 个药物–溶剂组合有观测，92.15% 的可能网格为空。再看右下，头部 30 个母体占 56.6% 的记录，74 个母体每个只有 1–5 条。还有 86 组同名义条件、合计 205 条记录的测量冲突，项目保留了这些数据。请记住：稀疏、长尾和测量噪声是后面分组和加权的原因。"
+    "time": "0:39",
+    "body": "The dataset contains nineteen hundred and four records, covering forty-nine solvents and one hundred and sixty-one standardised drug parents. The grid shows that more than ninety-two percent of the possible structure and solvent combinations are unmeasured. Sampling is also uneven: the top thirty parents contribute over half the records, while seventy-four parents have only one to five records each. This motivates parent-balanced learning and evaluation."
+  },
+  "distributions": {
+    "time": "0:32",
+    "body": "These plots show the observed data. The histogram uses only the development records, while the scatter plot uses the full dataset. Solubility spans more than eight log units. The records also include conflicting measurements under the same nominal conditions. We retain these measurements instead of treating the dataset as perfectly controlled experimental data."
   },
   "protocol": {
-    "time": "1:20",
-    "body": "我们先用 RDKit 处理分子表示，再把盐型或立体标记不同、但归属于同一母体的药物放入同一个组。模型输入仍然使用原始完整结构。161 个母体固定分为 128 个开发母体、1,507 条记录，以及 33 个保留母体、397 条记录。开发集做嵌套分组验证：外层五折负责评估，内层三折选参数和融合权重，插补和特征筛选也只能在训练折拟合。三个随机种子是 2026、17、42。后面的主表都是开发集外折结果。请把这条界线记住，独立保留集是另一批母体。"
-  },
-  "methods": {
-    "time": "1:20",
-    "body": "这张原图分两条并行路线。上方的 SOLAR-H 先尝试把温度变化中的信号单独估出来，再学习由药物和溶剂决定的结构基线。下方路线用丰富的分子交互特征训练 ExtraTrees，再和表格基础模型 TabPFN 的预测融合。前者更方便分析温度，后者主要目标是降低对未见母体的误差。等会看到的基础 ExtraTrees 是对照，只用药物、溶剂各 11 项基础描述符加一个温度，共 23 个输入。两条路线用同一个母体分组评价协议，所以结果可以直接对照。"
+    "time": "0:40",
+    "body": "We standardise parent identities with RDKit and keep every parent entirely within one split. The development set contains one hundred and twenty-eight parents. A separate group of thirty-three parents remains reserved. Within development, five outer folds estimate performance on unseen parents. Three inner folds select parameters and blend weights. Preprocessing uses training-fold data only. Our headline results are development out-of-fold results, averaged over three training seeds."
   },
   "fusion": {
-    "time": "1:40",
-    "body": "把这一页分成三步。第一步，药物和溶剂各 217 个描述符，再加一个原始温度。除了拼接，还把相同描述符相乘并取绝对差值，得到 869 列。比如极性差用差值直接表示，不必让树自己在许多分裂中找。部署树经过插补和方差筛选后有 665 个有效列，所有折内预处理都在训练数据上拟合。第二步，某个母体有几条记录，每条就按它的记录数倒数赋权。q 等于 1，母体总权重相同。0.6985 到 0.6760 只来自三折筛查。第三步，OOF 是在某个内折未参与训练的数据上预测。我们用这些预测选凸组合权重。演示的部署权重是 75 比 25，外折的权重随内层选择而变。"
+    "time": "0:41",
+    "body": "Our prediction model combines three ideas. First, we construct eight hundred and sixty-nine features from drug and solvent descriptors, temperature, descriptor products and absolute differences. These interactions directly describe the molecule pair. Second, inverse-count weights give each parent equal total influence in tree training. Third, we combine ExtraTrees with TabPFN. Inner out-of-fold predictions determine the convex weights. The deployed example uses seventy-five percent ExtraTrees and twenty-five percent TabPFN."
   },
   "solar": {
-    "time": "1:10",
-    "body": "SOLAR-H 把预测分成结构基线和温度项。左边公式的 z 是药物与溶剂的 44 维结构特征，u 在前面加一个常数项。用训练折的温度中位数和四分位距得到标准化温度。对同一药物–溶剂组合的多温测量减去组内均值，结构基线就消掉了，我们可以先用加权岭回归求温度响应。再扣掉这一项，训练树来拟合基线。右边是报告消融原图，温度满增益时母体 MAE 恶化到 0.8150。自适应版本是 0.7164。请记住这一页的价值：分解让我们能解释温度响应，也能用阻尼控制外推。"
+    "time": "0:48",
+    "body": "SOLAR-H follows a different route. It separates a structural baseline from a structure-dependent temperature term. Within each drug and solvent pair, centring removes the fixed structural component, allowing a weighted ridge model to estimate temperature response. A tree then learns the baseline. Inner validation chooses the temperature gain. The saved deployment selects a gain of zero, so its explicit temperature term vanishes. This is an adaptive response to uncertain extrapolation, rather than evidence that temperature has no physical effect."
+  },
+  "solar-ablation": {
+    "time": "0:35",
+    "body": "The ablation tests the importance of temperature shrinkage. Fixing the gain at one raises parent MAE from about zero point seven one six to zero point eight one five. Its paired interval stays above zero. The other ablation intervals cross zero. The clearest finding here is that forcing the full temperature response harms unseen-parent prediction in this experiment."
   },
   "performance": {
-    "time": "1:40",
-    "body": "先说明评价口径。这是 128 个开发母体、五个外折、三个种子的结果。母体等权 MAE 是先算每个母体的平均绝对误差，再让每个母体各占一份。逐行 MAE 每条记录一票，RMSE 更受大误差影响，R² 越高越好。主融合在报告的 13 种方案中四项指标均最好，母体 MAE 为 0.6668，逐行 MAE 为 0.6510，RMSE 为 0.8842，R² 为 0.5234。和基础 ExtraTrees 的 0.7469 比，按未四舍五入产物算母体误差下降 10.73%。配对单位是母体，融合减基础树的 95% 区间是 −0.1366 到 −0.0276。8.54% 是另一项比较，下一页会讲清楚。"
+    "time": "0:48",
+    "body": "The radar combines the four headline metrics on one page. Error axes are reversed, so farther out is better on every axis. Scores are normalised across the thirteen reported methods. One means the best observed result, not perfect prediction. The blend leads all four point estimates, with parent MAE of zero point six six six eight and R squared of zero point five two three four. Its parent error is ten point seven three percent lower than basic ExtraTrees."
   },
   "ablation": {
-    "time": "1:30",
-    "body": "看顶部三段：基础树 0.7469，丰富特征且母体等权的树 0.6831，异质融合 0.6668。这三个阶段使用同一套开发集外折评价。丰富特征树相对基础树下降 8.54%，配对区间 −0.1219 到 −0.0082。三折筛查只用来解释加权方向，其数值没有放进这个链条。两个单分支的误差并不完全同步，15.0% 的残差符号相反，相关系数 0.909。固定权重试了 0.25、0.50、0.75，在这三个点的误差都比单分支低。三种种子的主结果落在 0.6635 到 0.6690。对单分支的配对区间跨零，所以我们可以讲排序和稳定性，别把小幅点估计差异讲成确定优势。"
+    "time": "0:42",
+    "body": "This progression isolates the main improvement stages under the same outer validation. Rich features and parent weighting reduce parent MAE from zero point seven four six nine to zero point six eight three one. Fusion reduces it further. The blend-versus-basic paired interval lies below zero. However, intervals against the rich single branches cross zero, so we should distinguish the best point estimate from a statistically certain advantage over every competitor."
+  },
+  "sensitivity": {
+    "time": "0:38",
+    "body": "The weight curve shows all five tested fixed weights. Intermediate blends perform better than either single-branch endpoint. The dashed line represents the adaptive procedure. Across three seeds, the selected blend changes only slightly. The fold-specific weights on the right also show that the deployment weight is not a universal constant. We do not need to read every value to see this pattern."
   },
   "interpretation": {
-    "time": "1:10",
-    "body": "左图解释的是部署树分支。SHAP 把预测相对基准的差分配给各类输入。以母体等权汇总绝对净归因，药物描述符是 0.466，显式交互是 0.432，单位是对数溶解度，不是百分比。右图在同一批 157 个多温组合上，总体斜率 −0.00746，控制组合后变成 +0.01538，母体聚类自助法的区间为 0.01236 到 0.01902。这是观察数据的条件关联。 按报告的摄氏度解释，斜率可换算为每升一度约增加 3.6% 的浓度。等强度的偏 R² 敏感性值约 0.54。极难溶的 23 条记录里，融合模型平均高估 2.250 个对数单位，原因可能与缺少晶型、晶格能等固态信息有关。"
+    "time": "0:31",
+    "body": "TreeSHAP explains the deployed tree branch. Drug descriptors and explicit interactions have the largest group attributions. This supports the usefulness of describing both the drug and its compatibility with the solvent. The values are in log-solubility units. They are neither percentages nor causal effects. The explanation sample covers all development parents."
+  },
+  "calibration": {
+    "time": "0:28",
+    "body": "These two development examples illustrate how TabPFN changes the tree prediction. For erythritol, the correction moves downward. For the Dane salt, it moves upward. Both follow the same weighted-average formula. These examples explain the blend arithmetic; they are fitted deployment examples, not independent tests of generalisation."
+  },
+  "temperature": {
+    "time": "0:39",
+    "body": "Using exactly the same observations, the pooled temperature slope is negative, but the within-pair slope is positive. Pair centring removes fixed differences between drug and solvent combinations. The parent-bootstrap interval for the within-pair slope stays positive. This illustrates how the sampling mix can reverse an overall association. Unmeasured factors that change with temperature may still affect the estimate, so the result remains a conditional association."
+  },
+  "error-bands": {
+    "time": "0:40",
+    "body": "This radar uses raw row MAE, so its direction differs from the earlier performance radar: closer to the centre is better. Both models struggle most in the extremely low-solubility band. For the blend, average overprediction is about two point two five log units across twenty-three records. The input features omit crystal form, packing and lattice energy. These missing solid-state factors are a priority for future work."
   },
   "studio": {
-    "time": "1:40",
-    "body": "接下来展示真实的 SOLAR Studio。先打开单点预测，选择洛伐他汀、丙酮和温度 25，然后点 Run。报告记录的融合预测是 −0.7270，反变换约 0.1875 mol/L。界面能看到 75% 的 ExtraTrees 和 25% 的 TabPFN 分支，还能看到开发集有哪些实测点支持这个条件。口头提醒这属于模型估计，数据覆盖提示也不是置信区间。若现场推理较慢，可直接播放原项目录屏。点击右侧章节可跳到单点预测、49 种溶剂排序或批量 CSV，按课堂时间选择要展示的片段。"
+    "time": "2:29",
+    "body": "We now show the complete two-minute demonstration. The example predicts lovastatin in acetone at twenty-five degrees. The recorded output is approximately zero point one eight seven five moles per litre. The video demonstrates point prediction, model comparison, solvent screening and batch input. I will pause the narration while it plays."
+  },
+  "application-check": {
+    "time": "0:35",
+    "body": "The saved interface checks show agreement between API and offline predictions. Curve and single-point outputs also agree within a small numerical tolerance. The timing dots are five sequential warm requests on the recorded MPS device, averaging about one point seven seconds. They describe that hardware and setup; they do not guarantee the same speed on every computer."
   },
   "conclusion": {
-    "time": "0:40",
-    "body": "最后回到开场的问题。我们用母体隔离的验证回答未见结构上的泛化，用分子交互、母体等权和异质融合把开发集母体 MAE 做到 0.6668，再用 SOLAR-H、SHAP、组内温度分析和交互系统解释与复核。报告的下一步包括加入固态和三维信息、用主动学习补足稀疏条件，以及在受控实验中做外部验证。"
+    "time": "0:30",
+    "body": "To conclude, parent-disjoint evaluation makes the prediction task meaningful. Rich interactions, parent weighting and heterogeneous fusion improve the reported development results. The application makes those predictions accessible, while the error analysis identifies clear limits. The next priorities are solid-state information and controlled external validation. Thank you. We welcome your questions."
   },
-  "thanks": {
-    "time": "0:10",
-    "body": "谢谢大家，欢迎提问。需要补充时，打开 Q&A 备用页。"
+  "backup-models": {
+    "time": "Q&A",
+    "body": "Reference page only. Do not include in the timed presentation."
+  },
+  "backup-details": {
+    "time": "Q&A",
+    "body": "Reference page only. Do not include in the timed presentation."
   }
 };

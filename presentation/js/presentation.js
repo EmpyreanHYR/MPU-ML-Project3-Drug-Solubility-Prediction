@@ -3,7 +3,6 @@ const slides = [...document.querySelectorAll('.slide')];
 const mainCount = slides.filter(slide => !slide.classList.contains('backup')).length;
 const contents = document.querySelector('#contents-dialog');
 const zoom = document.querySelector('#zoom-dialog');
-const evidence = document.querySelector('#evidence-dialog');
 const video = document.querySelector('#demo-video');
 const playDemo = document.querySelector('#play-demo');
 const playbackMessage = document.querySelector('#demo-playback-message');
@@ -105,63 +104,6 @@ slides.forEach((slide, index) => {
   contentsList.append(button);
 });
 
-const selected = new Set(['fusion', 'dual', 'randomforest', 'tabpfn', 'rich', 'solar', 'basic', 'ridge']);
-const chart = document.querySelector('#comparison-chart');
-const resultsTable = document.querySelector('#full-results tbody');
-for (const row of SOLAR_BENCHMARK) {
-  const winner = row.id === 'fusion';
-  const tableRow = document.createElement('tr');
-  if (winner) tableRow.className = 'is-winner';
-  const nameCell = document.createElement('th');
-  nameCell.scope = 'row';
-  nameCell.textContent = row.name;
-  tableRow.append(nameCell);
-  for (const value of row.values) {
-    const cell = document.createElement('td');
-    cell.textContent = value;
-    tableRow.append(cell);
-  }
-  resultsTable.append(tableRow);
-
-  if (!selected.has(row.id)) continue;
-  chart.append(makeBar(row.id === 'rich' ? 'Rich ExtraTrees' : row.name, row.values[0], winner));
-}
-
-function makeBar(name, score, winner) {
-  const barRow = document.createElement('div');
-  barRow.className = 'bar-row' + (winner ? ' is-winner' : '');
-  const label = document.createElement('span');
-  label.textContent = name;
-  const track = document.createElement('div');
-  track.className = 'bar-track';
-  track.setAttribute('aria-hidden', 'true');
-  const fill = document.createElement('span');
-  fill.style.width = Number(score) * 100 + '%';
-  track.append(fill);
-  const value = document.createElement('strong');
-  value.textContent = score;
-  barRow.append(label, track, value);
-  return barRow;
-}
-
-const ablationSelect = document.querySelector('#ablation-series');
-const ablationChart = document.querySelector('#ablation-chart');
-function showAblation() {
-  const rows = ablationSelect.value === 'stages'
-    ? ['basic', 'rich', 'fusion'].map(id => {
-        const row = SOLAR_BENCHMARK.find(model => model.id === id);
-        return [row.name, row.values[0], id === 'fusion'];
-      })
-    : SOLAR_WEIGHT_SENSITIVITY.map(row => [
-        'TabPFN weight ' + row.weight.toFixed(2),
-        row.mae.toFixed(4),
-        row.mae === Math.min(...SOLAR_WEIGHT_SENSITIVITY.map(item => item.mae))
-      ]);
-  ablationChart.replaceChildren(...rows.map(row => makeBar(...row)));
-}
-ablationSelect.onchange = showAblation;
-showAblation();
-
 function showFigure(link) {
   const image = document.querySelector('#zoom-image');
   const caption = link.dataset.caption || link.closest('figure')?.querySelector('figcaption')?.textContent || 'Report figure';
@@ -206,10 +148,12 @@ document.addEventListener('fullscreenchange', () => {
 
 previous.onclick = () => step(-1);
 next.onclick = () => step(1);
-document.querySelector('#print-button').onclick = () => window.print();
+document.querySelector('#print-button').onclick = () => {
+  document.querySelectorAll('dialog[open]').forEach(dialog => dialog.close());
+  window.print();
+};
 fullscreen.onclick = toggleFullscreen;
 document.querySelector('#contents-button').onclick = () => contents.showModal();
-document.querySelector('#ablation-evidence').onclick = () => evidence.showModal();
 document.querySelector('#open-studio').onclick = () => video.pause();
 function playRecording(start) {
   if (start !== undefined) video.currentTime = start;
@@ -260,7 +204,7 @@ video.addEventListener('error', () => {
 document.addEventListener('keydown', event => {
   if (event.ctrlKey || event.metaKey || event.altKey || document.querySelector('dialog[open]')) return;
   const { key, target } = event;
-  if (target.closest('input, textarea, select, video, [contenteditable="true"]')) return;
+  if (target.closest('input, textarea, select, video, .datum, [contenteditable="true"]')) return;
   if (key === ' ' && target.closest('button,a')) return;
   const actions = {
     ArrowLeft: () => step(-1),
