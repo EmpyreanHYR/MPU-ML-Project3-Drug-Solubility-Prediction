@@ -4,6 +4,12 @@
 
 完整报告：[Assignment_Report_v2/Assignment-main.pdf](Assignment_Report_v2/Assignment-main.pdf)（[说明](Assignment_Report_v2/README.md)） · 英文手稿：[Assignment_Report_v2_en/](Assignment_Report_v2_en/) · 初版报告：[Assignment_Report/Assignment-main.pdf](Assignment_Report/Assignment-main.pdf) · 结果明细：[output/README.md](output/README.md) · 模型权重：[models/README.md](models/README.md)
 
+## 项目汇报
+
+[**打开 HTML 汇报**](https://empyreanhyr.github.io/MPU-ML-Project3-Drug-Solubility-Prediction/presentation/) · [汇报文件与离线使用说明](presentation/README.md)
+
+包含 13 页英文主幻灯片、中文讲稿、答辩备用页和完整双语系统录屏。在线汇报由 GitHub Pages 发布。实时预测可在本机启动 SOLAR Studio 后从第 11 页打开。
+
 ## 亮点速览
 
 - **最优泛化精度**：主模型 ExtraTrees--TabPFN 在 128 个未见母体上取得母体等权 MAE **0.6668**、逐行 MAE **0.6510**、RMSE **0.8842**、$R^2$ **0.5234**，较基础树基线误差降低 **8.54%**（配对 Bootstrap 95% 置信区间 $[-0.1219, -0.0082]$）。

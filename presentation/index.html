@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#081426">
+  <title>COMP6133 · Drug Solubility Prediction</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/editorial.css">
+  <script src="js/benchmark.js" defer></script>
+  <script src="notes/speaker-notes.js" defer></script>
+  <script src="js/presentation.js" defer></script>
+</head>
+<body>
+  <div class="viewport">
+    <main class="deck" id="deck" aria-label="COMP6133 Drug Solubility Prediction presentation">
+      <header class="masthead"><a href="#opening" data-jump="opening">SOLAR<span>COMP6133 · DRUG SOLUBILITY</span></a><nav aria-label="Presentation controls"><button type="button" id="contents-button">Contents</button><button type="button" id="print-button">Print PDF</button><button type="button" id="fullscreen-button">Full screen</button></nav></header>
+      <section class="slide cover-slide" id="opening" data-title="Research overview" data-source="V2 title &amp; abstract, pp. 1, 3 · nested-CV result" data-report-page="1">
+
+        <div class="cover">
+  <div class="cover-main">
+    <p class="kicker">Macau Polytechnic University · COMP6133</p>
+    <h1>Drug Solubility Prediction<br><em>for Unseen Drug Parents</em></h1>
+    <p class="subtitle">Physics-Guided Decomposition and<br>Heterogeneous Ensemble Learning</p>
+    <p class="cover-members">Yaorong Huang · Chunshen Yu · Jiayun Song · Haoyang He</p>
+    <p class="cover-course">Final Major Group Project</p>
+  </div>
+  <aside class="cover-evidence">
+    <span class="eyebrow">ExtraTrees–TabPFN</span>
+    <strong>0.6668</strong>
+    <span class="cover-quantity">Parent-weighted MAE</span>
+    <p>128 development parents<br>Parent-disjoint outer folds</p>
+  </aside>
+</div>
+      </section>
+      <section class="slide" id="problem" data-title="Predicting solubility across conditions" data-source="V2 §§1.1–1.2, 3.1, pp. 3–4, 6–7 · frozen CSV policy" data-report-page="6" hidden>
+        <p class="eyebrow">Background & problem definition</p>
+        <h2>Predicting solubility across conditions</h2>
+        <div class="split figure-text">
+          <div class="visual-panel">
+            <p class="eyebrow">Regression task</p>
+            <img class="equation eq-task" src="assets/math/task.svg" alt="Predicted log molar solubility as a function of drug, solvent and temperature.">
+            <p>Drug SMILES, solvent SMILES and temperature enter the model. The output is log molar solubility.</p>
+            <p class="legend">V2 labels temperature in °C. The CSV unit lacks independent verification.</p>
+          </div>
+          <div class="talk-points">
+            <p class="lead">Predict solubility to prioritise solvent screening and crystallisation experiments.</p>
+            <ul class="tight"><li><b>Solvent:</b> the same drug can dissolve differently in different solvents.</li><li><b>Temperature:</b> solubility changes with operating conditions.</li><li><b>New drugs:</b> evaluation holds out entire standardised drug parents.</li></ul>
+          </div>
+        </div>
+      </section>
+      <section class="slide" id="data" data-title="Sparse coverage and uneven sampling" data-source="V2 §§3.2–3.4, pp. 7–8 · frozen data audit" data-report-page="7" hidden>
+        <p class="eyebrow">Dataset & exploratory analysis</p>
+        <h2>Sparse coverage and uneven sampling</h2>
+        <div class="split dataset">
+  <figure class="figure">
+    <a class="zoom" href="assets/figures/data-overview.webp"><img src="assets/figures/data-overview.webp" alt="V2 data overview: observed drug–solvent pairs, development target histogram, temperature–solubility density and sampling by parent rank."></a>
+    <figcaption>V2 Fig. 1 · Dataset coverage, target and parent sampling. Panel B is development-only.</figcaption>
+  </figure>
+  <div class="data-panel">
+    <div class="stats four"><div><b>1,904</b><span>experimental records</span></div><div><b>49</b><span>solvents</span></div><div><b>186</b><span>drug names</span></div><div><b>168</b><span>canonical structures</span></div></div>
+    <ul class="tight">
+      <li><b>161</b> drug parents after grouping. <b>646</b> observed pairs, <b>92.15%</b> of the possible grid empty.</li>
+      <li>Top <b>30</b> parents account for <b>56.6%</b> of records. <b>74</b> parents have just <b>1–5</b> rows each.</li>
+      <li><b>86</b> same-condition conflict groups contain <b>205</b> records.</li>
+    </ul>
+    <p class="range">Temperature <b>−59.5 to 130.0</b> (CSV scale)<br>Target <b>−6.2343 to 2.2168</b> (log₁₀ molar solubility)</p>
+  </div>
+</div>
+      </section>
+      <section class="slide" id="protocol" data-title="Keep every drug parent in one split" data-source="V2 §3.5, pp. 8–9 · split manifest and TabPFN nested protocol" data-report-page="8" hidden>
+        <p class="eyebrow">Data processing & validation</p>
+        <h2>Keep every drug parent in one split</h2>
+        <div class="split figure-text">
+          <div class="pipeline pipeline-vertical" aria-label="Processing and evaluation flow">
+            <span>Read the raw CSV</span><i></i><span>Standardise molecules with RDKit</span><i></i><span>Group by ChargeParent</span><i></i><span>Generate descriptors</span><i></i><span>Run grouped nested CV</span><i></i><span>Evaluate held-out parents</span>
+          </div>
+          <div class="talk-points">
+            <p>RDKit removes counterions, standardises charge and strips stereo labels for grouping. The model uses the supplied structures.</p>
+            <p class="branch-label">Frozen split · <b>161 parents</b></p>
+            <h3>Development</h3><p><b>128 parents · 1,507 rows.</b> Five outer folds estimate generalisation and three inner folds tune the model. Seeds: 2026, 17, 42.</p>
+            <h3>Independent holdout</h3><p><b>33 parents · 397 rows.</b> The main results come from the development outer folds.</p>
+          </div>
+        </div>
+      </section>
+      <section class="slide" id="methods" data-title="Two routes share the evaluation protocol" data-source="V2 §§3.6, 5.2, 6.1, pp. 9, 12–13, 15–16 · original Fig. 2" data-report-page="9" hidden>
+        <p class="eyebrow">Overall methodology & baselines</p>
+        <h2>Two routes share the evaluation protocol</h2>
+        <div class="split figure-text">
+          <figure class="figure methods-figure"><a class="zoom" href="assets/figures/method_workflows.webp"><img src="assets/figures/method_workflows.webp" alt="V2 parallel model workflows for SOLAR-H and the ExtraTrees–TabPFN blend."></a><figcaption>V2 Fig. 2 · Parallel modelling routes evaluated on unseen drug parents.</figcaption></figure>
+          <div class="talk-points">
+            <h3>SOLAR-H</h3><p>Separate the structural baseline from the temperature response.</p>
+            <h3>ExtraTrees–TabPFN</h3><p>Learn from explicit pair interactions and blend predictions.</p>
+            <h3>Basic ExtraTrees</h3><p>Compare against a <b>23-input</b> tree baseline with 11 descriptors per molecule and temperature.</p>
+          </div>
+        </div>
+      </section>
+      <section class="slide" id="fusion" data-title="Represent interactions, balance parents, blend models" data-source="V2 §§5.2–5.7, pp. 12–15 · tree screening and deployed-tree analysis" data-report-page="13" hidden>
+        <p class="eyebrow">Model improvement</p>
+        <h2>Represent interactions, balance parents, blend models</h2>
+        <div class="split figure-text">
+          <div class="visual-panel formula-stack">
+            <div><h3>Molecular interactions</h3><img class="equation" src="assets/math/features.svg" alt="Drug and solvent descriptors, temperature, products and differences span 869 columns."></div>
+            <div><h3>Parent-balanced training</h3><img class="equation" src="assets/math/weight.svg" alt="Row weights are proportional to the inverse parent count when q equals one."></div>
+            <div><h3>Convex blend</h3><img class="equation" src="assets/math/blend.svg" alt="ExtraTrees and TabPFN predictions are combined with complementary weights."></div>
+          </div>
+          <div class="talk-points">
+            <h3>Represent the molecule pair</h3><p>Use <b>217 descriptors per molecule</b>, raw temperature and explicit interactions. The explained deployed tree retains <b>665 of 869</b> columns after preprocessing.</p>
+            <h3>Give parents equal total weight</h3><p>Parent MAE fell from <b>0.6985 to 0.6760</b> when weighting was enabled in three-fold screening.</p>
+            <h3>Learn the blend inside each outer fold</h3><p>Choose non-negative weights using inner-fold predictions. The deployed ExtraTrees–TabPFN example uses <b>75% / 25%</b>.</p>
+          </div>
+        </div>
+      </section>
+      <section class="slide" id="solar" data-title="Separate the structural baseline from temperature" data-source="V2 §§4.2–4.5 and 6.2, pp. 10–12, 16 · results.solar_h" data-report-page="10" hidden>
+        <p class="eyebrow">Physics-guided SOLAR-H</p>
+        <h2>Separate the structural baseline from temperature</h2>
+        <div class="split figure-text solar">
+  <div>
+    <figure class="figure"><a class="zoom" href="assets/figures/solar_ablation.webp"><img src="assets/figures/solar_ablation.webp" alt="SOLAR-H ablation changing row weights, interaction terms, temperature or fixed gain."></a><figcaption>V2 Fig. 3 · Development outer CV. Positive Δ parent MAE means greater error. Bars are paired 95% intervals.</figcaption></figure>
+    <div class="equation-pair"><img class="equation eq-solar" src="assets/math/solar.svg" alt="Predicted log solubility equals the structural baseline plus the temperature term."><img class="equation eq-standardize" src="assets/math/standardize.svg" alt="Tau equals temperature minus training median divided by training IQR. u is a bias plus z, with 45 entries."></div>
+  </div>
+  <div class="talk-points">
+    <p><b>z<sub>c</sub></b> contains 44 pair features from 11 descriptors per molecule, with training-fold scaling. <b>T<sub>0</sub></b> and <b>s<sub>T</sub></b> are the training median and IQR.</p>
+    <ol class="steps"><li>Centre within multi-temperature pairs and fit a weighted ridge slope.</li><li>Subtract the temperature term, then fit a weighted tree baseline.</li><li>Select gain γ ∈ {0, 0.1, 0.3, 1.0} in inner CV.</li></ol>
+    <p class="callout">Fixed gain 1 increases parent MAE to <b>0.8150</b>.</p>
+  </div>
+</div>
+<div class="stats four results-strip"><div><b>0.7164</b><span>Parent MAE ↓</span></div><div><b>0.7520</b><span>Row MAE ↓</span></div><div><b>1.0016</b><span>RMSE ↓</span></div><div><b>0.3884</b><span>R² ↑</span></div></div>
+      </section>
+      <section class="slide" id="performance" data-title="The blend leads the reported development benchmark" data-source="V2 §6.2, pp. 16–17 · main table · paired-results.json: paired.basic" data-report-page="16" hidden>
+        <p class="eyebrow">Model comparison</p>
+        <h2>The blend leads the reported development benchmark</h2>
+        <p class="protocol-label">Development set · 128 unseen parents across 5 outer folds · 3 seeds · 1,507 rows</p>
+<div class="split performance">
+  <section class="benchmark-panel">
+    <div class="chart-title"><h3>Parent-weighted MAE ↓</h3><span>Log-solubility units</span></div>
+    <div id="comparison-chart" class="bar-chart" aria-label="Selected parent-weighted MAE results"></div>
+    <p class="legend">Selected models from the V2 benchmark. Bars start at zero.</p>
+  </section>
+  <aside class="result-summary">
+    <div class="hero-stat"><b>0.6668</b><span>Parent-weighted MAE</span></div>
+    <div class="stats three"><div><b>0.6510</b><span>Row MAE ↓</span></div><div><b>0.8842</b><span>RMSE ↓</span></div><div><b>0.5234</b><span>R² ↑</span></div></div>
+    <p><b>10.73%</b> lower parent MAE than basic ExtraTrees (0.7469). Paired 95% CI for blend minus basic: <b>[−0.1366, −0.0276]</b>.</p>
+    <div class="actions"><button type="button" data-jump="backup-models">Full model table</button><a class="button zoom" href="assets/figures/model_radar.webp" data-caption="V2 Fig. 4 · Development outer CV. Scores are normalised to [0,1], with error axes reversed.">V2 radar</a></div>
+  </aside>
+</div>
+      </section>
+      <section class="slide" id="ablation" data-title="Which changes reduce parent MAE?" data-source="V2 §§6.3–6.5, pp. 16–19 · Fig. 5 and paired-results.json" data-report-page="17" hidden>
+        <p class="eyebrow">Ablation & robustness</p>
+        <h2>Which changes reduce parent MAE?</h2>
+        <div class="split figure-text">
+          <div>
+            <div class="ablation-controls">
+              <label for="ablation-series">Comparison</label>
+              <select id="ablation-series"><option value="stages">Reported improvement stages</option><option value="weights">Fixed TabPFN blend weights</option></select>
+            </div>
+            <figure class="ablation-figure">
+              <div class="bar-chart" id="ablation-chart" aria-label="Parent-weighted MAE by comparison" aria-live="polite"></div>
+              <figcaption>Development outer CV · parent-weighted MAE in log-solubility units · lower is better. Bars start at zero.</figcaption>
+            </figure>
+          </div>
+          <div class="talk-points">
+            <h3>Richer features and parent weighting</h3>
+            <p>Parent MAE fell from <b>0.7469 to 0.6831</b>, an <b>8.54%</b> reduction versus basic ExtraTrees.</p>
+            <h3>Blend with TabPFN</h3>
+            <p>The adaptive blend reached <b>0.6668</b>. Across seeds, parent MAE ranged from <b>0.6635 to 0.6690</b>.</p>
+            <button type="button" id="ablation-evidence">View original evidence</button>
+          </div>
+        </div>
+      </section>
+      <section class="slide" id="interpretation" data-title="Structure dominates the tree, and pairing changes the slope" data-source="V2 §§6.4, 7.3–7.5, pp. 18–22 · deployed-tree SHAP and causal.json" data-report-page="19" hidden>
+        <p class="eyebrow">Interpretability & limitations</p>
+        <h2>Structure dominates the tree, and pairing changes the slope</h2>
+        <div class="split figure-text interpret">
+          <div class="figure-stack">
+            <figure class="figure"><a class="zoom" href="assets/figures/tree-shap.webp"><img src="assets/figures/tree-shap.webp" alt="V2 TreeSHAP attribution for drug descriptors and pair interactions."></a><figcaption>V2 Fig. 6A · Deployed tree, development sample · log₁₀ units.</figcaption></figure>
+            <figure class="figure"><a class="zoom" href="assets/figures/temperature_associations.webp"><img src="assets/figures/temperature_associations.webp" alt="V2 pooled and within-pair temperature association with uncertainty intervals."></a><figcaption>V2 Fig. 8 · Same 157 development pairs · log₁₀ per CSV temperature unit.</figcaption></figure>
+          </div>
+          <div class="talk-points">
+            <h3>TreeSHAP attribution</h3><p>Drug descriptors <b>0.466</b> · Pair interactions <b>0.432</b>.</p>
+            <h3>Observed temperature association</h3><p>Pooled <b>−0.00746</b> · Within pair <b>+0.01538</b><br>Parent-bootstrap 95% CI <b>[0.01236, 0.01902]</b>.</p>
+            <div class="risk"><strong>Very low solubility</strong><span>For y ≤ −4, the blend overpredicts by <b>+2.250</b> log units on average across <b>23 rows</b>. The 2D features omit crystal packing and lattice energy.</span></div>
+          </div>
+        </div>
+      </section>
+      <section class="slide" id="studio" data-title="SOLAR Studio in action" data-source="V2 §8, pp. 23–24 · app check · project video and Studio v5" data-report-page="23" hidden>
+        <p class="eyebrow">SOLAR Studio application</p>
+        <h2>SOLAR Studio in action</h2>
+        <div class="split application">
+          <figure class="figure">
+            <div class="studio-player">
+              <video id="demo-video" controls playsinline preload="none" poster="assets/screenshots/studio-point.jpg" src="assets/video/SOLAR_Studio_Demo_Bilingual.mp4" aria-label="Full bilingual SOLAR Studio recording">
+                <a href="assets/video/SOLAR_Studio_Demo_Bilingual.mp4">Open the SOLAR Studio recording</a>
+              </video>
+              <button id="play-demo" class="primary" type="button"><span aria-hidden="true">▶</span> Play demo</button>
+              <img class="print-demo-poster" src="assets/screenshots/studio-point.jpg" alt="SOLAR Studio point prediction demonstration frame.">
+            </div>
+            <figcaption>Full SOLAR Studio v5 recording · bilingual · 1:59.</figcaption>
+            <p id="demo-playback-message" class="legend" role="status" hidden><a href="assets/video/SOLAR_Studio_Demo_Bilingual.mp4" target="_blank" rel="noopener">Open the local video file</a> if playback fails.</p>
+          </figure>
+          <div class="application-tools">
+            <div class="demo-results">
+              <h3>Recorded prediction</h3>
+              <p>Lovastatin in acetone · 25 °C</p>
+              <div class="stats two">
+                <div><b>−0.7270</b><span>Predicted log₁₀ S</span></div>
+                <div><b>0.1875</b><span>Concentration, mol/L</span></div>
+              </div>
+            </div>
+            <div class="recording-chapters">
+              <h3>Video chapters</h3>
+              <div class="studio-links" aria-label="Jump to a chapter in the recording">
+                <button type="button" data-start="0">Introduction <span>0:00</span></button>
+                <button type="button" data-start="6.726">Point prediction <span>0:07</span></button>
+                <button type="button" data-start="40.004">Model comparison <span>0:40</span></button>
+                <button type="button" data-start="66.718">Solvent screening <span>1:07</span></button>
+                <button type="button" data-start="92.367">Ablation &amp; evidence <span>1:32</span></button>
+                <button type="button" data-start="109.616">Batch inference <span>1:50</span></button>
+              </div>
+              <p class="legend">Select a chapter to play it here.</p>
+              <a id="open-studio" class="button primary" href="http://127.0.0.1:8502/" target="_blank" rel="noopener" title="Start SOLAR Studio locally to use live prediction">Open Local SOLAR Studio</a>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="slide" id="conclusion" data-title="Parent-disjoint evaluation is the basis for deployment" data-source="V2 §§9.1–9.4, pp. 25–26 · main development results" data-report-page="25" hidden>
+        <p class="eyebrow">Conclusion & future work</p>
+        <h2>Parent-disjoint evaluation is the basis for deployment</h2>
+        <div class="two conclusion">
+  <article><h3>What the project delivers</h3><ol class="steps">
+    <li><b>Unseen-parent evaluation.</b> Nested group splits keep each parent isolated.</li>
+    <li><b>Prediction.</b> The ExtraTrees–TabPFN blend achieves <strong>0.6668</strong> parent MAE in development nested CV.</li>
+    <li><b>Interpretation and deployment.</b> SOLAR-H, SHAP and temperature analysis inform the interactive Studio.</li>
+  </ol></article>
+  <article class="future card"><h3>Future work in V2</h3><ul class="tight"><li>Add 3D and solid-state information, including melting point.</li><li>Use active learning to guide measurements in poorly covered conditions.</li><li>Extend to co-solvents and verify predictions in controlled external experiments.</li></ul></article>
+</div>
+      </section>
+      <section class="slide closing-slide" id="thanks" data-title="Thank you · Questions &amp; Discussion" data-source="COMP6133 · Project report" data-report-page="1" hidden>
+        <h2>Thank you.</h2>
+        <p>Questions &amp; Discussion</p>
+        <div class="actions"><button class="primary" type="button" data-jump="backup-models">Open Q&amp;A pages</button></div>
+      </section>
+      <section class="slide backup" id="backup-models" data-title="Full 13-model comparison" data-source="V2 §6.2, p. 16 · full benchmark · lower errors and higher R² are better" data-report-page="16" hidden>
+        <p class="eyebrow">Backup A</p>
+        <h2>Full 13-model comparison</h2>
+        <p class="protocol-label">Development set · 128 parent groups · 5 outer × 3 inner folds · 3-seed means</p>
+<table id="full-results" class="metrics-table"><caption>V2 results table · MAE and RMSE in log-solubility units</caption><thead><tr><th scope="col">Model</th><th scope="col">Parent MAE ↓</th><th scope="col">Row MAE ↓</th><th scope="col">RMSE ↓</th><th scope="col">R² ↑</th></tr></thead><tbody></tbody></table>
+      </section>
+      <section class="slide backup" id="backup-holdout" data-title="Independent holdout: archived earlier models" data-source="V2 §3.5, p. 8 · output/final_metrics.csv and output/selection_frozen.json" data-report-page="8" hidden>
+        <p class="eyebrow">Backup B</p>
+        <h2>Independent holdout: archived earlier models</h2>
+        <p class="protocol-label">Frozen holdout · 33 drug parents · 397 rows · historical experiment</p>
+<table class="metrics-table holdout"><caption>Selected rows in the original historical holdout export</caption><thead><tr><th scope="col">Archived experiment</th><th scope="col">Parent MAE ↓</th><th scope="col">Row MAE ↓</th><th scope="col">RMSE ↓</th><th scope="col">R² ↑</th></tr></thead><tbody>
+<tr><th scope="row">ExtraTrees_base</th><td>0.7240</td><td>0.7952</td><td>1.0560</td><td>0.3281</td></tr>
+<tr><th scope="row">ExtraTrees_tune_05 <span class="muted">(frozen selection)</span></th><td>0.7362</td><td>0.8193</td><td>1.0680</td><td>0.3127</td></tr>
+</tbody></table>
+<div class="panel holdout-note"><h3>V2 blend holdout status</h3><p>The archived scores are from earlier model versions. A frozen holdout score for the V2 ExtraTrees–TabPFN blend is unavailable in the repository. The main comparison uses development out-of-fold predictions.</p></div>
+<div class="actions"><a class="button" href="assets/evidence/historical-holdout.csv" target="_blank" rel="noopener">Open historical metrics CSV</a></div>
+      </section>
+      <section class="slide backup" id="backup-details" data-title="Technical details and inner-fold choice" data-source="V2 §§3.5, 4.2–4.4, 5.3–5.6, pp. 8–14 · model implementation" data-report-page="10" hidden>
+        <p class="eyebrow">Backup C</p>
+        <h2>Technical details and inner-fold choice</h2>
+        <div class="two details-grid">
+<article class="panel"><h3>SOLAR-H</h3><img class="equation eq-solar" src="assets/math/solar.svg" alt="Structural baseline plus damped, structure-dependent temperature term."><img class="equation eq-standardize" src="assets/math/standardize.svg" alt="Tau is scaled by training median and IQR, with 45 augmented structure entries."><p>44 pair features in z<sub>c</sub>, temperature scaled by training median and IQR. Fit weighted ridge on centred pairs (λ = 1,000). Inner folds choose gain from {0, 0.1, 0.3, 1.0} and tree depth from {8, 16, unlimited}.</p></article>
+<article class="panel"><h3>Balanced risk and fusion</h3><img class="equation eq-risk" src="assets/math/risk.svg" alt="Parent MAE is the mean across parent groups of each group's mean absolute error."><p>Inverse-count weights give each parent equal influence on weighted variance reduction.</p><img class="equation eq-blend" src="assets/math/blend.svg" alt="Convex combination of ExtraTrees and TabPFN."><p>Inner OOF chooses α from {0, 0.25, 0.50, 0.75, 1.0} by parent MAE.</p></article>
+<article class="panel details-wide"><h3>Rich tree representation</h3><img class="equation eq-features" src="assets/math/features.svg" alt="869 columns include descriptors for the drug and solvent, temperature, products and absolute differences."><p>217 + 217 molecular descriptors, one temperature, and two 217-element interaction blocks.</p></article>
+</div>
+      </section>
+      <footer class="transport">
+        <a id="slide-source" href="assets/evidence/report-v2.pdf" target="_blank" rel="noopener">V2 report</a>
+        <div class="progress" id="progress" role="progressbar" aria-label="Slide progress" aria-valuemin="0" aria-valuemax="13" aria-valuenow="1"><span></span></div>
+        <div class="navigation"><button id="prev" type="button" aria-label="Previous slide">Previous</button><output id="page-count" aria-live="polite">01 / 13</output><button id="next" type="button" aria-label="Next slide">Next</button></div>
+      </footer>
+      <dialog id="contents-dialog"><div class="dialog-head"><h2>Contents</h2><form method="dialog"><button>Close</button></form></div><nav class="contents-grid" aria-label="Slide list" id="contents-list"></nav></dialog>
+      <dialog id="zoom-dialog" class="media-dialog"><div class="dialog-head"><p id="zoom-label">Source figure</p><form method="dialog"><button>Close</button></form></div><img id="zoom-image" alt=""></dialog>
+      <dialog id="evidence-dialog" class="media-dialog">
+        <div class="dialog-head"><h2>Paired comparisons and weight sensitivity</h2><form method="dialog"><button>Close</button></form></div>
+        <figure class="figure"><img src="assets/figures/prediction_diagnostics.webp" alt="V2 paired blend-minus-comparator differences and fixed blend-weight sensitivity."><figcaption>V2 Fig. 5 · Development outer CV · log-solubility MAE. Negative paired differences favour the blend.</figcaption></figure>
+        <ul class="tight evidence-list">
+          <li>Rich tree vs basic tree: <b>8.54%</b> reduction. Paired 95% CI <b>[−0.1219, −0.0082]</b>.</li>
+          <li>Single-branch residual signs differ on <b>15.0%</b> of predictions. Residual r = <b>0.909</b>.</li>
+          <li>At α = 0.25, 0.50 and 0.75, fixed blends beat both single branches by point estimate.</li>
+          <li>Paired intervals vs either single branch cross zero.</li>
+        </ul>
+      </dialog>
+    </main>
+  </div>
+</body>
+</html>

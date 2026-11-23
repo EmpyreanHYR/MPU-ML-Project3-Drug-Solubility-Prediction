@@ -1,0 +1,122 @@
+/* Academic palette for the fixed-stage deck. */
+:root {
+  color-scheme: light;
+  color: #142e3a;
+  background: #f7f8f5;
+  --navy: #f7f8f5;
+  --panel: #eff3f0;
+  --panel-light: #e5ede8;
+  --line: #cad8d3;
+  --blue: #006c67;
+  --teal: #007b70;
+  --muted: #4d6267;
+}
+button, .button { background: transparent; border-color: #b8cbc4; border-radius: 4px; }
+button:hover, .button:hover { background: #e0ede8; }
+:focus-visible { outline-color: #a66123; }
+.primary { color: white; background: #006c67; border-color: #006c67; }
+.primary:hover { color: white; background: #00544f; }
+.deck { background: var(--navy); border-color: var(--line); }
+.masthead { background: #f7f8f5; border-color: var(--line); }
+.masthead a { color: #142e3a; letter-spacing: -.025em; font-size: 23px; }
+.masthead a span { font-size: 12px; letter-spacing: .08em; }
+.transport { color: #edf7f5; background: #15343c; border-color: #15343c; }
+.transport button { color: #edf7f5; border-color: #54767a; }
+.transport button:hover { background: #31525a; }
+#slide-source { color: #deebe7; }
+.progress { background: #47686e; }
+.progress span { background: #7ecdb8; }
+.cover-slide { background-image: none; }
+.cover-main { padding-left: 0; background: none; }
+.cover h1 em { color: var(--accent, #00776d); }
+.cover-members, .lead, .midline, .subtitle, .protocol-label, .range,
+.cover-quantity, .stats span, .hero-stat span, .demo-results, .closing-slide p { color: #344e58; }
+.cover-evidence { border: 0; border-left: 1px solid var(--line); border-radius: 0; background: transparent; padding-left: 36px; }
+.cards article, .panel, .card, .formula-block, .benchmark-panel, .result-summary {
+  background: transparent;
+  border: 0;
+  border-top: 1px solid var(--line);
+  border-radius: 0;
+  padding-inline: 0;
+}
+.cards article, .panel, .card, .result-summary { padding-right: 16px; }
+.accent-card { box-shadow: none; border-top: 2px solid var(--teal) !important; }
+.branch-label, .pipeline span, .equation-pair, .callout, .technical-callout, .range {
+  color: #24454d;
+  background: #e9f0eb;
+  border-color: #9ebeb4;
+}
+.equation { filter: brightness(.22) saturate(.65); }
+.figure img { border-color: var(--line); border-radius: 3px; }
+.bar-track { background: #dbe7e1; border-radius: 0; }
+.bar-track span { background: #699694; }
+.bar-row.is-winner, .hero-stat b { color: #007468; }
+.risk { color: #623529; background: #f5e8de; border-color: #b76a3d; }
+.risk strong { color: #7d4127; }
+.metrics-table thead, .metrics-table tbody tr:nth-child(2n) { background: #eaf0ec; }
+.metrics-table .is-winner { color: #075b52; background: #dceee6; }
+dialog { background: #f9faf8; color: #142e3a; border-color: var(--line); }
+dialog::backdrop { background: #17343bbd; }
+.contents-grid button[aria-current="page"] { border-color: var(--teal); background: #dcece5; }
+
+.navigation button { width: auto; height: 32px; padding: 4px 12px; font-size: 15px; font-weight: 700; }
+#next { background: #e3f3ec; color: #143b39; border-color: #b8dcd0; }
+#next:hover:not(:disabled) { background: #bcdfd2; }
+.figure-text { grid-template-columns: minmax(0, 1.18fr) minmax(0, 1fr); gap: 34px; align-items: center; }
+.visual-panel { background: #e9f0eb; border: 1px solid var(--line); padding: 30px; }
+.talk-points h3 { margin: 0 0 7px; }
+.talk-points p { margin-bottom: 20px; }
+.talk-points p:last-child { margin-bottom: 0; }
+.talk-points > .lead { font-size: 25px; }
+#problem .visual-panel { min-height: 318px; display: grid; align-content: center; }
+#problem .eq-task { height: 39px; margin-block: 17px 22px; }
+#problem .talk-points li { margin-bottom: 14px; }
+.dataset { align-items: center; }
+.data-panel .stats b { font-size: 34px; }
+.data-panel .stats div { padding-block: 9px; }
+#methods .figure-text { grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); }
+#methods .talk-points p:not(:last-child) { margin-bottom: 24px; }
+.methods-figure img { height: auto; }
+.formula-stack { display: grid; gap: 18px; }
+.formula-stack > div + div { border-top: 1px solid var(--line); padding-top: 16px; }
+.formula-stack img { height: 38px; margin-bottom: 3px; }
+.pipeline-vertical { flex-direction: column; align-items: stretch; gap: 4px; }
+.pipeline-vertical span { min-height: 49px; padding: 8px 10px; font-size: 19px; }
+.pipeline-vertical i { align-self: center; width: 12px; transform: rotate(90deg); margin-block: 4px; }
+.solar .equation-pair { margin-top: 11px; margin-bottom: 0; }
+.solar .figure img { height: 205px; }
+.results-strip { margin-top: 19px; }
+.performance { align-items: center; }
+#comparison-chart { gap: 11px; }
+#comparison-chart .bar-row { grid-template-columns: 195px minmax(0, 1fr) 62px; font-size: 18px; }
+.result-summary .stats b { font-size: 28px; }
+.figure-stack { display: grid; gap: 12px; }
+.interpret .figure img { height: 185px; }
+.interpret .risk { grid-template-columns: 1fr; gap: 5px; }
+.interpret .talk-points > p { font-size: 20px; margin-bottom: 19px; }
+.ablation-controls { display: grid; justify-items: start; gap: 6px; margin: 0 0 12px; }
+.ablation-controls label { color: var(--muted); font-size: 15px; font-weight: 650; }
+.ablation-controls select { padding: 8px 12px; border: 1px solid #a5bbb3; border-radius: 4px; font-family: inherit; font-size: 16px; color: inherit; background: white; max-width: 100%; }
+.ablation-figure { margin: 0; }
+#ablation-chart { min-height: 246px; align-content: center; padding: 12px 0; border-block: 1px solid var(--line); }
+#ablation-chart .bar-row { grid-template-columns: 205px minmax(0, 1fr) 63px; padding-block: 6px; }
+#ablation-chart .bar-track { height: 17px; }
+.conclusion { gap: 32px; font-size: 23px; }
+.conclusion :is(ol, ul) li { margin-bottom: 14px; }
+.holdout :is(th,td) { padding-block: 13px; }
+.holdout-note { margin-block: 22px; }
+.details-grid { gap: 20px; }
+.details-grid .panel { padding-block: 16px; }
+.details-grid p { font-size: 20px; }
+.evidence-list { margin-top: 14px; }
+#evidence-dialog .figure img { max-height: min(40vh, 300px); }
+@media screen {
+  html, body, .viewport, .slide { overflow: clip; }
+  .slide:not(.cover-slide) {
+    display: flex;
+    flex-direction: column;
+    justify-content: safe center;
+    padding-block: 22px;
+  }
+  .slide:not(.cover-slide) > * { flex-shrink: 0; }
+}

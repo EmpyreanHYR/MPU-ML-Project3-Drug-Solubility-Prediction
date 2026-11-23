@@ -10,6 +10,12 @@
 !/scripts/
 !/tests/
 !/webapp/
+!/presentation/
+!/.github/
+/.github/*
+!/.github/workflows/
+/.github/workflows/*
+!/.github/workflows/publish-presentation.yml
 !/plotting/
 !/tools/
 !/configs/

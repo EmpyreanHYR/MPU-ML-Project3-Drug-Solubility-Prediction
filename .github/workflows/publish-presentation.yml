@@ -1,0 +1,43 @@
+name: Publish HTML presentation
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'presentation/**'
+      - '.github/workflows/publish-presentation.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}presentation/
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: presentation
+          persist-credentials: false
+      - uses: actions/configure-pages@v5
+      - name: Collect presentation files
+        run: |
+          mkdir -p _site/presentation
+          cp presentation/index.html _site/presentation/
+          cp -R presentation/assets presentation/css presentation/js presentation/notes _site/presentation/
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - name: Deploy presentation
+        id: deployment
+        uses: actions/deploy-pages@v5
