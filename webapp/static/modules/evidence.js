@@ -77,7 +77,7 @@
               <span class="badge good">128 Unseen Parents · 1,507 Rows · 5×3 Nested CV (3-Seed Mean)</span>
             </div>
             <div class="table-scroll">
-              <table>
+              <table class="data-table">
                 <thead>
                   <tr>
                     <th>Stage / 阶段</th>
@@ -92,12 +92,12 @@
                 <tbody>
                   ${REPORT_EVIDENCE.ablationChain.map(row => `<tr class="${row.highlight ? 'highlight' : ''}">
                     <td><strong>${esc(row.stage)}</strong></td>
-                    <td><strong>${esc(row.name)}</strong><br><small style="color:#64748b;font-size:9.5px">${esc(row.features)}</small></td>
-                    <td class="${row.highlight ? 'cell-best' : ''}">${fmt(row.parent_mae, 4)}</td>
-                    <td class="${row.highlight ? 'cell-best' : ''}">${fmt(row.mae, 4)}</td>
-                    <td class="${row.highlight ? 'cell-best' : ''}">${fmt(row.rmse, 4)}</td>
-                    <td class="${row.highlight ? 'cell-best' : ''}">${fmt(row.r2, 4)}</td>
-                    <td><strong>${esc(row.delta_vs_basic)}</strong><br><small style="font-size:9px;color:#475569">${esc(row.ci_vs_basic)}</small></td>
+                    <td><strong>${esc(row.name)}</strong><span class="cell-zh">${esc(row.features)}</span></td>
+                    <td class="num ${row.highlight ? 'cell-best' : ''}">${fmt(row.parent_mae, 4)}</td>
+                    <td class="num ${row.highlight ? 'cell-best' : ''}">${fmt(row.mae, 4)}</td>
+                    <td class="num ${row.highlight ? 'cell-best' : ''}">${fmt(row.rmse, 4)}</td>
+                    <td class="num ${row.highlight ? 'cell-best' : ''}">${fmt(row.r2, 4)}</td>
+                    <td class="num"><strong>${esc(row.delta_vs_basic)}</strong><span class="cell-zh">${esc(row.ci_vs_basic)}</span></td>
                   </tr>`).join('')}
                 </tbody>
               </table>
@@ -192,7 +192,7 @@
                   </tr>
                   <tr class="highlight">
                     <td><strong>Within-Pair Fixed Effects (组合内固定效应)</strong></td>
-                    <td class="cell-best">+0.01538 ★</td>
+                    <td class="cell-best">+0.01538</td>
                     <td><strong>${ct.within_ci}</strong></td>
                     <td>True endothermic dissolution: +3.6% molar solubility per +1°C (Robust R² = 0.540) / 吸热促溶真实正斜率</td>
                   </tr>
@@ -285,7 +285,7 @@
                 <tbody>
                   ${models.map((m, idx) => `<tr class="${m.id === state.defaultModel ? 'highlight' : ''}">
                     <td>${idx + 1}</td>
-                    <td><strong>${esc(short(m.id))}</strong>${m.id === state.defaultModel ? ' <span class="badge good">Main ★</span>' : ''}</td>
+                    <td><strong>${esc(short(m.id))}</strong>${m.id === state.defaultModel ? ' <span class="badge good">Main</span>' : ''}</td>
                     ${['parent_macro_MAE', 'MAE', 'RMSE', 'R2', 'inference_ms_per_row'].map(k => {
                       const best = k === 'R2' ? Math.max(...models.map(x => x.metrics[k])) : Math.min(...models.map(x => x.metrics[k]));
                       return `<td class="${m.metrics[k] === best ? 'cell-best' : ''}">${fmt(m.metrics[k], k === 'inference_ms_per_row' ? 2 : 4)}</td>`;
@@ -301,7 +301,7 @@
           <article class="card result-card">
             <div class="chart-header">
               <h3>Dataset Standardization &amp; Strict Parent-Grouped Split (7% Rubric) / 数据清洗标准化与零泄漏母体划分</h3>
-              <span class="badge good">Parent Overlap = ${d.protocol.parent_overlap} (Zero Leakage ✓)</span>
+              <span class="badge good">Parent Overlap = ${d.protocol.parent_overlap} (Zero Leakage)</span>
             </div>
             <div class="split-bar"><span style="width:${s.development_rows / s.total_rows * 100}%"></span><span style="flex:1"></span></div>
             <div class="split-legend">

@@ -54,7 +54,7 @@
 
     if (t < tMinCat || t > tMaxCat) {
       box.className = 'ood-warning-box ood-critical';
-      box.innerHTML = `<strong>⚠ Out-of-Distribution (OOD) Warning / 超出训练集分布警告</strong>` +
+      box.innerHTML = `<strong>Out-of-Distribution (OOD) Warning / 超出训练集分布警告</strong>` +
         `<span>T = ${t}°C is outside the development training domain [${tMinCat}°C, ${tMaxCat}°C]. Extrapolation confidence is very low; predictions are for reference only.<br>该温度超出模型开发训练集范围 [${tMinCat}°C, ${tMaxCat}°C]，外推预测置信度极低，结果仅供参考。</span>`;
       box.hidden = false;
       return;
@@ -99,7 +99,7 @@
       `<span class="mol-prop-chip">MW <strong>${fmt(pr.MolWt, 1)}</strong></span>` +
       `<span class="mol-prop-chip">cLogP <strong>${fmt(pr.MolLogP, 2)}</strong></span>` +
       `<span class="mol-prop-chip">TPSA <strong>${fmt(pr.TPSA, 1)}</strong></span>` +
-      (side === 'drug' ? `<span class="mol-prop-chip ${p.lipinski_violations === 0 ? 'ro5-ok' : 'ro5-warn'}">${p.lipinski_violations === 0 ? 'Lipinski ✓' : 'Ro5: ' + p.lipinski_violations}</span>` : '');
+      (side === 'drug' ? `<span class="mol-prop-chip ${p.lipinski_violations === 0 ? 'ro5-ok' : 'ro5-warn'}">${p.lipinski_violations === 0 ? 'Lipinski OK' : 'Ro5: ' + p.lipinski_violations}</span>` : '');
   }
 
   function updatePairMatch(dp, sp) {
@@ -251,7 +251,7 @@
       <div class="pending-run-body">
         <div class="pending-run-header">
           <span class="badge warn">Manual Run Mode / 手动触发计算模式</span>
-          <h3>Awaiting Execution / 等待点击运行计算</h3>
+          <h3>Awaiting Execution<span class="heading-zh">等待点击运行计算</span></h3>
         </div>
         <p class="pending-desc-en">${modeDescEn}</p>
         <p class="pending-desc-zh">${modeDescZh}</p>
@@ -262,7 +262,7 @@
           <span class="badge">T = ${esc(tempVal)} °C</span>
         </div>
         <div class="pending-run-actions">
-          <span class="pending-hint">👈 Click the <strong>${esc(runBtnText)}</strong> button in the left panel (or click right here) to start inference:</span>
+          <span class="pending-hint">Click <strong>${esc(runBtnText)}</strong> to start inference</span>
           <button type="button" class="button compact" id="pending-trigger-run">${icon('play')}<span>${esc(runBtnText)}</span></button>
         </div>
       </div>
@@ -315,7 +315,9 @@
     $('experiment-view').hidden = !isExperiment;
     $('insights-view').hidden = tab !== 'insights';
     $('batch-view').hidden = tab !== 'batch';
-    $('page-title').textContent = views[tab][0];
+    const [titleEn, ...titleZh] = String(views[tab][0]).split(' / ');
+    $('page-title').innerHTML = `<span class="crumb-en">${esc(titleEn)}</span>` +
+      (titleZh.length ? `<span class="crumb-zh">${esc(titleZh.join(' / '))}</span>` : '');
 
     if (isExperiment) {
       window.StudioLanguage.btn($('run-label'), views[tab][1]);
@@ -419,39 +421,53 @@
     </div>`;
   }
 
+  /* Divergent A/B bars: each metric gets one track, the winner extends left of
+     centre. A table tells you 0.6668 vs 0.7164; this tells you by how much, at
+     a glance, without reading a single number. */
   function metricsTable(a, b, idA, idB) {
     const mA = state.models?.find(m => m.id === idA || m.id === a?.model)?.metrics || a;
     const mB = state.models?.find(m => m.id === idB || m.id === b?.model)?.metrics || b;
     const rows = [
-      ['Parent Macro MAE ↓ (Primary / 首要母体指标)', 'parent_macro_MAE'],
-      ['Record MAE ↓ (逐行平均绝对误差)', 'MAE'],
-      ['Global RMSE ↓ (全局均方根误差)', 'RMSE'],
-      ['Explained Variance R² ↑ (决定系数)', 'R2'],
-      ['Training Fit Time (s) ↓ (训练耗时)', 'fit_seconds'],
-      ['Inference Latency (ms/row) ↓ (单行推理耗时)', 'inference_ms_per_row']
+      ['Parent Macro MAE ↓ (Primary / 首要母体指标)', 'parent_macro_MAE', 'mae'],
+      ['Record MAE ↓ (逐行平均绝对误差)', 'MAE', 'mae'],
+      ['Global RMSE ↓ (全局均方根误差)', 'RMSE', 'mae'],
+      ['Explained Variance R² ↑ (决定系数)', 'R2', 'r2'],
+      ['Training Fit Time (s) ↓ (训练耗时)', 'fit_seconds', 'ms'],
+      ['Inference Latency (ms/row) ↓ (单行推理耗时)', 'inference_ms_per_row', 'ms']
     ];
-    return `<div class="table-scroll">
-      <table>
-        <thead>
-          <tr>
-            <th>5×3 Nested Grouped CV (3-Seed Mean)</th>
-            <th>${esc(short(idA))}</th>
-            <th>${esc(short(idB))}</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${rows.map(([title, key]) => {
-            const vA = mA[key], vB = mB[key];
-            const aBetter = key === 'R2' ? vA > vB : vA < vB;
-            const bBetter = key === 'R2' ? vB > vA : vB < vA;
-            return `<tr>
-              <td>${title}</td>
-              <td class="${aBetter ? 'cell-best' : ''}">${fmt(vA, 4)}</td>
-              <td class="${bBetter ? 'cell-best' : ''}">${fmt(vB, 4)}</td>
-            </tr>`;
-          }).join('')}
-        </tbody>
-      </table>
+    const winsA = rows.filter(([, key, kind]) => {
+      const vA = Number(mA[key]), vB = Number(mB[key]);
+      return Number.isFinite(vA) && Number.isFinite(vB) && (kind === 'r2' ? vA > vB : vA < vB);
+    }).length;
+    return `<div class="ab-compare">
+      <div class="ab-compare-head">
+        <span class="ab-side ab-side-a">${esc(short(idA))}<b>${winsA}/${rows.length}</b></span>
+        <span class="ab-compare-mid">vs / 对比</span>
+        <span class="ab-side ab-side-b">${esc(short(idB))}<b>${rows.length - winsA}/${rows.length}</b></span>
+      </div>
+      <div class="ab-rows">
+        ${rows.map(([title, key, kind]) => {
+          const vA = Number(mA[key]), vB = Number(mB[key]);
+          if (!Number.isFinite(vA) || !Number.isFinite(vB)) {
+            return `<div class="ab-row"><span class="ab-row-label">${title}</span><span class="ab-row-na">n/a</span></div>`;
+          }
+          const aWins = kind === 'r2' ? vA > vB : vA < vB;
+          const diff = Math.abs(vA - vB) / Math.max(Math.abs(vA), Math.abs(vB)) * 100;
+          const span = Math.min(100, diff * 2.4);
+          return `<div class="ab-row${aWins ? ' is-a' : ' is-b'}">
+            <span class="ab-row-label">${title}</span>
+            <span class="ab-track">
+              <i class="ab-bar ab-bar-a" style="width:${aWins ? span : 0}%"></i>
+              <i class="ab-bar ab-bar-b" style="width:${aWins ? 0 : span}%"></i>
+            </span>
+            <span class="ab-vals">
+              <b class="ab-val-a">${fmt(vA, 4)}</b>
+              <span class="ab-delta">${aWins ? '−' : '+'}${fmt(diff, 1)}%</span>
+              <b class="ab-val-b">${fmt(vB, 4)}</b>
+            </span>
+          </div>`;
+        }).join('')}
+      </div>
     </div>`;
   }
 
@@ -592,7 +608,7 @@
         <div class="card result-card">
           <div class="chart-header">
             <h3>Predicted log₁₀ S vs Solvent Lipophilicity (cLogP) / 溶解度与溶剂疏水常数相关性</h3>
-            <span class="badge">${esc(label('drug', c.q.drug_id))} · T = ${c.q.temperature}°C · ${r.cached ? '⚡ Cache Hit' : fmt(r.elapsed_ms, 1) + ' ms'}</span>
+            <span class="badge">${esc(label('drug', c.q.drug_id))} · T = ${c.q.temperature}°C · ${r.cached ? 'Cache Hit' : fmt(r.elapsed_ms, 1) + ' ms'}</span>
           </div>
           ${chart([
             {x: items.filter(x => x.pair_rows === 0 && x.mol_logp != null).map(x => x.mol_logp), y: items.filter(x => x.pair_rows === 0 && x.mol_logp != null).map(x => x.log_solubility), pointLabels: items.filter(x => x.pair_rows === 0 && x.mol_logp != null).map(x => x.name), label: 'Unobserved prediction / 虚拟筛选预测', kind: 'dots', color: '#2d8b76'},
@@ -684,13 +700,13 @@
           ], {xLabel: 'Temperature T (°C) / 温度 T', yLabel: 'log₁₀ S (mol/L)', H: 215})
         : `<div class="journal-empty">No development observations exist for <strong>${esc(label('drug', q.drug_id))} × ${esc(label('solvent', q.solvent_id))}</strong> (Cold pair / Unseen parent extrapolation).<br>开发集中暂无该药物-溶剂组合的实测记录（属于冷启动组合或未见母体外推预测）。</div>`;
 
-      const latencyNote = r.cached ? `⚡ Cache Hit (${fmt(r.elapsed_ms, 2)} ms)` : `Latency: ${fmt(r.elapsed_ms, 1)} ms`;
+      const latencyNote = r.cached ? `Cache Hit (${fmt(r.elapsed_ms, 2)} ms)` : `Latency: ${fmt(r.elapsed_ms, 1)} ms`;
 
       html = `<div class="deck-split-grid">
         <div class="deck-split-col">
-          <div class="card result-card">
+          <div class="result-card">
             <div class="chart-header" style="flex-direction:row;justify-content:space-between;align-items:center">
-              <h3>Point Prediction &amp; Model Decomposition / 单点预测与模型分解</h3>
+              <h3>Point Prediction &amp; Model Decomposition<span class="heading-zh">单点预测与模型分解</span></h3>
               <div class="result-actions">
                 <button type="button" class="button outline compact" data-export="csv">${icon('download')}CSV</button>
                 <button type="button" class="button outline compact" data-export="report">${icon('file')}Report</button>
@@ -698,16 +714,16 @@
             </div>
             <div class="prediction-grid">
               ${valueCard('Predicted log₁₀ S / 对数摩尔溶解度', fmt(r.log_solubility, 4), 'log₁₀(S / mol·L⁻¹) · ' + short(q.model_id))}
-              ${valueCard('Molar Concentration S = 10ʸ / 物理摩尔浓度', r.concentration == null ? 'Out of range' : r.concentration.toPrecision(4) + ' mol/L', `T = ${q.temperature} °C · ${latencyNote}`, true)}
+              ${valueCard('Molar Concentration S = 10ʸ / 物理摩尔浓度', r.concentration == null ? 'Out of range' : r.concentration.toPrecision(4), `mol/L · T = ${q.temperature} °C · ${latencyNote}`, true)}
             </div>
             ${decompHtml}
             ${modelBenchHtml}
           </div>
         </div>
         <div class="deck-split-col">
-          <div class="card result-card">
+          <div class="card">
             <div class="chart-header" style="flex-direction:row;justify-content:space-between;align-items:center">
-              <h3>Applicability Domain &amp; Data Support / 适用域预警与开发集实测支撑</h3>
+              <h3>Applicability Domain &amp; Data Support<span class="heading-zh">适用域预警与开发集实测支撑</span></h3>
               <span class="badge">Development Split Only / 仅开发集</span>
             </div>
             ${e ? domainHTML(e) : ''}
@@ -768,6 +784,12 @@
           </div>
         </div>`;
       } else {
+        // flag a curve that does not react to temperature at all: it is a real
+        // model property worth showing, not something to paper over
+        const flatCurves = [r.curve_a, r.curve_b].filter(curve => {
+          const v = curve.lines[0].values;
+          return Math.max(...v) - Math.min(...v) < 1e-6;
+        });
         const series = [r.curve_a, r.curve_b].map((curve, i) => ({
           x: curve.temperatures,
           y: transform(curve.lines[0].values),
@@ -791,6 +813,12 @@
                 ${chartToolbar()}
               </div>
               ${chart(series, {yLabel: state.unit === 'raw' ? 'S = 10ʸ (mol/L)' : 'Predicted log₁₀ S', H: 250})}
+              ${flatCurves.length ? `<p class="flat-curve-note">
+                <strong>Temperature-insensitive model / 温度不敏感模型:</strong>
+                ${flatCurves.map(c => esc(short(c.model_id))).join('、')} outputs the same value across the whole range.
+                This is a property of the model, not the chart — its temperature term contributes nothing.
+                / 该模型在整个温度区间输出恒定值，说明其温度项未起作用。
+              </p>` : ''}
             </div>
           </div>
           <div class="deck-split-col">

@@ -75,9 +75,10 @@
     });
   }
 
-  function buildRadarSVG(selectedIds) {
-    const width = 490, height = 370;
-    const cx = 245, cy = 188, R = 128;
+  function buildRadarSVG(selectedIds, opts = {}) {
+    const focusAxis = opts.focusAxis;
+    const width = 560, height = 380;
+    const cx = 280, cy = 186, R = 118;
     const K = RADAR_AXES.length;
     const angles = Array.from({length: K}, (_, i) => -Math.PI / 2 + i * 2 * Math.PI / K);
 
@@ -107,10 +108,14 @@
       else if (i === 2) { anchor = 'start'; dyEn = 4; dyZh = 12; }
       else if (i === 3) { anchor = 'end'; dyEn = 4; dyZh = 12; }
       else if (i === 4) { anchor = 'end'; dyEn = -2; dyZh = 12; }
-      return `<text x="${lx.toFixed(1)}" y="${ly.toFixed(1)}" text-anchor="${anchor}">
-        <tspan x="${lx.toFixed(1)}" dy="${dyEn}" font-weight="600" font-size="10.5" fill="#1e293b">${axis.labelEn}</tspan>
-        <tspan x="${lx.toFixed(1)}" dy="${dyZh}" font-size="9.5" fill="#64748b">${axis.labelZh}</tspan>
-      </text>`;
+      const active = String(focusAxis) === String(i);
+      return `<g class="radar-axis-label${active ? ' is-focus' : ''}" data-axis="${i}">
+        <text x="${lx.toFixed(1)}" y="${ly.toFixed(1)}" text-anchor="${anchor}" style="cursor:pointer">
+          <tspan x="${lx.toFixed(1)}" dy="${dyEn}" font-weight="600" font-size="11" fill="${active ? 'var(--c-accent-strong)' : 'var(--c-text)'}">${axis.labelEn}</tspan>
+          <tspan x="${lx.toFixed(1)}" dy="${dyZh}" font-size="10" fill="${active ? 'var(--c-accent)' : 'var(--c-text-3)'}">${axis.labelZh}</tspan>
+        </text>
+        <circle cx="${(cx + (R + 8) * Math.cos(th)).toFixed(1)}" cy="${(cy + (R + 8) * Math.sin(th)).toFixed(1)}" r="4" class="radar-axis-handle" data-axis="${i}" style="cursor:pointer;fill:${active ? 'var(--c-accent)' : 'var(--c-line-strong)'}" />
+      </g>`;
     }).join('');
 
     const modelSvgGroups = selectedIds.map((id, mIdx) => {
@@ -141,6 +146,7 @@
       <g class="radar-grid">${gridPolys}${gridLabels}${spokes}</g>
       <g class="radar-axes">${axisLabels}</g>
       <g class="radar-models">${modelSvgGroups}</g>
+      ${focusAxis != null ? `<line class="radar-focus-spoke" x1="${cx}" y1="${cy}" x2="${(cx + R * Math.cos(angles[focusAxis])).toFixed(1)}" y2="${(cy + R * Math.sin(angles[focusAxis])).toFixed(1)}" stroke="var(--c-accent)" stroke-width="2" opacity="0.55" />` : ''}
       <circle cx="${cx}" cy="${cy}" r="2.5" fill="#94a3b8" />
     </svg>`;
   }
@@ -271,8 +277,19 @@
         cross.setAttribute('x1', cx); cross.setAttribute('x2', cx); cross.setAttribute('opacity', '0.65');
         hi.innerHTML = hits.map(h => `<circle cx="${X(h.p[0])}" cy="${Y(h.p[1])}" r="5" fill="none" stroke="${h.c}" stroke-width="2"/><circle cx="${X(h.p[0])}" cy="${Y(h.p[1])}" r="2.8" fill="${h.c}"/>`).join('');
         const title = hits[0].p[2] ? esc(hits[0].p[2]) : (identity ? `X = ${fmt(hits[0].p[0], 3)}` : `T = ${fmt(hits[0].p[0], 2)}`);
+        // two-line curves: show both series AND their live difference so the
+        // reader never has to subtract numbers in their head
+        // only line series that share the same unit may be subtracted; the raw
+        // observation dots are a different series and must be skipped
+        const lineHits = hits.filter(h => h.s.kind !== 'dots');
+        let deltaRow = '';
+        if (lineHits.length >= 2) {
+          const d = lineHits[1].p[1] - lineHits[0].p[1];
+          deltaRow = `<div class="tt-row tt-delta"><span>Δ (${esc(lineHits[1].s.label.split(' / ')[0])} − ${esc(lineHits[0].s.label.split(' / ')[0])})</span><strong>${d >= 0 ? '+' : ''}${fmt(d, 4)}</strong></div>`;
+        }
         tip.innerHTML = `<div class="tt-title">${title}</div>` +
-          hits.map(h => `<div class="tt-row"><span><i class="tt-dot" style="background:${h.c}"></i>${esc(h.s.label.split(' / ')[0])}</span><strong>${fmt(h.p[1], 4)}</strong></div>`).join('');
+          hits.map(h => `<div class="tt-row"><span><i class="tt-dot" style="background:${h.c}"></i>${esc(h.s.label.split(' / ')[0])}</span><strong>${fmt(h.p[1], 4)}</strong></div>`).join('') +
+          deltaRow;
         tip.hidden = false;
         const px = (e.clientX - rect.left) + 12, py = (e.clientY - rect.top) - 10;
         tip.style.left = Math.min(px, rect.width - tip.offsetWidth - 6) + 'px';
@@ -289,6 +306,10 @@
     }
     const allRanked = [...state.models].sort((a, b) => (a.metrics?.parent_macro_MAE || 99) - (b.metrics?.parent_macro_MAE || 99));
     const selectedModels = selectedIds.map(id => state.models.find(m => m.id === id)).filter(Boolean);
+    if (state.radarSort) {
+      const key = state.radarSort, dir = key === 'R2' ? -1 : 1;
+      selectedModels.sort((a, b) => (Number(a.metrics?.[key]) - Number(b.metrics?.[key])) * dir);
+    }
 
     const bestParent = Math.min(...selectedModels.map(m => m.metrics.parent_macro_MAE));
     const bestMAE = Math.min(...selectedModels.map(m => m.metrics.MAE));
@@ -315,11 +336,11 @@
           <tr>
             <th>#</th>
             <th>Model / 模型</th>
-            <th>Parent MAE ↓</th>
-            <th>Record MAE ↓</th>
-            <th>RMSE ↓</th>
-            <th>R² ↑</th>
-            <th>Speed</th>
+            <th class="sortable${state.radarSort === 'parent_macro_MAE' ? ' is-sorted' : ''}" data-sort-key="parent_macro_MAE" data-sort-dir="asc">Parent MAE ↓</th>
+            <th class="sortable${state.radarSort === 'MAE' ? ' is-sorted' : ''}" data-sort-key="MAE" data-sort-dir="asc">Record MAE ↓</th>
+            <th class="sortable${state.radarSort === 'RMSE' ? ' is-sorted' : ''}" data-sort-key="RMSE" data-sort-dir="asc">RMSE ↓</th>
+            <th class="sortable${state.radarSort === 'R2' ? ' is-sorted' : ''}" data-sort-key="R2" data-sort-dir="desc">R² ↑</th>
+            <th class="sortable${state.radarSort === 'inference_ms_per_row' ? ' is-sorted' : ''}" data-sort-key="inference_ms_per_row" data-sort-dir="asc">Speed</th>
           </tr>
         </thead>
         <tbody>
@@ -328,7 +349,7 @@
             const color = getModelColor(m.id, idx);
             const met = m.metrics;
             const spd = met.inference_ms_per_row < 0.01 ? (met.inference_ms_per_row * 1000).toFixed(1) + ' µs' : fmt(met.inference_ms_per_row, 2) + ' ms';
-            return `<tr>
+            return `<tr class="radar-matrix-row" data-model-id="${esc(m.id)}" title="Click to load this model as A / 点击载入为对照 A">
               <td><span class="badge ${rank === 1 ? 'good' : ''}">#${rank}</span></td>
               <td><span class="radar-chip-dot" style="background:${color};display:inline-block;margin-right:5px"></span><strong>${esc(short(m.id))}</strong></td>
               <td class="${met.parent_macro_MAE === bestParent ? 'cell-best' : ''}">${fmt(met.parent_macro_MAE, 4)}</td>
@@ -356,7 +377,16 @@
     const selectedIds = state.radarSelected || [state.defaultModel, state.comparator];
     const sortedModels = [...state.models].sort((a, b) => (a.metrics?.parent_macro_MAE || 99) - (b.metrics?.parent_macro_MAE || 99));
 
+    const focus = state.radarFocusAxis;
     return `<div class="card radar-comparison-card" id="radar-comparison-card">
+      <div class="radar-focus-bar">
+        <span class="radar-bar-label">Focus axis / 聚焦指标:</span>
+        <div class="radar-focus-btns" id="radar-focus-btns">
+          <button type="button" class="pill-btn${focus == null ? ' active' : ''}" data-focus-axis="" title="No focus / 不聚焦指标">All</button>
+          ${RADAR_AXES.map((a, i) => `<button type="button" class="pill-btn${String(focus) === String(i) ? ' active' : ''}" data-focus-axis="${i}" title="${esc(a.labelZh)}">${esc(a.labelEn)}</button>`).join('')}
+        </div>
+        <span class="radar-focus-hint">Click an axis to rank every model on it / 点击指标轴，按该指标给全部模型排序</span>
+      </div>
       <div class="radar-presets-bar">
         <span class="radar-bar-label">Presets / 预设组合:</span>
         <div class="radar-presets-btns">
@@ -394,16 +424,49 @@
       </div>
 
       <div class="radar-content-grid">
-        <div class="radar-chart-stage">
-          <div class="radar-svg-wrapper" id="radar-svg-wrapper">${buildRadarSVG(selectedIds)}</div>
+        <div class="radar-chart-stage-full">
+          <div class="radar-svg-wrapper" id="radar-svg-wrapper">${buildRadarSVG(selectedIds, {focusAxis: state.radarFocusAxis})}</div>
           <div class="radar-tooltip" id="radar-tooltip"></div>
           <div class="radar-axis-guide">
             <span>Normalized 0–100 scale (outer ring = best) · 5×3 Nested Parent-Grouped CV</span>
           </div>
         </div>
-        <div class="radar-matrix-panel" id="radar-matrix-panel">
-          ${buildRadarMatrixHTML(selectedIds)}
-        </div>
+      </div>
+      <div class="radar-matrix-panel" id="radar-matrix-panel">
+        ${buildAxisRankingHTML()}${buildRadarMatrixHTML(selectedIds)}
+      </div>
+    </div>`;
+  }
+
+  /* Ranking of every model on one axis — the "which one is actually best at X"
+     view that a radar chart alone cannot answer at 14 models. */
+  function buildAxisRankingHTML() {
+    const i = state.radarFocusAxis;
+    if (i == null || !state.models?.length) return '';
+    const axis = RADAR_AXES[Number(i)];
+    if (!axis) return '';
+    const rows = state.models
+      .map(m => {
+        const met = m.metrics || {};
+        const raw = met[axis.key];
+        return {id: m.id, name: short(m.id), raw, score: axis.score(raw), label: axis.format(raw)};
+      })
+      .filter(r => Number.isFinite(Number(r.raw)))
+      .sort((a, b) => b.score - a.score);
+    const best = rows[0];
+    return `<div class="axis-ranking">
+      <div class="axis-ranking-head">
+        <h4>${esc(axis.labelEn)} <span class="heading-zh">${esc(axis.labelZh)}</span></h4>
+        <span class="badge good">Best: ${esc(best?.name || '—')} · ${esc(best?.label || '—')}</span>
+      </div>
+      <div class="axis-ranking-list">
+        ${rows.map((r, idx) => `<div class="axis-row${r.id === best?.id ? ' is-best' : ''}">
+          <span class="axis-row-rank">#${idx + 1}</span>
+          <span class="axis-row-name">${esc(r.name)}</span>
+          <span class="axis-row-track"><i style="width:${Math.max(3, r.score).toFixed(1)}%"></i></span>
+          <span class="axis-row-score">${r.score.toFixed(0)}</span>
+          <span class="axis-row-raw">${esc(r.label)}</span>
+        </div>`).join('')}
       </div>
     </div>`;
   }
@@ -419,14 +482,18 @@
       root.querySelectorAll('.radar-chip').forEach(chip => {
         chip.classList.toggle('active', state.radarSelected.includes(chip.dataset.modelId));
       });
+      root.querySelectorAll('[data-focus-axis]').forEach(btn => {
+        btn.classList.toggle('active', String(btn.dataset.focusAxis) === String(state.radarFocusAxis ?? ''));
+      });
       const svgWrap = root.querySelector('#radar-svg-wrapper');
       if (svgWrap) {
-        svgWrap.innerHTML = buildRadarSVG(state.radarSelected);
+        svgWrap.innerHTML = buildRadarSVG(state.radarSelected, {focusAxis: state.radarFocusAxis});
         bindSvgHovers();
+        bindAxisPicks();
       }
       const matrixPanel = root.querySelector('#radar-matrix-panel');
       if (matrixPanel) {
-        matrixPanel.innerHTML = buildRadarMatrixHTML(state.radarSelected);
+        matrixPanel.innerHTML = buildAxisRankingHTML() + buildRadarMatrixHTML(state.radarSelected);
         bindMatrixActions();
       }
     }
@@ -444,6 +511,19 @@
         updateRadarDisplay();
       };
     });
+
+    function bindAxisPicks() {
+      root.querySelectorAll('[data-focus-axis]').forEach(el => {
+        el.onclick = e => {
+          e.preventDefault();
+          e.stopPropagation();
+          const raw = el.dataset.focusAxis;
+          const next = raw === '' || raw == null ? null : Number(raw);
+          state.radarFocusAxis = state.radarFocusAxis === next ? null : next;
+          updateRadarDisplay();
+        };
+      });
+    }
 
     root.querySelectorAll('.radar-preset-btn').forEach(btn => {
       btn.onclick = e => {
@@ -464,6 +544,24 @@
         btn.onclick = () => {
           const {pairA, pairB} = btn.dataset;
           if (pairA && pairB) onApplyPair?.(pairA, pairB);
+        };
+      });
+      root.querySelectorAll('.radar-comp-table th[data-sort-key]').forEach(th => {
+        th.onclick = () => {
+          const key = th.dataset.sortKey;
+          state.radarSort = state.radarSort === key ? null : key;
+          updateRadarDisplay();
+        };
+      });
+      root.querySelectorAll('.radar-matrix-row').forEach(row => {
+        row.onclick = () => {
+          const mid = row.dataset.modelId;
+          const mEl = document.getElementById('model'), mbEl = document.getElementById('model-b');
+          if (!mEl || !mbEl || !mid) return;
+          // clicking the row already in A swaps it into B so A/B can be flipped fast
+          if (mEl.value === mid) { mbEl.value = mid; }
+          else { mEl.value = mid; }
+          onApplyPair?.(mEl.value, mbEl.value);
         };
       });
     }
@@ -490,6 +588,7 @@
 
     bindMatrixActions();
     bindSvgHovers();
+    bindAxisPicks();
   }
 
   window.SOLARCharts = Object.freeze({

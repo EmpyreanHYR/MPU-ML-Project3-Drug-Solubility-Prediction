@@ -22,7 +22,7 @@
   };
 
   function icon(name) {
-    return `<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="${icons[name] || icons.info}"/></svg>`;
+    return `<svg class="icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="${icons[name] || icons.info}"/></svg>`;
   }
 
   function hydrateIcons(root = document) {
@@ -129,7 +129,7 @@
         rmse: 0.8981,
         r2: 0.5083,
         delta_vs_basic: '−0.0638 (−8.54%)',
-        ci_vs_basic: '[−0.1219, −0.0082] ✓',
+        ci_vs_basic: '[−0.1219, −0.0082]',
         highlight: false
       },
       {
@@ -157,7 +157,7 @@
         highlight: false
       },
       {
-        stage: 'F ★ Proposed Main',
+        stage: 'F · Proposed Main',
         name: 'ExtraTrees–TabPFN Fusion (0.75 ET + 0.25 TabPFN) / 本文主融合模型',
         features: '869D Interaction + q=1 + OOF Convex Fusion',
         parent_mae: 0.6668,
@@ -165,7 +165,7 @@
         rmse: 0.8842,
         r2: 0.5234,
         delta_vs_basic: '−0.0801 (−10.73%)',
-        ci_vs_basic: '[−0.1366, −0.0276] ✓',
+        ci_vs_basic: '[−0.1366, −0.0276]',
         highlight: true
       }
     ],
@@ -196,7 +196,7 @@
     solubilityBands: [
       {band: '(−∞, −4.0] · Extreme Insoluble (Solubility Cliff / 极端难溶悬崖)', rows: 23, parents: 8, fusion_mae: 2.2508, fusion_bias: '+2.2504 (Overest.)', solar_mae: 2.4127},
       {band: '(−4.0, −2.0] · Low Solubility (低溶解度区间)', rows: 321, parents: 56, fusion_mae: 0.8743, fusion_bias: '+0.7837', solar_mae: 0.9972},
-      {band: '(−2.0, 0.0] · Moderate Solubility (54.7% 主力工业区间 ★)', rows: 824, parents: 110, fusion_mae: 0.4653, fusion_bias: '−0.1197 (Near zero)', solar_mae: 0.5514},
+      {band: '(−2.0, 0.0] · Moderate Solubility (54.7% 主力工业区间)', rows: 824, parents: 110, fusion_mae: 0.4653, fusion_bias: '−0.1197 (Near zero)', solar_mae: 0.5514},
       {band: '(0.0, +∞) · High Solubility (高溶解度区间)', rows: 339, parents: 43, fusion_mae: 0.7823, fusion_bias: '−0.7719', solar_mae: 0.8949}
     ],
     causalTemp: {
@@ -237,6 +237,8 @@
     screenFilter: 'all',
     screenSort: 'desc',
     screenSubTab: 'ranking',
+    radarFocusAxis: null,
+    radarSort: null,
     diagCache: {},
     diagModel: 'TabPFN_ExtraTreesBlend',
     leaderboardGroup: 'all',
