@@ -17,7 +17,7 @@
 
 ## 打开实际系统
 
-`presentation/` 与 `webapp/`、`models/` 保持同级。已准备项目 Python 环境后，可双击 `Start-Presentation.bat`，或从项目根目录运行：
+`presentation/` 与 `hehaoran/`、`models/` 保持同级，应用代码位于 `hehaoran/webapp/`。已准备项目 Python 环境后，可双击 `Start-Presentation.bat`，或从项目根目录运行：
 
 ```sh
 uv sync --frozen

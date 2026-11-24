@@ -1,7 +1,7 @@
 """Data provenance and row isolation tests for the educational API additions."""
 import numpy as np
 from fastapi.testclient import TestClient
-from webapp.server import app, data
+from hehaoran.webapp.server import app, data
 
 client = TestClient(app)
 

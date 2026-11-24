@@ -125,7 +125,7 @@ def main():
             '- [TabPFN＋ExtraTrees研究模型](../../models/combination_v3/tabpfn_nested/deployment/TabPFN_ExtraTreesBlend.joblib)',
             '- [TabPFN＋双树研究模型](../../models/combination_v3/tabpfn_nested/deployment/TabPFN_TwoTreeBlend.joblib)',
             '- [第二轮复现入口](../../scripts/reproduce_tabpfn.sh)',
-            '', '预测入口：在项目根目录运行 `.venv/bin/python scripts/predict_combination_v3.py --drug-smiles CCO --solvent-smiles O --temperature 25`。输出为CSV目标字段的log10预测值；温度输入仍使用CSV原始数值尺度。',
+            '', '预测入口：在项目根目录运行 `.venv/bin/python yuchunshen/run.py predict_combination_v3.py --drug-smiles CCO --solvent-smiles O --temperature 25`。输出为CSV目标字段的log10预测值；温度输入仍使用CSV原始数值尺度。',
             'TabPFN研究模型需同时保留项目适配器和models/combination_v3/tabpfn_probe/tabpfn-v2-regressor.ckpt；权重未嵌入joblib，首次预测时在本机重建。'])
     lines.extend(['','## 未升格的对照','',
         '- [标准化相互作用](pair_pilot/comparison.csv)：8候选开发3折，未稳定超过原始交互。',

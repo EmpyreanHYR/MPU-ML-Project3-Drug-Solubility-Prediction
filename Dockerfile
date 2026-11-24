@@ -38,12 +38,10 @@ COPY huangyaorong ./huangyaorong
 COPY yuchunshen ./yuchunshen
 COPY hehaoran ./hehaoran
 
-COPY webapp ./webapp
-COPY scripts/launch_studio.py ./scripts/launch_studio.py
 
 EXPOSE 8000
 
 HEALTHCHECK --interval=30s --timeout=5s --start-period=15s --retries=3 \
     CMD python -c "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/api/health')" || exit 1
 
-CMD ["uvicorn", "webapp.server:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "2"]
+CMD ["uvicorn", "hehaoran.webapp.server:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "2"]

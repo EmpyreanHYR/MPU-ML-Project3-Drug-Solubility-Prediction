@@ -9,7 +9,6 @@
 !/src/
 !/scripts/
 !/tests/
-!/webapp/
 !/presentation/
 !/.github/
 /.github/*

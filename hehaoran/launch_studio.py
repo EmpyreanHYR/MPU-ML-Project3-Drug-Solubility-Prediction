@@ -56,7 +56,7 @@ def main():
 
     print('Starting the server. Keep this window open; press Ctrl+C to stop.', flush=True)
     process = subprocess.Popen(
-        [sys.executable, '-m', 'uvicorn', 'webapp.server:app',
+        [sys.executable, '-m', 'uvicorn', 'hehaoran.webapp.server:app',
          '--host', '127.0.0.1', '--port', str(port)], cwd=ROOT,
     )
     stopped = threading.Event()

@@ -89,8 +89,8 @@ def main():
     parser.add_argument("--no-browser", action="store_true")
     args = parser.parse_args()
     root = args.repo.resolve()
-    if not (root / "webapp" / "server.py").is_file():
-        parser.error("Select the SOLAR Studio project root containing webapp/server.py.")
+    if not (root / "hehaoran" / "webapp" / "server.py").is_file():
+        parser.error("Select the SOLAR Studio project root containing hehaoran/webapp/server.py.")
     if not 1 <= args.port <= 65535:
         parser.error("--port must be between 1 and 65535.")
 
@@ -99,10 +99,10 @@ def main():
     os.chdir(root)
     sys.path.insert(0, str(root))
     try:
-        from webapp import server as studio
+        from hehaoran.webapp import server as studio
         import uvicorn
         device = configure_device(studio)
-        mount_presentation(studio.app, root / "webapp" / "static", device)
+        mount_presentation(studio.app, root / "hehaoran" / "webapp" / "static", device)
     except ModuleNotFoundError as error:
         parser.exit(1, f"Missing Studio dependency: {error.name}. Run uv sync --frozen in the project.\n")
     except ValueError as error:

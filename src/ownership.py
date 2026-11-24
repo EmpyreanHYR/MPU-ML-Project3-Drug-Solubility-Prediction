@@ -1,6 +1,8 @@
-"""Resolve contributor-owned implementations through stable public entrypoints."""
+"""Load contributor-owned implementations and previously serialized model names."""
 from pathlib import Path
 import sys
+import importlib.abc
+import importlib.util
 
 ROOT = Path(__file__).resolve().parents[1]
 IMPLEMENTATIONS = {'scripts/export_combination_variants.py': 'yuchunshen/export_combination_variants.py',
@@ -41,6 +43,8 @@ IMPLEMENTATIONS = {'scripts/export_combination_variants.py': 'yuchunshen/export_
  'webapp/server.py': 'hehaoran/webapp/server.py'}
 
 
+IMPLEMENTATIONS.update({'src/experimental_v3/__init__.py': 'yuchunshen/experimental_v3/__init__.py', 'src/experimental_pair_v3/__init__.py': 'yuchunshen/experimental_pair_v3/__init__.py', 'src/revision_models/__init__.py': 'huangyaorong/revision_models/__init__.py'})
+
 def source_path(path):
     path = Path(path)
     try:
@@ -71,3 +75,49 @@ class SourcePath(type(Path())):
     """Read implementation bytes when existing code inspects a public entrypoint."""
     def read_bytes(self):
         return Path(source_path(self)).read_bytes()
+
+
+    def glob(self, pattern, **kwargs):
+        # Existing training bookkeeping enumerates the former source layout.
+        # Yield logical names while reading their single physical implementation.
+        yielded = set()
+        for path in super().glob(pattern, **kwargs):
+            yielded.add(path)
+            yield path
+        for logical in IMPLEMENTATIONS:
+            path = SourcePath(ROOT / logical)
+            if path.parent == self and path.match(pattern) and path not in yielded:
+                yield path
+
+
+_MODULES = {old[:-3].replace('/', '.'): old
+            for old in IMPLEMENTATIONS if old.startswith('src/')}
+_MODULES.update({Path(old).stem: old for old in IMPLEMENTATIONS
+                 if old.startswith('scripts/') and len(Path(old).parts) == 2})
+_PACKAGES = {name.rsplit('.', 1)[0] for name in _MODULES if '.' in name}
+
+
+class _OwnedLoader(importlib.abc.Loader):
+    def create_module(self, spec):
+        return None
+
+    def exec_module(self, module):
+        logical = _MODULES.get(module.__name__)
+        if logical is not None:
+            execute(logical, module.__dict__)
+
+
+class _OwnedFinder(importlib.abc.MetaPathFinder):
+    def find_spec(self, fullname, path=None, target=None):
+        if fullname in _MODULES:
+            return importlib.util.spec_from_loader(fullname, _OwnedLoader(),
+                origin=str(ROOT / IMPLEMENTATIONS[_MODULES[fullname]]))
+        if fullname in _PACKAGES and not (ROOT / fullname.replace('.', '/') / '__init__.py').exists():
+            return importlib.util.spec_from_loader(fullname, _OwnedLoader(), is_package=True)
+        return None
+
+
+def install():
+    """Resolve legacy estimator names without retaining old source files."""
+    if not any(isinstance(finder, _OwnedFinder) for finder in sys.meta_path):
+        sys.meta_path.insert(0, _OwnedFinder())

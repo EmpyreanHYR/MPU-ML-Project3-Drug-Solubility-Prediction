@@ -13,10 +13,10 @@ set "MKL_NUM_THREADS=2"
 if exist ".venv\Scripts\python.exe" goto local_python
 where uv >nul 2>nul
 if errorlevel 1 goto missing
-uv run --frozen python scripts\launch_studio.py %*
+uv run --frozen python hehaoran\run.py launch_studio.py %*
 goto finished
 :local_python
-".venv\Scripts\python.exe" scripts\launch_studio.py %*
+".venv\Scripts\python.exe" hehaoran\run.py launch_studio.py %*
 goto finished
 :missing
 echo Cannot find the project Python environment or uv.

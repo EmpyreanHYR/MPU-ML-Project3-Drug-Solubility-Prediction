@@ -4,9 +4,9 @@ export PATH="/opt/homebrew/bin:/usr/local/bin:$HOME/.local/bin:$PATH"
 cd "$(dirname "$0")" || exit 1
 source scripts/env.sh
 if [ -x .venv/bin/python ]; then
-  .venv/bin/python scripts/launch_studio.py "$@"
+  .venv/bin/python hehaoran/run.py launch_studio.py "$@"
 elif command -v uv >/dev/null 2>&1; then
-  uv run --frozen python scripts/launch_studio.py "$@"
+  uv run --frozen python hehaoran/run.py launch_studio.py "$@"
 else
   echo "Cannot find the project Python environment or uv."
   echo "Install uv, then run: uv sync --frozen"

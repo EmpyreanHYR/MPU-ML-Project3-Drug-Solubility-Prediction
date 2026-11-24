@@ -99,7 +99,7 @@ $$\widehat y_i = b(z_c) + \gamma \cdot \tau_i \cdot \left( u_c^\top \beta \right
 
 ```bash
 uv sync --frozen
-uv run --frozen python scripts/launch_studio.py
+uv run --frozen python hehaoran/run.py launch_studio.py
 ```
 
 启动后访问 <http://127.0.0.1:8502/>（macOS / Windows 用户也可直接双击根目录的 `启动Studio.command` 或 `启动Studio.bat`）。系统提供以下核心模块：
@@ -119,11 +119,11 @@ uv run --frozen pytest -q tests/test_web_api.py tests/test_learning.py
 ### 2. 模型训练与基线补充
 
 ```bash
-uv run --frozen python scripts/run_revision.py                      # 原始 12 个对照模型
-uv run --frozen python scripts/run_adaptive_revision.py             # SOLAR-H 自适应分解模型
+uv run --frozen python songjiayun/run.py run_revision.py                      # 原始 12 个对照模型
+uv run --frozen python huangyaorong/run.py run_adaptive_revision.py             # SOLAR-H 自适应分解模型
 bash scripts/reproduce.sh                                           # 丰富特征与第一轮融合实验
 bash scripts/reproduce_tabpfn.sh                                    # TabPFN v2 与异质融合实验
-PYTHONPATH=. uv run --frozen python scripts/run_baselines.py --model all  # 常规回归基线 (RF / Ridge / RbfSVR)
+PYTHONPATH=. uv run --frozen python songjiayun/run.py run_baselines.py --model all  # 常规回归基线 (RF / Ridge / RbfSVR)
 uv run --frozen python scripts/evaluate_test_set.py                 # 独立保留测试集 (397 条) 单次评估
 uv run --frozen python plotting/eda_revision.py                     # 数据分布与探索性分析图
 uv run --frozen python plotting/revision_figures.py                 # V1 报告配图生成
@@ -144,9 +144,9 @@ uv run --frozen python plotting/revision_figures.py                 # V1 报告�
 | yuchunshen | [yuchunshen/](yuchunshen/README.md) | ExtraTrees–TabPFN 对、候选融合、训练与导出 |
 | hehaoran | [hehaoran/](hehaoran/README.md) | 应用后端、前端静态资源与启动器 |
 
-各成员上传整个同名文件夹到仓库根目录。公共数据、特征与指标工具、分析绘图、项目配置和测试继续保留在原位置；原训练及应用命令仍然可用。原位置的模型和训练文件仅保留兼容入口，实际实现只维护一份。
+各成员上传整个同名文件夹到仓库根目录。公共数据、特征与指标工具、分析绘图、项目配置和测试继续保留在原位置；已删除原位置的模型、训练脚本及应用入口文件，使用下方个人目录命令运行。已有模型权重的旧模块名由公共加载器解析，无需保留旧文件。
 
-例如，以下命令与原入口等效：
+运行入口：
 
 ```bash
 uv run --frozen python songjiayun/run.py run_revision.py --help
@@ -162,11 +162,11 @@ uv run --frozen python hehaoran/run.py launch_studio.py
 | 路径 | 内容说明 |
 |---|---|
 | `datasets/` | 原始数据集 `data_2026.csv`、清理策略与冻结的母体划分、嵌套交叉验证折清单（`splits/`） |
-| `src/` | 公共数据、特征、指标工具，以及保持已有模型可加载的兼容入口 |
-| `scripts/` | 训练、嵌套选参、基线评测、保留集测试、结果汇总、Studio 启动与仓库一致性检查脚本 |
+| `src/` | 公共数据、特征、指标工具，以及已有模型的统一加载支持 |
+| `scripts/` | 公共复现入口、保留集评估、结果分析及仓库检查；训练实现已迁入个人目录 |
 | `models/` | 全部部署与实验模型权重（`.joblib` / `.ckpt`）、第三方权重许可与 SHA-256 校验清单 `manifest.json` |
 | `output/` | 嵌套验证逐折/逐行预测、参数搜索记录、配对统计检验、因果与归因分析等 CSV/JSON 工件 |
-| `webapp/` | SOLAR Studio 后端兼容入口；实际后端与前端位于 `hehaoran/webapp/` |
+| `hehaoran/webapp/` | SOLAR Studio 后端与前端静态资源；原根目录 `webapp/` 已移除 |
 | `Report_final/` | 最终提交报告（PDF/Word）与查重报告；历史版本源码见仓库外 `../旧文件备份/` |
 | `plotting/`、`tools/`、`configs/` | 探索性数据分析与报告绘图脚本、图表质量审查工具及实验配置 |
 | `tests/` | FastAPI 接口一致性、离线模型对齐、全溶剂筛选、诊断接口与互动学习中心自动化测试 |
