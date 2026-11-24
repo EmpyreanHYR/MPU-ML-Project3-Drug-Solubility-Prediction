@@ -2,7 +2,9 @@
 
 > 融合物理分解与异构集成的机器学习项目：在严格的母体分组嵌套交叉验证下，预测药物分子在多溶剂、变温条件下的对数溶解度，并部署为可交互的实时推断系统。
 
-完整报告：[Assignment_Report_v2/Assignment-main.pdf](Assignment_Report_v2/Assignment-main.pdf)（[说明](Assignment_Report_v2/README.md)） · 英文手稿：[Assignment_Report_v2_en/](Assignment_Report_v2_en/) · 初版报告：[Assignment_Report/Assignment-main.pdf](Assignment_Report/Assignment-main.pdf) · 结果明细：[output/README.md](output/README.md) · 模型权重：[models/README.md](models/README.md)
+最终报告：[COMP6133_GroupReport_Group08.pdf](Report_final/COMP6133_GroupReport_Group08.pdf)（Word 版：[.docx](Report_final/COMP6133_GroupReport_Group08.docx)） · 结果明细：[output/README.md](output/README.md) · 模型权重：[models/README.md](models/README.md)
+
+> 历史报告（V1 中文版、V2 中文版、V2 英文手稿及其 LaTeX 源码与分析脚本）已归档到仓库外的 `../旧文件备份/`，不再随仓库分发。
 
 ## 项目汇报
 
@@ -108,18 +110,13 @@ uv run --frozen python scripts/launch_studio.py
 
 ## 实验复现与核验
 
-### 1. 复核 V2 报告全部分析、图表与接口测试
+### 1. 接口与互动教学测试
 
 ```bash
-uv run --frozen python Assignment_Report_v2/analysis/method_figures.py
-uv run --frozen python Assignment_Report_v2/analysis/radar_comparison.py
-PYTHONPATH=. uv run --frozen python Assignment_Report_v2/analysis/results.py
-PYTHONPATH=. uv run --frozen python Assignment_Report_v2/analysis/deployment_explanations.py
-PYTHONPATH=. uv run --frozen python Assignment_Report_v2/analysis/check_application.py
 uv run --frozen pytest -q tests/test_web_api.py tests/test_learning.py
 ```
 
-### 2. 模型训练、基线补充与报告编译
+### 2. 模型训练与基线补充
 
 ```bash
 uv run --frozen python scripts/run_revision.py                      # 原始 12 个对照模型
@@ -130,9 +127,9 @@ PYTHONPATH=. uv run --frozen python scripts/run_baselines.py --model all  # 常�
 uv run --frozen python scripts/evaluate_test_set.py                 # 独立保留测试集 (397 条) 单次评估
 uv run --frozen python plotting/eda_revision.py                     # 数据分布与探索性分析图
 uv run --frozen python plotting/revision_figures.py                 # V1 报告配图生成
-bash scripts/build_report.sh                                        # 编译 Assignment_Report (V1)
-(cd Assignment_Report_v2 && latexmk -xelatex -interaction=nonstopmode -halt-on-error Assignment-main.tex)
 ```
+
+> 报告源码（LaTeX 分章、分析脚本、复现图表的命令）已随历史报告归档到仓库外的 `../旧文件备份/`；本仓库只保留最终 PDF/DOCX 与可运行的系统本体。
 
 > 说明：训练脚本默认校验并复用匹配冻结协议的既有结果；如需从零重训，请先在独立副本中移出相应 `output/` 实验子目录。
 
@@ -146,9 +143,7 @@ bash scripts/build_report.sh                                        # 编译 Ass
 | `models/` | 全部部署与实验模型权重（`.joblib` / `.ckpt`）、第三方权重许可与 SHA-256 校验清单 `manifest.json` |
 | `output/` | 嵌套验证逐折/逐行预测、参数搜索记录、配对统计检验、因果与归因分析等 CSV/JSON 工件 |
 | `webapp/` | SOLAR Studio v5.0 的 FastAPI 后端（`server.py`）与中英双语前端静态资源（`static/`） |
-| `Assignment_Report_v2/` | 第二版正式中文报告（LaTeX 源码、分章 `sections/`、矢量图表 `figures/`、复算脚本 `analysis/` 与 `Assignment-main.pdf`） |
-| `Assignment_Report_v2_en/` | 第二版报告的英文手稿（LaTeX 源码、Markdown 与 Word 文档） |
-| `Assignment_Report/` | 初版中文报告（LaTeX 源码、图表与 `Assignment-main.pdf`） |
+| `Report_final/` | 最终提交报告（PDF/Word）与查重报告；历史版本源码见仓库外 `../旧文件备份/` |
 | `plotting/`、`tools/`、`configs/` | 探索性数据分析与报告绘图脚本、图表质量审查工具及实验配置 |
 | `tests/` | FastAPI 接口一致性、离线模型对齐、全溶剂筛选、诊断接口与互动学习中心自动化测试 |
 | `Question/`、`bibliography/`、`assets/` | 原始课程题目要求、文献数据库与核验脚本、报告与绘图所用内嵌字体 |

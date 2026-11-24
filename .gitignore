@@ -20,9 +20,6 @@
 !/tools/
 !/configs/
 !/assets/
-!/Assignment_Report/
-!/Assignment_Report_v2/
-!/Assignment_Report_v2_en/
 !/Question/
 !/bibliography/
 !/models/
@@ -84,59 +81,7 @@ __pycache__/
 /output/**/tmp/
 /output/**/tests/
 
-# Report sources, current figures, and the final PDF only.
-/Assignment_Report/*
-!/Assignment_Report/.latexmkrc
-!/Assignment_Report/Assignment-main.tex
-!/Assignment_Report/Assignment-main.pdf
-!/Assignment_Report/assignment.cls
-!/Assignment_Report/README.md
-!/Assignment_Report/assets/
-!/Assignment_Report/sections/
-!/Assignment_Report/figures/
-/Assignment_Report/sections/*
-!/Assignment_Report/sections/*.tex
-/Assignment_Report/figures/*
-!/Assignment_Report/figures/revision_v2/
-!/Assignment_Report/figures/revision_v4/
-/Assignment_Report/figures/revision_v2/*
-!/Assignment_Report/figures/revision_v2/*.pdf
-!/Assignment_Report/figures/revision_v2/*.svg
-!/Assignment_Report/figures/revision_v2/*.drawio
-/Assignment_Report/figures/revision_v4/*
-!/Assignment_Report/figures/revision_v4/*.jpg
-
-# Version 2 report and its reproducible supporting evidence.
-/Assignment_Report_v2/*
-!/Assignment_Report_v2/.latexmkrc
-!/Assignment_Report_v2/Assignment-main.tex
-!/Assignment_Report_v2/Assignment-main.pdf
-!/Assignment_Report_v2/assignment.cls
-!/Assignment_Report_v2/README.md
-!/Assignment_Report_v2/references.bib
-!/Assignment_Report_v2/sections/
-!/Assignment_Report_v2/figures/
-!/Assignment_Report_v2/analysis/
-/Assignment_Report_v2/sections/*
-!/Assignment_Report_v2/sections/*.tex
-/Assignment_Report_v2/figures/*
-!/Assignment_Report_v2/figures/*.pdf
-!/Assignment_Report_v2/figures/*.jpg
-/Assignment_Report_v2/analysis/*
-!/Assignment_Report_v2/analysis/*.py
-!/Assignment_Report_v2/analysis/*.json
-
-# English manuscript of the report (LaTeX, Markdown, Word).
-/Assignment_Report_v2_en/*
-!/Assignment_Report_v2_en/Assignment-main-en.tex
-!/Assignment_Report_v2_en/Assignment-main-en.pdf
-!/Assignment_Report_v2_en/build.command
-!/Assignment_Report_v2_en/Assignment_Report_en.md
-!/Assignment_Report_v2_en/Assignment_Report_en.docx
-!/Assignment_Report_v2_en/references.bib
-!/Assignment_Report_v2_en/sections/
-/Assignment_Report_v2_en/sections/*
-!/Assignment_Report_v2_en/sections/*.tex
+# Archived reports (V1/V2/V2-en) live outside the repository: ../旧文件备份/
 
 # Unused variable font; the static font and its license are sufficient.
 /assets/fonts/NotoSansSC-VF.ttf
