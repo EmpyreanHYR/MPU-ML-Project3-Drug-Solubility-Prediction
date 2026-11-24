@@ -32,6 +32,8 @@
 !/SOLAR_Studio_Demo_Bilingual.mp4
 !/SOLAR_Studio_Demo_Bilingual.srt
 !/Report_final/
+!/Contribution/
+
 
 # Local environments and generated intermediates anywhere in allowed directories.
 .DS_Store
