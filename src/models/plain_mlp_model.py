@@ -1,4 +1,6 @@
-"""Capacity-matched descriptor MLP control, without balanced or difference loss."""
-from .conditional_common import NeuralRegressor
-
-def build_model(seed=2026,**params):return NeuralRegressor(seed=seed,**params)
+"""Compatibility entry; implementation: huangyaorong/models/plain_mlp_model.py."""
+from pathlib import Path as _Path
+import sys as _sys
+_sys.path.insert(0, str(_Path(__file__).resolve().parents[1]))
+from src.ownership import execute as _execute
+_execute('src/models/plain_mlp_model.py', globals())

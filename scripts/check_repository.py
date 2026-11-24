@@ -7,10 +7,11 @@ import subprocess
 ROOT = Path(__file__).resolve().parents[1]
 DIRECTORIES = {'.github', 'assets', 'bibliography', 'configs', 'Contribution', 'datasets',
                'models', 'output', 'plotting', 'presentation', 'Question', 'Report_final',
-               'scripts', 'src', 'tests', 'tools', 'webapp'}
+               'scripts', 'src', 'tests', 'tools', 'webapp',
+               'songjiayun', 'huangyaorong', 'yuchunshen', 'hehaoran'}
 ROOT_FILES = {'.gitignore', '.python-version', 'README.md', 'pyproject.toml', 'uv.lock',
               'SOLAR_Studio_Demo_Bilingual.mp4', 'SOLAR_Studio_Demo_Bilingual.srt',
-              '启动Studio.bat', '启动Studio.command'}
+              '启动Studio.bat', '启动Studio.command', 'Dockerfile'}
 WEIGHTS = {'.joblib', '.ckpt', '.pt', '.pth', '.safetensors'}
 
 

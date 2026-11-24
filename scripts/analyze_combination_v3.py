@@ -8,6 +8,7 @@ import json
 import numpy as np
 import pandas as pd
 from src.data import ROOT, load_data, development_splits
+from src.ownership import source_path
 from src.paths import normalize_frozen
 from src.metrics import regression_metrics
 
@@ -94,7 +95,7 @@ def main():
     dump(OUT/"paired_uncertainty.json",comparisons)
     frozen=normalize_frozen(json.loads((OUT/"protocol.json").read_text()))
     for relative,sha in frozen["code_sha256"].items():
-        assert hashlib.sha256((ROOT/relative).read_bytes()).hexdigest()==sha
+        assert hashlib.sha256(source_path(ROOT/relative).read_bytes()).hexdigest()==sha
     dump(OUT/"checks.json",{
         "status":"passed","all_models":coverage,"layout_migration_verified":True,
         "outer_parent_overlap":0,"historical_holdout_evaluated":False,

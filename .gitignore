@@ -99,3 +99,10 @@ __pycache__/
 /scripts/audit_revision.py
 /scripts/check_restored_consistency.py
 /scripts/build_app_report_figures.py
+
+# Contributor implementation directories
+!/songjiayun/
+!/huangyaorong/
+!/yuchunshen/
+!/hehaoran/
+!/Dockerfile

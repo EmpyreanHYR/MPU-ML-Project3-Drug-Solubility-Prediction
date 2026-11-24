@@ -1,2 +1,6 @@
-from sklearn.ensemble import RandomForestRegressor
-def build_model(seed=2026,**params):return RandomForestRegressor(**({'n_estimators':200,'min_samples_leaf':2,'n_jobs':2,'random_state':seed}|params))
+"""Compatibility entry; implementation: songjiayun/models/random_forest_model.py."""
+from pathlib import Path as _Path
+import sys as _sys
+_sys.path.insert(0, str(_Path(__file__).resolve().parents[1]))
+from src.ownership import execute as _execute
+_execute('src/models/random_forest_model.py', globals())

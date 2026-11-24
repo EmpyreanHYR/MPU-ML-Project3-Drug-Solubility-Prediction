@@ -1,2 +1,6 @@
-from sklearn.ensemble import HistGradientBoostingRegressor
-def build_model(seed=2026,**params):return HistGradientBoostingRegressor(**({'max_iter':200,'max_leaf_nodes':15,'learning_rate':.05,'l2_regularization':1.0,'early_stopping':False,'random_state':seed}|params))
+"""Compatibility entry; implementation: songjiayun/models/hist_gradient_boosting_model.py."""
+from pathlib import Path as _Path
+import sys as _sys
+_sys.path.insert(0, str(_Path(__file__).resolve().parents[1]))
+from src.ownership import execute as _execute
+_execute('src/models/hist_gradient_boosting_model.py', globals())

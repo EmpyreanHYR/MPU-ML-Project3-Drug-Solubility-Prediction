@@ -133,16 +133,40 @@ uv run --frozen python plotting/revision_figures.py                 # V1 报告�
 
 > 说明：训练脚本默认校验并复用匹配冻结协议的既有结果；如需从零重训，请先在独立副本中移出相应 `output/` 实验子目录。
 
+## 按成员组织代码
+
+实际实现按职责存放在以下根目录文件夹中，具体文件对应关系与运行方式见各目录 README：
+
+| 负责人 | 代码目录 | 职责 |
+|---|---|---|
+| songjiayun | [songjiayun/](songjiayun/README.md) | 基底模型、共同对照训练及常规基线 |
+| huangyaorong | [huangyaorong/](huangyaorong/README.md) | SOLAR-H、自适应温度增益与相关消融对照 |
+| yuchunshen | [yuchunshen/](yuchunshen/README.md) | ExtraTrees–TabPFN 对、候选融合、训练与导出 |
+| hehaoran | [hehaoran/](hehaoran/README.md) | 应用后端、前端静态资源与启动器 |
+
+各成员上传整个同名文件夹到仓库根目录。公共数据、特征与指标工具、分析绘图、项目配置和测试继续保留在原位置；原训练及应用命令仍然可用。原位置的模型和训练文件仅保留兼容入口，实际实现只维护一份。
+
+例如，以下命令与原入口等效：
+
+```bash
+uv run --frozen python songjiayun/run.py run_revision.py --help
+uv run --frozen python huangyaorong/run.py run_adaptive_revision.py
+uv run --frozen python yuchunshen/run.py run_tabpfn_combination_v3.py all
+uv run --frozen python hehaoran/run.py launch_studio.py
+```
+
+`run_revision.py` 是多模型共用训练框架，归入基底模型负责人目录；其中调用的 SOLAR-H 与相关消融模型实现归入方法一目录。各目录依赖完整仓库，删除某成员目录后，对应功能需等该成员重新上传后才可运行。结果仍写入根目录 `output/`，模型权重仍写入 `models/`。报告与贡献章节未修改。
+
 ## 目录结构
 
 | 路径 | 内容说明 |
 |---|---|
 | `datasets/` | 原始数据集 `data_2026.csv`、清理策略与冻结的母体划分、嵌套交叉验证折清单（`splits/`） |
-| `src/` | 数据加载、RDKit 描述符与显式交互特征工程、SOLAR-H 与融合模型定义、评价指标实现 |
+| `src/` | 公共数据、特征、指标工具，以及保持已有模型可加载的兼容入口 |
 | `scripts/` | 训练、嵌套选参、基线评测、保留集测试、结果汇总、Studio 启动与仓库一致性检查脚本 |
 | `models/` | 全部部署与实验模型权重（`.joblib` / `.ckpt`）、第三方权重许可与 SHA-256 校验清单 `manifest.json` |
 | `output/` | 嵌套验证逐折/逐行预测、参数搜索记录、配对统计检验、因果与归因分析等 CSV/JSON 工件 |
-| `webapp/` | SOLAR Studio v5.0 的 FastAPI 后端（`server.py`）与中英双语前端静态资源（`static/`） |
+| `webapp/` | SOLAR Studio 后端兼容入口；实际后端与前端位于 `hehaoran/webapp/` |
 | `Report_final/` | 最终提交报告（PDF/Word）与查重报告；历史版本源码见仓库外 `../旧文件备份/` |
 | `plotting/`、`tools/`、`configs/` | 探索性数据分析与报告绘图脚本、图表质量审查工具及实验配置 |
 | `tests/` | FastAPI 接口一致性、离线模型对齐、全溶剂筛选、诊断接口与互动学习中心自动化测试 |

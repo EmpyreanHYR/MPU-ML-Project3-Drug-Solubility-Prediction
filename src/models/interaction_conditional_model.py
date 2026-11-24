@@ -1,5 +1,6 @@
-"""Two molecular encoders, explicit interaction, and structural/temperature heads."""
-from .conditional_common import NeuralRegressor
-
-def build_model(seed=2026,**params):
-    return NeuralRegressor(**({'seed':seed,'balanced':True,'structured':True,'delta_weight':1.}|params))
+"""Compatibility entry; implementation: huangyaorong/models/interaction_conditional_model.py."""
+from pathlib import Path as _Path
+import sys as _sys
+_sys.path.insert(0, str(_Path(__file__).resolve().parents[1]))
+from src.ownership import execute as _execute
+_execute('src/models/interaction_conditional_model.py', globals())

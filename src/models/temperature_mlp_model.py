@@ -1,4 +1,6 @@
-"""Same MLP control with within-pair difference supervision."""
-from .conditional_common import NeuralRegressor
-
-def build_model(seed=2026,**params):return NeuralRegressor(**({'seed':seed,'delta_weight':1.}|params))
+"""Compatibility entry; implementation: huangyaorong/models/temperature_mlp_model.py."""
+from pathlib import Path as _Path
+import sys as _sys
+_sys.path.insert(0, str(_Path(__file__).resolve().parents[1]))
+from src.ownership import execute as _execute
+_execute('src/models/temperature_mlp_model.py', globals())

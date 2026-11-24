@@ -7,6 +7,7 @@ import json
 import numpy as np
 import pandas as pd
 from src.data import ROOT,load_data,development_splits
+from src.ownership import source_path
 from src.paths import model_path, normalize_frozen
 from src.metrics import regression_metrics
 
@@ -76,13 +77,13 @@ def main():
             archived=original_environment[source]
             assert hashlib.sha256(archived['content'].encode()).hexdigest()==sha==archived['sha256']
         else:
-            assert hashlib.sha256((ROOT/source).read_bytes()).hexdigest()==sha
+            assert hashlib.sha256(source_path(ROOT/source).read_bytes()).hexdigest()==sha
     for protocol_path in [OUT/'protocol.json',OUT/'tabpfn_nested/protocol.json']:
         if protocol_path.exists():
             protocol=normalize_frozen(json.loads(protocol_path.read_text()))
             for key in ['code_sha256','reused_input_sha256']:
                 for source,sha in protocol.get(key,{}).items():
-                    assert hashlib.sha256((ROOT/source).read_bytes()).hexdigest()==sha
+                    assert hashlib.sha256(source_path(ROOT/source).read_bytes()).hexdigest()==sha
     (OUT/'combined_checks.json').write_text(json.dumps(dict(status='passed',coverage=coverage,
         holdout_used=False,layout_migration_verified=True,
         reused_input_hashes_verified=True,frozen_protocol_inputs_verified=True,

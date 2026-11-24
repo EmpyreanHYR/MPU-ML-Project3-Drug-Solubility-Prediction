@@ -1,4 +1,6 @@
-from sklearn.pipeline import make_pipeline
-from sklearn.preprocessing import StandardScaler
-from sklearn.linear_model import Ridge
-def build_model(seed=2026,**params):return make_pipeline(StandardScaler(),Ridge(**({'alpha':10.0}|params)))
+"""Compatibility entry; implementation: songjiayun/models/ridge_model.py."""
+from pathlib import Path as _Path
+import sys as _sys
+_sys.path.insert(0, str(_Path(__file__).resolve().parents[1]))
+from src.ownership import execute as _execute
+_execute('src/models/ridge_model.py', globals())
