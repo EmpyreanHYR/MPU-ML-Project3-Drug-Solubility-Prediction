@@ -33,12 +33,20 @@ def associations():
  finish(fig,'v2_associations',['descriptor_spearman.csv'],'Development-set descriptor associations inform interaction design; correlations are descriptive.')
 
 def architecture():
- import subprocess
- source=ROOT/'Assignment_Report/figures/revision_v2/v2_architecture.drawio'
- subprocess.run(['/Applications/draw.io.app/Contents/MacOS/draw.io','--export','--format','pdf','--crop','--output',str(source.with_suffix('.pdf')),str(source)],check=True)
- import pymupdf
- document=pymupdf.open(source.with_suffix('.pdf'))
- document[0].get_pixmap(matrix=pymupdf.Matrix(2,2)).save(source.with_suffix('.png'))
+ fig,axs=canvas(columns=1,height_mm=105);ax=axs[0,0]
+ ax.set(xlim=(0,1),ylim=(0,1));ax.axis('off')
+ panel(ax,'a','SOLAR-H structure and temperature decomposition')
+ boxes=[(.08,.76,.84,.12,'Drug + solvent descriptors and interactions'),
+        (.06,.46,.41,.14,'ExtraTrees structural baseline\nb(z)'),
+        (.55,.46,.39,.14,'Within-pair temperature fit\ntau × u(z) beta'),
+        (.55,.23,.39,.12,'Inner-CV gain gamma'),
+        (.18,.03,.64,.12,'Prediction = baseline + gamma × temperature term')]
+ for x,y,w,h,label in boxes:
+  ax.add_patch(FancyBboxPatch((x,y),w,h,boxstyle='round,pad=.01',fc='#edf4ef',ec='#738981'))
+  ax.text(x+w/2,y+h/2,label,ha='center',va='center',fontsize=8)
+ for start,end in [((.28,.75),(.28,.61)),((.75,.75),(.75,.61)),((.75,.45),(.75,.36)),((.28,.45),(.28,.16)),((.75,.22),(.65,.16))]:
+  ax.add_patch(FancyArrowPatch(start,end,arrowstyle='->',mutation_scale=10,color='#738981'))
+ save_figure(fig,'v2_architecture',[],{'claim':'Structural baseline plus a damped within-pair temperature response.'})
 
 
 def comparison():

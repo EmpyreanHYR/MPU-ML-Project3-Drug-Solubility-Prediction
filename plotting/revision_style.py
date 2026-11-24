@@ -34,7 +34,7 @@ mpl.rcParams.update({
     "axes.unicode_minus": False,
 })
 COLORS = {"baseline": "#8A9299", "traditional": "#5D86A6", "modern": "#A48BBB", "selected": "#2E8E8B", "accent": "#CC9165"}
-FIGURES = ROOT / "Assignment_Report/figures/revision_v2"
+FIGURES = ROOT / "output/figures/revision_v2"
 QA = ROOT / ".cache/figure_qa/revision_v2"
 SOURCE = ROOT / ".cache/figure_source/revision_v2"
 for directory in (FIGURES, QA, SOURCE):

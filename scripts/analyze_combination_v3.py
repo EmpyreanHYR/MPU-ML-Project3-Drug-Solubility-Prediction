@@ -19,6 +19,19 @@ def dump(path, data):
     path.write_text(json.dumps(data, ensure_ascii=False, indent=2)+"\n")
 
 
+def read_predictions(folder):
+    """Accept complete fold exports from baselines as well as collected runs."""
+    path = folder / 'predictions.csv'
+    if path.exists():
+        return pd.read_csv(path)
+    files = [folder / f'fold_{fold}/predictions_{seed}.csv'
+             for fold in range(1, 6) for seed in (2026, 17, 42)]
+    missing = [str(path) for path in files if not path.is_file()]
+    if missing:
+        raise AssertionError(f"Incomplete experiment: {folder}; missing {missing}")
+    return pd.concat([pd.read_csv(path) for path in files], ignore_index=True)
+
+
 def main():
     df = load_data()
     dev = df.loc[df.role.eq("development")].reset_index(drop=True)
@@ -27,10 +40,7 @@ def main():
     coverage = []
     per_fold = []
     for folder in sorted((OUT/"nested").iterdir()):
-        path = folder/"predictions.csv"
-        if not path.exists():
-            raise AssertionError(f"Incomplete experiment: {folder}")
-        pred = pd.read_csv(path)
+        pred = read_predictions(folder)
         assert len(pred) == len(dev)*3
         assert pred[["seed","data_row"]].duplicated().sum() == 0
         assert np.isfinite(pred[["y","prediction"]]).all().all()

@@ -110,6 +110,8 @@ uv run --frozen python hehaoran/run.py launch_studio.py
 
 ## 实验复现与核验
 
+最近一次实际运行检查、修复内容及未验证范围见 [运行检查记录](tests/RUNTIME_CHECKS.md)。重新生成的图表写入 `output/figures/`。
+
 ### 1. 接口与互动教学测试
 
 ```bash
@@ -123,7 +125,7 @@ uv run --frozen python songjiayun/run.py run_revision.py                      # 
 uv run --frozen python huangyaorong/run.py run_adaptive_revision.py             # SOLAR-H 自适应分解模型
 bash scripts/reproduce.sh                                           # 丰富特征与第一轮融合实验
 bash scripts/reproduce_tabpfn.sh                                    # TabPFN v2 与异质融合实验
-PYTHONPATH=. uv run --frozen python songjiayun/run.py run_baselines.py --model all  # 常规回归基线 (RF / Ridge / RbfSVR)
+PYTHONPATH=. uv run --frozen python songjiayun/run.py run_baselines.py  # 常规回归基线 (RF / Ridge / RbfSVR)
 uv run --frozen python scripts/evaluate_test_set.py                 # 独立保留测试集 (397 条) 单次评估
 uv run --frozen python plotting/eda_revision.py                     # 数据分布与探索性分析图
 uv run --frozen python plotting/revision_figures.py                 # V1 报告配图生成

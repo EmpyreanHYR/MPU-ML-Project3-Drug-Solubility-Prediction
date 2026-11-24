@@ -11,14 +11,15 @@ Outputs are written to output/combination_v3/test_set/.
 from pathlib import Path
 import json
 import os
+import sys
 
 import joblib
 import numpy as np
 import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[1]
-DATA = ROOT / "datasets/data_2026.csv"
-SPLIT = ROOT / "datasets/splits/split_manifest.csv"
+sys.path.insert(0, str(ROOT))
+from src.data import load_data
 CKPT = ROOT / "models/combination_v3/tabpfn_probe/tabpfn-v2-regressor.ckpt"
 OUT = ROOT / "output/combination_v3/test_set"
 MODELS = {
@@ -63,10 +64,7 @@ def prepare_model(model):
 
 
 def main():
-    data = pd.read_csv(DATA, encoding="utf-8-sig")
-    data["data_row"] = np.arange(1, len(data) + 1)
-    split = pd.read_csv(SPLIT)
-    test = data.merge(split, on="data_row", how="inner", validate="one_to_one")
+    test = load_data()
     test = test[test["role"] == "reserved_holdout_unscored"].reset_index(drop=True)
     if len(test) != 397 or test["parent_group_id"].nunique() != 33:
         raise RuntimeError(f"unexpected test split: {len(test)} rows, {test['parent_group_id'].nunique()} parents")

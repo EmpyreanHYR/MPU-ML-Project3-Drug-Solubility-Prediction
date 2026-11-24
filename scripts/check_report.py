@@ -1,6 +1,6 @@
 """Render the compiled report and record text/layout checks; no model fitting."""
 from pathlib import Path
-import hashlib
+import argparse
 import json
 import re
 
@@ -8,7 +8,11 @@ import pymupdf
 from PIL import Image, ImageDraw
 
 ROOT = Path(__file__).resolve().parents[1]
-pdf = ROOT / 'Assignment_Report/Assignment-main.pdf'
+parser = argparse.ArgumentParser(description=__doc__)
+parser.add_argument('--pdf', type=Path, default=ROOT / 'Report_final/COMP6133_GroupReport_Group08.pdf')
+parser.add_argument('--log', type=Path, help='Optional LaTeX build log for archived source checks')
+args = parser.parse_args()
+pdf = args.pdf.resolve()
 out = ROOT / '.cache/report_qa'
 out.mkdir(parents=True, exist_ok=True)
 doc = pymupdf.open(pdf)
@@ -34,9 +38,9 @@ for start in range(0, len(thumbs), 6):
     for j, thumb in enumerate(thumbs[start:start+6]):
         panel.paste(thumb, ((j%3)*470, (j//3)*672))
     panel.save(out / f'contact_{start+1:02d}_{min(start+6,len(thumbs)):02d}.jpg', quality=90)
-log = (ROOT / 'Assignment_Report/Assignment-main.log').read_text(errors='replace')
+log = args.log.read_text(errors='replace') if args.log else ''
 issues = re.findall(r'^.*(?:Overfull|Missing character|undefined references|undefined citations|Citation .* undefined|Reference .* undefined).*$', log, re.MULTILINE)
-result = {'pdf': str(pdf.relative_to(ROOT)), 'sha256': hashlib.sha256(pdf.read_bytes()).hexdigest(),
+result = {'pdf': str(pdf), 'latex_log_checked': args.log is not None,
           'page_count': len(doc), 'pages': pages, 'latex_issues': issues,
           'visual_review': 'Review the rendered contact sheets and full pages before delivery.'}
 (out / 'report_checks.json').write_text(json.dumps(result, ensure_ascii=False, indent=2)+'\n')
