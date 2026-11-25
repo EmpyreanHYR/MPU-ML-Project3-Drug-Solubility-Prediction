@@ -120,3 +120,38 @@ dialog::backdrop { background: #17343bbd; }
   }
   .slide:not(.cover-slide) > * { flex-shrink: 0; }
 }
+
+/* Four presenter units: complete content remains visible in print. */
+.unit-agenda { display:grid; grid-template-columns:1fr 1fr; gap:24px 40px; margin:22px 0; }
+.unit-agenda > a { display:flex; gap:20px; padding:18px 0; border-top:1px solid var(--line); text-decoration:none; color:inherit; }
+.unit-agenda b { font-size:40px; color:var(--teal); line-height:1; }
+.unit-agenda h3 { font-size:25px; margin:0 0 9px; }
+.unit-agenda p { font-size:19px; margin:0 0 9px; }
+.unit-agenda span { font-size:16px; color:#49616a; }
+.unit-divider { display:grid; grid-template-columns:190px 1fr; align-items:center; gap:48px; margin:65px 0; }
+.unit-numeral { font-size:140px; line-height:1; color:var(--teal); font-weight:700; border-right:1px solid var(--line); }
+.unit-divider h2 { font-size:49px; margin-bottom:24px; }
+.unit-divider .lead { font-size:27px; }
+.unit-deliverable { font-size:21px; color:#49616a; margin-top:26px; }
+.slide-speaker {
+  position: absolute;
+  right: 46px;
+  bottom: 10px;
+  margin: 0;
+  color: #344e58;
+  font-size: 16px;
+  font-weight: 650;
+  line-height: 1.25;
+  text-align: right;
+}
+.closing-slide .slide-speaker { font-size: 16px; margin: 0; }
+@media screen {
+  .slide:not(.cover-slide) { padding-bottom: 36px; }
+}
+@media print {
+  .slide .slide-speaker {
+    bottom: 14px;
+    z-index: 1;
+    color: #edf7f5;
+  }
+}
