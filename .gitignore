@@ -69,6 +69,7 @@ __pycache__/
 !/output/**/
 !/output/**/*.csv
 !/output/**/*.json
+!/output/**/*.txt
 !/output/**/README.md
 /output/playwright/
 /output/**/figure_qa/
