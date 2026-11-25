@@ -1,26 +1,23 @@
 # hehaoran：SOLAR Studio 应用开发
 
-将整个 `hehaoran/` 文件夹上传至仓库根目录，保持内部层级。依赖完整项目中的公共代码、数据、模型和其他成员模块，不是可单独运行的独立项目。
+SOLAR Studio v5.0 的 FastAPI 后端、前端静态资源与启动器。应用加载根目录 `models/` 中的 14 个部署模型，提供单点预测、双模型对照、多溶剂变温探索、全溶剂高通量筛选、批量 CSV 推断与证据看板。
 
-本目录保存唯一的实际实现，原位置的同名文件已删除。已有权重中的历史模块名通过公共加载器解析，不依赖原位置文件。后续修改本目录中的代码。
+## 目录内容
 
-## 文件对应关系
-
-| 原位置（已删除） | 当前实现（仓库根目录相对路径） |
+| 路径 | 内容 |
 |---|---|
-| `webapp/server.py` | `hehaoran/webapp/server.py` |
-| `scripts/launch_studio.py` | `hehaoran/launch_studio.py` |
-
-前端完整目录：`hehaoran/webapp/static/`。
+| `webapp/server.py` | FastAPI 应用、预测与筛选接口、适用域与归因服务 |
+| `webapp/static/` | `01 Point Prediction` 等五个工作台的前端页面与脚本 |
+| `launch_studio.py` | 启动器：就绪检查、端口选择与浏览器打开 |
+| `run.py` | 统一入口，按脚本名分发并统一模块名与资源路径 |
 
 ## 运行
 
-在仓库根目录通过统一入口执行，参数透传给原脚本：
+在仓库根目录执行：
 
 ```bash
+uv sync --frozen
 uv run --frozen python hehaoran/run.py launch_studio.py
 ```
 
-使用项目 README 中更新后的命令。训练请通过本目录的 `run.py` 运行，以保持已保存模型的模块名和资源路径一致。
-
-数据仍位于根目录 `datasets/`，实验结果仍写入根目录 `output/`，权重仍写入根目录 `models/`，测试保留于根目录 `tests/`。
+默认访问 <http://127.0.0.1:8502/>；也可直接双击根目录的 `启动Studio.command`（macOS）或 `启动Studio.bat`（Windows）。若 8502 已被旧进程或其他服务占用，启动器会自动换到下一个空闲端口并打印实际地址；要回到 8502，先关掉占用它的窗口（macOS 可用 `lsof -ti tcp:8502 | xargs kill`）。数据位于根目录 `datasets/`，模型权重位于 `models/`，测试位于 `tests/`。

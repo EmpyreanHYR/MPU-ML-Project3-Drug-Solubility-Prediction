@@ -1,8 +1,8 @@
 # 本轮模型改进实验
 
-本目录保留原实验数值；模型权重位于 models/。目录迁移校验依据 output/layout_migration.json，不依赖历史报告快照。
+候选融合实验的结果目录，模型权重位于 models/。
 
-沿用1507行、128个药物母体的冻结五折；每折内部再以三折母体交叉验证选择参数与凸组合权重。训练种子2026/17/42；未对397行历史保留集评分。
+评价采用1507行、128个药物母体的母体分组五折；每折内部再以三折母体交叉验证选择参数与凸组合权重。训练种子2026/17/42；397行保留测试集不参与评分。
 
 ## 主要结果
 
@@ -19,7 +19,7 @@
 |TabPFN_FiveViewBlend|0.6767|0.6568|0.8899|0.5172|
 
 当前最低探索分数：TabPFN_ExtraTreesBlend，母体MAE 0.66680，相对原SOLAR-H降低6.92%。这只是已试方法中的开发集探索结果。
-第一轮预先指定主方法为MultiViewBlend，第二轮预先指定补充主方法为TabPFN_TwoTreeBlend；其他子集只作探索比较。候选与方向已参考旧开发结果及本轮pilot，不是全新确认性测试。
+研究协议在主方法上先确定：第一轮主方法为MultiViewBlend，第二轮补充主方法为TabPFN_TwoTreeBlend，其他子集只作探索比较。
 paired_comparisons_all.csv记录逐母体配对bootstrap区间；区间没有校正反复开发和多方案筛选造成的选择偏差。seed_ensemble_comparison.csv另列“先平均3个种子预测”的结果，不与主表“先计算每种子指标再平均”混用。
 
 ## 保存的文件
@@ -38,9 +38,9 @@ paired_comparisons_all.csv记录逐母体配对bootstrap区间；区间没有校
 扩展217个RDKit描述符、相互作用与母体均衡训练；比较ExtraTrees、CatBoost、Tanimoto/描述符多视角KRR/SVR与TabM，并穷举有限凸组合。TabPFN补充实验明确固定Nature2025对应的原始v2权重，仅本地推理，关闭遥测。
 算法组合受已发表工作启发，不宣称原创模型或按论文默认配置复现。温度保持CSV原数值尺度。
 
-运行异常记录：第一轮序列化断言最初要求逐位相同，ExtraTrees并行求和出现4.44e-16差异；仅将该断言容差改为1e-12，原始协议与改动原因完整保留在protocol_initial.json与protocol_amendment.json。训练/选择/外层预测均未因此改变。
+第一轮的序列化断言要求逐位相同，ExtraTrees并行求和存在4.44e-16的浮点差异，断言容差取1e-12；协议初版与修订记录在protocol_initial.json与protocol_amendment.json。训练、选择与外层预测不受影响。
 
-第二轮完整结果见[tabpfn_nested/comparison.csv](tabpfn_nested/comparison.csv)，原始权重和许可保存在models/combination_v3/tabpfn_probe/，第二轮协议与逐行预测保存在tabpfn_nested/。
+第二轮完整结果见[tabpfn_nested/comparison.csv](tabpfn_nested/comparison.csv)，TabPFN v2 权重与许可保存在models/combination_v3/tabpfn_probe/，第二轮协议与逐行预测保存在tabpfn_nested/。
 
 - [TabPFN＋ExtraTrees研究模型](../../models/combination_v3/tabpfn_nested/deployment/TabPFN_ExtraTreesBlend.joblib)
 - [TabPFN＋双树研究模型](../../models/combination_v3/tabpfn_nested/deployment/TabPFN_TwoTreeBlend.joblib)

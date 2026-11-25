@@ -1,30 +1,24 @@
-# huangyaorong：方法一：SOLAR-H 及结构—温度分解消融
+# huangyaorong：SOLAR-H 及结构—温度分解消融
 
-将整个 `huangyaorong/` 文件夹上传至仓库根目录，保持内部层级。依赖完整项目中的公共代码、数据、模型和其他成员模块，不是可单独运行的独立项目。
+SOLAR-H 结构--温度分解模型及其消融对照的实现。模型把条件对数溶解度解耦为结构基线与结构调制的温度响应，梯度增益由内层嵌套验证选定。代码依赖仓库根目录的公共数据、特征与指标工具，通过本目录的 `run.py` 统一入口调用。
 
-本目录保存唯一的实际实现，原位置的同名文件已删除。已有权重中的历史模块名通过公共加载器解析，不依赖原位置文件。后续修改本目录中的代码。
+## 目录内容
 
-## 文件对应关系
-
-| 原位置（已删除） | 当前实现（仓库根目录相对路径） |
+| 路径 | 内容 |
 |---|---|
-| `src/models/temperature_mlp_model.py` | `huangyaorong/models/temperature_mlp_model.py` |
-| `src/models/interaction_conditional_model.py` | `huangyaorong/models/interaction_conditional_model.py` |
-| `src/models/plain_mlp_model.py` | `huangyaorong/models/plain_mlp_model.py` |
-| `src/models/hybrid_conditional_model.py` | `huangyaorong/models/hybrid_conditional_model.py` |
-| `src/models/conditional_common.py` | `huangyaorong/models/conditional_common.py` |
-| `src/revision_models/adaptive_hybrid_model.py` | `huangyaorong/revision_models/adaptive_hybrid_model.py` |
-| `scripts/run_adaptive_revision.py` | `huangyaorong/run_adaptive_revision.py` |
-| `scripts/revision_diagnostics.py` | `huangyaorong/revision_diagnostics.py` |
+| `models/` | 温度 MLP、条件交互模型、普通 MLP、混合条件模型与公共条件建模组件 |
+| `revision_models/` | 自适应混合模型（SOLAR-H） |
+| `run_adaptive_revision.py` | SOLAR-H 的训练、消融与评测 |
+| `revision_diagnostics.py` | 分解项与温度响应诊断 |
+| `run.py` | 统一入口，按脚本名分发并统一模块名与资源路径 |
 
 ## 运行
 
-在仓库根目录通过统一入口执行，参数透传给原脚本：
+在仓库根目录执行，参数透传给对应脚本：
 
 ```bash
 uv run --frozen python huangyaorong/run.py run_adaptive_revision.py
+uv run --frozen python huangyaorong/run.py revision_diagnostics.py
 ```
 
-使用项目 README 中更新后的命令。训练请通过本目录的 `run.py` 运行，以保持已保存模型的模块名和资源路径一致。
-
-数据仍位于根目录 `datasets/`，实验结果仍写入根目录 `output/`，权重仍写入根目录 `models/`，测试保留于根目录 `tests/`。
+训练通过本目录的 `run.py` 运行，已保存模型的模块名与资源路径才能正确解析。数据位于根目录 `datasets/`，实验结果写入 `output/`，权重写入 `models/`，测试位于 `tests/`。

@@ -24,11 +24,11 @@ uv sync --frozen
 uv run --frozen python -X utf8 presentation/launch.py
 ```
 
-启动器打开 `http://127.0.0.1:8502/presentation/`。保持服务运行，在视频页点击 Open Local SOLAR Studio 打开真实系统。CPU 推理可能慢于原录屏，课堂时间预算使用附带的完整视频。
+启动器打开 `http://127.0.0.1:8502/presentation/`。保持服务运行，在视频页点击 Open Local SOLAR Studio 打开真实系统。课堂时间预算以附带的完整视频为准。
 
 ## 数值与来源
 
-[来源映射](notes/source-map.md) 对应最终报告 `Report_final/`、冻结结果文件与 `output/revision_v2/manifest.json` 中的历史快照（旧报告源码已归档到仓库外 `../旧文件备份/`）。模型及实验文件保持原样。
+[来源映射](notes/source-map.md) 列出每页幻灯片对应的最终报告章节、结果文件与 `output/revision_v2/manifest.json` 中的数值。
 
 - 模型雷达：全部 13 种方案确定归一化边界，展示基础树、SOLAR-H、丰富树、TabPFN 和主融合。误差轴反转，越外越优，1 表示这组基准中最优的观测值。
 - 分层误差雷达：直接绘制原始 row MAE，越内越优；侧表同时提供两个模型的全部四段数值。

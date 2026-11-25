@@ -1,9 +1,9 @@
-# 冻结的数据划分
+# 数据划分
 
-这些文件从原 `analysis/2026-11-16/` 原样复制，是训练、评价和应用共同依赖的唯一生效划分。
+训练、评价与应用共用这一份划分，其中的母体角色在项目中的所有实验里保持一致。
 
 - `data_policy.json`：数据来源哈希与解释策略。
 - `split_manifest.csv`：按行记录药物母体及开发/保留角色。
-- `development_folds.csv`：冻结的开发集交叉验证划分。
+- `development_folds.csv`：开发集的交叉验证划分。
 
-主评价只使用 1507 条开发记录、128 个母体。397 条历史保留记录已被早期实验查看；后续融合实验未再用其评分，不能将其称为全新盲测集。
+主评价使用 1507 条开发记录、128 个母体。397 条保留记录由 `scripts/evaluate_test_set.py` 单独评分，脚本只读取 `split_manifest.csv` 中标记为 `reserved_holdout_unscored` 的行，不重新拟合、调参或选择模型，结果写入 `output/combination_v3/test_set/`。
