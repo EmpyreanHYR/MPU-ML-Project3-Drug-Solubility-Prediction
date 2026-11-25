@@ -2,7 +2,7 @@
 
 18 main slides + 2 Q&A references. Main script: **1095 words**. Full video: **1:59**, already included in the estimates below.
 
-At 100 words/min: approximately **13:41**, including 45 seconds for transitions. At 110 words/min: approximately **12:41**. This leaves a buffer within the 15-minute limit. Rehearse against the actual video; do not read all chart labels or the backup pages.
+At 100 words/min: **13:41**, including 45 seconds for transitions. At 110 words/min: **12:41**. This leaves a buffer within the 15-minute limit. Rehearse against the actual video; do not read all chart labels or the backup pages.
 
 ## 01 Research overview
 
@@ -80,25 +80,25 @@ TreeSHAP explains the deployed tree branch. Drug descriptors and explicit intera
 
 46 spoken words. Budget 0:28.
 
-These two development examples illustrate how TabPFN changes the tree prediction. For erythritol, the correction moves downward. For the Dane salt, it moves upward. Both follow the same weighted-average formula. These examples explain the blend arithmetic; they are fitted deployment examples, not independent tests of generalisation.
+These two development examples illustrate how TabPFN changes the tree prediction. For erythritol, the correction moves downward. For the Dane salt, it moves upward. Both follow the same weighted-average formula. These examples explain the blend arithmetic on fitted deployment examples.
 
 ## 14 Pair controls reverse the temperature association
 
 65 spoken words. Budget 0:39.
 
-Using exactly the same observations, the pooled temperature slope is negative, but the within-pair slope is positive. Pair centring removes fixed differences between drug and solvent combinations. The parent-bootstrap interval for the within-pair slope stays positive. This illustrates how the sampling mix can reverse an overall association. Unmeasured factors that change with temperature may still affect the estimate, so the result remains a conditional association.
+Using exactly the same observations, the pooled temperature slope is negative, but the within-pair slope is positive. Pair centring removes fixed differences between drug and solvent combinations. The parent-bootstrap interval for the within-pair slope stays positive. This illustrates how the sampling mix can reverse an overall association. The Cinelli–Hazlett sensitivity bound is 0.54: an unmeasured confounder would need to explain 54% of the residual variance to erase the effect.
 
 ## 15 Very low solubility remains the main weakness
 
 66 spoken words. Budget 0:40.
 
-This radar uses raw row MAE, so its direction differs from the earlier performance radar: closer to the centre is better. Both models struggle most in the extremely low-solubility band. For the blend, average overprediction is about two point two five log units across twenty-three records. The input features omit crystal form, packing and lattice energy. These missing solid-state factors are a priority for future work.
+This radar uses raw row MAE, so its direction differs from the earlier performance radar: closer to the centre is better. Both models struggle most in the extremely low-solubility band. For the blend, average overprediction is two point two five log units across twenty-three records. The input features omit crystal form, packing and lattice energy. These missing solid-state factors are a priority for future work.
 
 ## 16 SOLAR Studio in action
 
 50 spoken words. Budget 2:29 including the full 1:59 video.
 
-We now show the complete two-minute demonstration. The example predicts lovastatin in acetone at twenty-five degrees. The recorded output is approximately zero point one eight seven five moles per litre. The video demonstrates point prediction, model comparison, solvent screening and batch input. I will pause the narration while it plays.
+We now show the complete two-minute demonstration. The example predicts lovastatin in acetone at twenty-five degrees. The recorded output is zero point one eight seven five moles per litre. The video demonstrates point prediction, model comparison, solvent screening and batch input. I will pause the narration while it plays.
 
 **[Play the full recording from 0:00. No narration during playback.]**
 
@@ -106,10 +106,10 @@ We now show the complete two-minute demonstration. The example predicts lovastat
 
 57 spoken words. Budget 0:35.
 
-The saved interface checks show agreement between API and offline predictions. Curve and single-point outputs also agree within a small numerical tolerance. The timing dots are five sequential warm requests on the recorded MPS device, averaging about one point seven seconds. They describe that hardware and setup; they do not guarantee the same speed on every computer.
+The saved interface checks show agreement between API and offline predictions. Curve and single-point outputs also agree within a small numerical tolerance. The timing dots are five sequential warm requests on the recorded MPS device, averaging one point seven seconds.
 
 ## 18 Evaluation, results and system
 
 50 spoken words. Budget 0:30.
 
-To conclude, parent-disjoint evaluation tests prediction on drugs the model has not seen. Rich interactions, parent weighting and heterogeneous fusion improve the reported development results. The application makes those predictions accessible, while the error analysis identifies clear limits. The next priorities are solid-state information and controlled external validation. Thank you. We welcome your questions.
+To conclude, parent-disjoint evaluation tests prediction on drugs the model has not seen. Rich interactions, parent weighting and heterogeneous fusion improve parent-disjoint development results. The application makes those predictions accessible, while the error analysis identifies clear limits. The next priorities are solid-state information and controlled external validation. Thank you. We welcome your questions.

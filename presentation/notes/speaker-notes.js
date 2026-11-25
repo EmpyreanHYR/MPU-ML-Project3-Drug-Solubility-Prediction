@@ -49,27 +49,27 @@ const SOLAR_NOTES = {
   },
   "calibration": {
     "time": "0:28",
-    "body": "These two development examples illustrate how TabPFN changes the tree prediction. For erythritol, the correction moves downward. For the Dane salt, it moves upward. Both follow the same weighted-average formula. These examples explain the blend arithmetic; they are fitted deployment examples, not independent tests of generalisation."
+    "body": "These two development examples illustrate how TabPFN changes the tree prediction. For erythritol, the correction moves downward. For the Dane salt, it moves upward. Both follow the same weighted-average formula. These examples explain the blend arithmetic on fitted deployment examples."
   },
   "temperature": {
     "time": "0:39",
-    "body": "Using exactly the same observations, the pooled temperature slope is negative, but the within-pair slope is positive. Pair centring removes fixed differences between drug and solvent combinations. The parent-bootstrap interval for the within-pair slope stays positive. This illustrates how the sampling mix can reverse an overall association. Unmeasured factors that change with temperature may still affect the estimate, so the result remains a conditional association."
+    "body": "Using exactly the same observations, the pooled temperature slope is negative, but the within-pair slope is positive. Pair centring removes fixed differences between drug and solvent combinations. The parent-bootstrap interval for the within-pair slope stays positive. This illustrates how the sampling mix can reverse an overall association. The Cinelli–Hazlett sensitivity bound is 0.54: an unmeasured confounder would need to explain 54% of the residual variance to erase the effect."
   },
   "error-bands": {
     "time": "0:40",
-    "body": "This radar uses raw row MAE, so its direction differs from the earlier performance radar: closer to the centre is better. Both models struggle most in the extremely low-solubility band. For the blend, average overprediction is about two point two five log units across twenty-three records. The input features omit crystal form, packing and lattice energy. These missing solid-state factors are a priority for future work."
+    "body": "This radar uses raw row MAE, so its direction differs from the earlier performance radar: closer to the centre is better. Both models struggle most in the extremely low-solubility band. For the blend, average overprediction is two point two five log units across twenty-three records. The input features omit crystal form, packing and lattice energy. These missing solid-state factors are a priority for future work."
   },
   "studio": {
     "time": "2:29",
-    "body": "We now show the complete two-minute demonstration. The example predicts lovastatin in acetone at twenty-five degrees. The recorded output is approximately zero point one eight seven five moles per litre. The video demonstrates point prediction, model comparison, solvent screening and batch input. I will pause the narration while it plays."
+    "body": "We now show the complete two-minute demonstration. The example predicts lovastatin in acetone at twenty-five degrees. The recorded output is zero point one eight seven five moles per litre. The video demonstrates point prediction, model comparison, solvent screening and batch input. I will pause the narration while it plays."
   },
   "application-check": {
     "time": "0:35",
-    "body": "The saved interface checks show agreement between API and offline predictions. Curve and single-point outputs also agree within a small numerical tolerance. The timing dots are five sequential warm requests on the recorded MPS device, averaging about one point seven seconds. They describe that hardware and setup; they do not guarantee the same speed on every computer."
+    "body": "The saved interface checks show agreement between API and offline predictions. Curve and single-point outputs also agree within a small numerical tolerance. The timing dots are five sequential warm requests on the recorded MPS device, averaging one point seven seconds."
   },
   "conclusion": {
     "time": "0:30",
-    "body": "To conclude, parent-disjoint evaluation makes the prediction task meaningful. Rich interactions, parent weighting and heterogeneous fusion improve the reported development results. The application makes those predictions accessible, while the error analysis identifies clear limits. The next priorities are solid-state information and controlled external validation. Thank you. We welcome your questions."
+    "body": "To conclude, parent-disjoint evaluation makes the prediction task meaningful. Rich interactions, parent weighting and heterogeneous fusion improve parent-disjoint development results. The application makes those predictions accessible, while the error analysis identifies clear limits. The next priorities are solid-state information and controlled external validation. Thank you. We welcome your questions."
   },
   "backup-models": {
     "time": "Q&A",
