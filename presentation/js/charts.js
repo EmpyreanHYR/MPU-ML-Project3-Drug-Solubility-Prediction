@@ -170,7 +170,7 @@
   function metrics() {
     modelRadar();
     const tbody=document.querySelector('#full-results tbody');
-    SOLAR_BENCHMARK.forEach(r=>{const tr=document.createElement('tr');tr.dataset.model=r.id;if(r.id==='fusion')tr.className='is-winner';tr.innerHTML=`<th scope="row">${esc(r.name)}</th>${r.values.map(v=>`<td>${v}</td>`).join('')}`;tbody.append(tr);});
+    if (tbody) SOLAR_BENCHMARK.forEach(r=>{const tr=document.createElement('tr');tr.dataset.model=r.id;if(r.id==='fusion')tr.className='is-winner';tr.innerHTML=`<th scope="row">${esc(r.name)}</th>${r.values.map(v=>`<td>${v}</td>`).join('')}`;tbody.append(tr);});
     bars('shap-chart',Object.entries(D.explanations.mean_abs_group_attribution).sort((a,b)=>b[1]-a[1]).map(([k,v])=>({label:{Drug:'Drug descriptors',Interactions:'Pair interactions',Solvent:'Solvent descriptors',Temperature:'Temperature'}[k],value:v})),.5,760,320,'Mean absolute net attribution (log₁₀ units)');
   }
   function stages() {

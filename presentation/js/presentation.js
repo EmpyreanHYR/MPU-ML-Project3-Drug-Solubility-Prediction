@@ -1,6 +1,5 @@
 const deck = document.querySelector('#deck');
 const slides = [...document.querySelectorAll('.slide')];
-const mainCount = slides.filter(slide => !slide.classList.contains('backup')).length;
 const contents = document.querySelector('#contents-dialog');
 const zoom = document.querySelector('#zoom-dialog');
 const video = document.querySelector('#demo-video');
@@ -13,7 +12,6 @@ const fullscreen = document.querySelector('#fullscreen-button');
 const pad = value => String(value).padStart(2, '0');
 let active = 0;
 let notesWindow;
-let lastMain = 0;
 let enteringVideoFullscreen = false;
 
 function fitDeck() {
@@ -23,7 +21,6 @@ function fitDeck() {
 }
 
 function showSlide(index, writeHash = true) {
-  const main = index < mainCount;
   if (index !== active && slides[active].id === 'studio') {
     video.pause();
     exitVideoFullscreen();
@@ -32,16 +29,14 @@ function showSlide(index, writeHash = true) {
   active = index;
   const slide = slides[active];
   slide.hidden = false;
-  if (main) lastMain = active;
 
   const hash = '#' + slide.id;
   if (writeHash && location.hash !== hash) history.pushState(null, '', hash);
-  const first = main ? 0 : mainCount;
-  const total = main ? mainCount : slides.length - mainCount;
-  const number = active - first + 1;
-  previous.disabled = active === first;
+  const total = slides.length;
+  const number = active + 1;
+  previous.disabled = active === 0;
   next.disabled = number === total;
-  const label = (main ? '' : 'Q&A ') + pad(number) + ' / ' + total;
+  const label = pad(number) + ' / ' + total;
   document.querySelector('#page-count').textContent = label;
   progress.setAttribute('aria-valuemax', total);
   progress.setAttribute('aria-valuenow', number);
@@ -98,9 +93,8 @@ slides.forEach((slide, index) => {
   const button = document.createElement('button');
   button.type = 'button';
   button.dataset.jump = slide.id;
-  const label = index < mainCount ? pad(index + 1) : 'Backup ' + 'ABC'[index - mainCount];
-  button.textContent = label + ' · ' + slide.dataset.title;
-  if (index >= mainCount) button.classList.add('backup-entry');
+  const label = pad(index + 1);
+  button.textContent = label + ' · ' + (slide.dataset.unit ? 'Unit ' + slide.dataset.unit + ' / ' : '') + slide.dataset.title;
   contentsList.append(button);
 });
 
@@ -211,10 +205,9 @@ document.addEventListener('keydown', event => {
     ArrowRight: () => step(1),
     ' ': () => step(event.shiftKey ? -1 : 1),
     Home: () => showSlide(0),
-    End: () => showSlide(mainCount - 1),
+    End: () => showSlide(slides.length - 1),
     n: toggleNotes,
-    f: toggleFullscreen,
-    b: () => showSlide(active < mainCount ? mainCount : lastMain)
+    f: toggleFullscreen
   };
   const action = key.length === 1 ? key.toLowerCase() : key;
   if (Object.hasOwn(actions, action)) {
