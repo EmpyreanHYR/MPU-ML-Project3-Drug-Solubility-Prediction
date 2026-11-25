@@ -10,12 +10,12 @@ elif command -v uv >/dev/null 2>&1; then
 else
   echo "Cannot find the project Python environment or uv."
   echo "Install uv, then run: uv sync --frozen"
-  read -r -p "Press Enter to close..."
+  printf "Press Enter to close..."; read -r _
   exit 1
 fi
 result=$?
 if [ "$result" -ne 0 ] && [ "$result" -ne 130 ]; then
   echo "Studio could not start. See the error above."
-  read -r -p "Press Enter to close..."
+  printf "Press Enter to close..."; read -r _
 fi
 exit "$result"
