@@ -3,7 +3,6 @@
   "decision_date": "2026-11-16",
   "authorization": "User confirmed no additional metadata is available; proceed using CSV alone.",
   "source": "datasets/data_2026.csv",
-  "source_sha256": "5cf4cecfb556dba5fe10d57ffebe337090cdee07cca6327ec7375cf84c79290d",
   "primary_analysis_rows": 1904,
   "temperature": {
     "input": "original numeric values",

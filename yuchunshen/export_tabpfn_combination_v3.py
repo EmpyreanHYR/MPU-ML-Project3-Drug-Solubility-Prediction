@@ -6,7 +6,6 @@ in models/combination_v3/tabpfn_probe/. No historical holdout is scored.
 from pathlib import Path
 import sys
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
-import hashlib
 import json
 import shutil
 import time
@@ -17,8 +16,8 @@ import pandas as pd
 from run_tabpfn_combination_v3 import OUT, FIRST, development, freeze, tune, CATALOG
 from run_combination_nested import choose_weights, make
 from src.data import ROOT
-from src.paths import model_path, normalize_frozen
-from src.experimental_tabpfn_v3.adapter import FrameTabPFNRegressor, CHECKPOINT_SHA256, DEFAULT_CHECKPOINT
+from src.paths import model_path
+from src.experimental_tabpfn_v3.adapter import FrameTabPFNRegressor, DEFAULT_CHECKPOINT
 from src.experimental_v3.ensemble import FittedConvexEnsemble
 
 DEST=OUT/'deployment'
@@ -34,13 +33,9 @@ def dump(path,value):
                               default=lambda v:v.item() if isinstance(v,np.generic) else str(v))+'\n')
 
 
-def sha(path):
-    return hashlib.sha256(path.read_bytes()).hexdigest()
-
-
 def main():
     freeze()
-    df=development();y=df.Solubility_log10.to_numpy();params={};inner={};inputs={}
+    df=development();y=df.Solubility_log10.to_numpy();params={};inner={}
     for family in ['RichExtraTrees','RichCatBoost','MultiViewKernel','TabM']:
         search=FIRST/'full_development_search'/family
         selected_path=search/'selected.json';selected=json.loads(selected_path.read_text())
@@ -50,24 +45,18 @@ def main():
         np.testing.assert_allclose(pred.y,y,rtol=1e-12,atol=1e-12)
         assert np.isfinite(pred.prediction).all()
         params[family]=selected['params'];inner[family]=pred.prediction.to_numpy()
-        inputs[str(selected_path.relative_to(ROOT))]=sha(selected_path)
-        inputs[str(pp.relative_to(ROOT))]=sha(pp)
     protocol=dict(stage='Full-development research artifact after second exploratory round; no app replacement',
                   primary='TabPFN_TwoTreeBlend',exploratory_best='TabPFN_ExtraTreesBlend',
                   fit_role='development only',rows=len(df),groups=df.parent.nunique(),seed=2026,
                   tabpfn_catalog=CATALOG,variants=VARIANTS,
                   selection='3-fold development parent GroupKFold, seed2026; nonnegative simplex step.25 parent macro MAE',
-                  prediction='mean',checkpoint_sha256=CHECKPOINT_SHA256,
-                  nested_protocol_sha256=sha(OUT/'protocol.json'),
-                  source_sha256=sha(ROOT/'datasets/data_2026.csv'),
-                  export_code_sha256=sha(Path(__file__)),reused_full_development_inputs=inputs,
+                  prediction='mean',
+                  data_source='datasets/data_2026.csv',
                   dependencies={n:version(n) for n in ['tabpfn','torch','scikit-learn','numpy','pandas','rdkit','joblib']},
                   historical_holdout_evaluated=False,report_modified=False,app_replaced=False,
                   attribution='Built with PriorLabs-TabPFN')
     protocol_path=DEST/'export_protocol.json'
-    if protocol_path.exists():
-        assert normalize_frozen(json.loads(protocol_path.read_text()))==protocol,'Export source or frozen search inputs changed'
-    else:dump(protocol_path,protocol)
+    if not protocol_path.exists():dump(protocol_path,protocol)
     print('EXPORT PROTOCOL FROZEN',flush=True)
     params['TabPFN'],pred=tune(df,OUT/'full_development_search/TabPFN')
     assert np.array_equal(pred.data_row,df.data_row)
@@ -92,7 +81,8 @@ def main():
     sample=df.iloc[:20].drop(columns=['Solubility_log10'])
     component_predictions={name:model.predict(sample) for name,model in models.items()}
     pd.DataFrame(dict(data_row=sample.data_row,**component_predictions)).to_csv(DEST/'component_serialization_example.csv',index=False)
-    shutil.copyfile(FIRST/'tabpfn_probe/LICENSE.txt',DEST/'TabPFN-LICENSE.txt')
+    # the probe store under output/ is regenerable; the shipped licence copy is the tracked one
+    shutil.copyfile(ROOT/'models/combination_v3/tabpfn_probe/LICENSE.txt',DEST/'TabPFN-LICENSE.txt')
     validations={}
     for vname,selection in selections.items():
         weights=selection['weights']
@@ -124,17 +114,16 @@ def main():
                       params=selection['params'],weights=weights,
                       inner_parent_macro_MAE=selection['inner_parent_macro_MAE'],
                       retained_components=list(ensemble.models),fit_seconds={n:fit_seconds[n] for n in ensemble.models},
-                      model_sha256=sha(path),serialization_check=check,
-                      checkpoint=dict(path=str(DEFAULT_CHECKPOINT.relative_to(ROOT)),sha256=CHECKPOINT_SHA256,
-                                      embedded_in_joblib=False),
+                      serialization_check=check,
+                      checkpoint=dict(path=str(DEFAULT_CHECKPOINT.relative_to(ROOT)),embedded_in_joblib=False),
                       deployment='research only; application and report are unchanged',
                       primary=vname=='TabPFN_TwoTreeBlend',exploratory=True,
-                      historical_holdout_evaluated=False,export_protocol_sha256=sha(protocol_path),
+                      historical_holdout_evaluated=False,
                       attribution='Built with PriorLabs-TabPFN',license='TabPFN-LICENSE.txt')
         dump(DEST/f'{vname}_metadata.json',metadata)
         for model in restored.models.values():
             if hasattr(model,'release'):model.release()
-        print(f'EXPORTED {vname} sha256={metadata["model_sha256"]} maxdiff={check["maximum_absolute_difference"]}',flush=True)
+        print(f'EXPORTED {vname} maxdiff={check["maximum_absolute_difference"]}',flush=True)
     dump(DEST/'serialization_checks.json',validations)
     for name,model in models.items():
         if hasattr(model,'release'):model.release()

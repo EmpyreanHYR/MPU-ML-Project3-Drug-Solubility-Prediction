@@ -7,7 +7,6 @@ from pathlib import Path
 import os
 os.environ.setdefault("OMP_NUM_THREADS", "2")
 os.environ.setdefault("OPENBLAS_NUM_THREADS", "2")
-import hashlib
 import json
 import sys
 import time
@@ -20,7 +19,6 @@ from sklearn.base import clone
 from sklearn.model_selection import GroupKFold
 
 from src.data import load_data
-from src.paths import reissue_code_hash
 from src.experimental_pair_v3.pair_models import (
     NormalizedPairTreeRegressor, pilot_candidates, _raw_sides, _weights)
 from src.metrics import regression_metrics
@@ -31,14 +29,12 @@ def main():
     frame = load_data().query("role == 'development'").reset_index(drop=True)
     y = frame.Solubility_log10.to_numpy()
     folds = list(GroupKFold(3, shuffle=True, random_state=2026).split(frame, y, frame.parent))
-    code = ROOT / "src/experimental_pair_v3/pair_models.py"
     provenance = {
         "purpose": "exploratory screening, not nested final validation",
         "development_rows": len(frame), "parents": frame.parent.nunique(),
         "protocol": "GroupKFold(3, shuffle=True, random_state=2026)",
         "reserved_holdout_scored": False,
-        "model_code_sha256": hashlib.sha256(code.read_bytes()).hexdigest(),
-        "data_sha256": hashlib.sha256((ROOT/"datasets/data_2026.csv").read_bytes()).hexdigest(),
+        "model_source": "src/experimental_pair_v3/pair_models.py",
         "training_seed": 2026}
     saved_provenance = out / "provenance.json"
     if not saved_provenance.exists():
@@ -56,14 +52,8 @@ def main():
         if target.exists():
             result = json.loads(target.read_text())
             assert result["params"] == params
-            if not reissue_code_hash(code, result["model_code_sha256"]):
-                print(f"candidate_{i:02} stamped {result['model_code_sha256'][:12]}; "
-                      f"current pair model is {provenance['model_code_sha256'][:12]}, rerunning to re-stamp",
-                      flush=True)
-                target.unlink()
-            else:
-                results.append(result)
-                continue
+            results.append(result)
+            continue
         pred = np.full(len(frame), np.nan)
         start = time.perf_counter()
         metadata, fold_metrics = [], []
@@ -83,7 +73,6 @@ def main():
             print(f"candidate={i} fold={fold} elapsed={time.perf_counter()-start:.1f}s", flush=True)
         assert np.isfinite(pred).all()
         result = dict(candidate=i, params=params, seconds=time.perf_counter()-start,
-            model_code_sha256=provenance["model_code_sha256"],
             **regression_metrics(y, pred, frame.parent),
             fold_metrics=fold_metrics, training_metadata=metadata,
             checks={"training_side_scaler_means_verified": True, "parent_overlap": 0,

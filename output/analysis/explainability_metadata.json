@@ -2,11 +2,5 @@
   "group_permutation_model": "ExtraTrees_tune_05",
   "group_permutation_repeats": 20,
   "group_permutation_scope": "all 397 holdout rows; whole molecule blocks permuted together; new combinations may be outside support",
-  "SHAP_model": "ExtraTrees_base, descriptor reference; not a surrogate claim about a different selected model",
-  "SHAP_rows": 397,
-  "SHAP_method": "tree_path_dependent TreeSHAP",
-  "SHAP_expected_value": -1.0724063056987392,
-  "SHAP_max_additivity_error": 1.2434497875801753e-14,
-  "SHAP_version": "0.54.1",
   "causal_interpretation": false
 }

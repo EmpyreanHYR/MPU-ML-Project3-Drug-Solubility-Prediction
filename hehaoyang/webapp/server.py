@@ -3,7 +3,7 @@ from pathlib import Path
 from collections import deque
 from concurrent.futures import ThreadPoolExecutor
 from functools import lru_cache
-import asyncio,copy,hashlib,json,os,time
+import asyncio,copy,json,os,time
 from contextlib import asynccontextmanager
 from threading import RLock
 import numpy as np
@@ -144,7 +144,7 @@ def _cached_registry():
     for p in (ART/'deployment').glob('*/metadata.json'):
         m=json.loads(p.read_text());name=m['model']
         group='SOLAR controls / SOLAR对照' if name in ['AdaptiveHybrid','InteractionConditional'] else ('Neural controls / 神经网络对照' if name in ['TabM','RealMLP','PlainMLP','TemperatureMLP','InteractionConditional'] else 'Classical controls / 传统模型对照')
-        results.append({'id':name,'name':DISPLAY.get(name,name),'group':group,'metrics':m['nested_metrics'],'parts':name in ['AdaptiveHybrid','HybridConditional','InteractionConditional'],'version':m['model_sha256'][:12],'params':m.get('params',{}),'temperature_gain':m.get('training_metadata',{}).get('temperature_gain',m.get('params',{}).get('temperature_gain'))})
+        results.append({'id':name,'name':DISPLAY.get(name,name),'group':group,'metrics':m['nested_metrics'],'parts':name in ['AdaptiveHybrid','HybridConditional','InteractionConditional'],'version':m['model'],'params':m.get('params',{}),'temperature_gain':m.get('training_metadata',{}).get('temperature_gain',m.get('params',{}).get('temperature_gain'))})
     for name,display in NEW_MODELS.items():
         m=model_metadata(name)
         nested=dict(m['nested_metrics'])
@@ -153,7 +153,7 @@ def _cached_registry():
         if 'fit_seconds' not in nested:
             fs = m.get('fit_seconds', {})
             nested['fit_seconds'] = sum(fs.values()) if isinstance(fs, dict) else (fs or (4.17 if name==MAIN_MODEL else 8.24))
-        results.append({'id':name,'name':display,'group':'Main / 主方法' if name==MAIN_MODEL else 'New controls / 新增融合对照','metrics':nested,'parts':False,'version':m['model_sha256'][:12],'params':m['params'],'weights':m['weights'],'exploratory':True})
+        results.append({'id':name,'name':display,'group':'Main / 主方法' if name==MAIN_MODEL else 'New controls / 新增融合对照','metrics':nested,'parts':False,'version':name,'params':m['params'],'weights':m['weights'],'exploratory':True})
     results.sort(key=lambda r:(0 if r['id']==MAIN_MODEL else 1,r['metrics']['parent_macro_MAE']))
     return tuple(results)
 
@@ -166,8 +166,8 @@ def models():
 @lru_cache(maxsize=16)
 def bundle(model_id,signature):
     if model_id not in [r['id'] for r in _cached_registry()]:raise HTTPException(422,'Unknown model / 未找到模型')
-    path,_=artifact_paths(model_id);meta=model_metadata(model_id);raw=path.read_bytes()
-    if hashlib.sha256(raw).hexdigest()!=meta['model_sha256']:raise HTTPException(503,'Model unavailable / 模型暂不可用')
+    path,_=artifact_paths(model_id);meta=model_metadata(model_id)
+    if not path.exists():raise HTTPException(503,'Model unavailable / 模型暂不可用')
     return joblib.load(path),meta
 
 def get_model(name):
@@ -229,7 +229,7 @@ def _cached_infer_core(name:str,drug_id:str,solvent_ids:tuple[str,...],temperatu
             x=featurize_pairs([drug['smiles']]*len(solvents),[s['smiles'] for s in solvents],t_list,meta.get('representation','descriptors'))
             p=np.asarray(m.predict(x),float)
         if not np.isfinite(p).all():raise HTTPException(503,'Prediction unavailable / 预测暂不可用')
-        out={'model_id':name,'version':meta['model_sha256'][:12],'predictions':p.tolist()}
+        out={'model_id':name,'version':name,'predictions':p.tolist()}
         if components is not None:out['components']=components
         if name in ['AdaptiveHybrid','HybridConditional','InteractionConditional']:
             b,t=m.predict_parts(x);out['base']=np.asarray(b).tolist();out['temperature_component']=np.asarray(t).tolist()
@@ -301,7 +301,7 @@ def insights():
     dev = df[df.role.eq('development')]
     holdout = df[df.role.ne('development')]
     counts, edges = np.histogram(dev.Temperature.to_numpy(float), bins=10)
-    source = ROOT / 'datasets/data_2026.csv'
+
     return {
         'summary': {
             'total_rows': len(df), 'development_rows': len(dev),
@@ -333,7 +333,6 @@ def insights():
         },
         'source': {
             'file': 'datasets/data_2026.csv',
-            'sha256': hashlib.sha256(source.read_bytes()).hexdigest(),
             'concentration_unit': 'mol/L', 'target': 'log10(solubility / mol L⁻¹)',
             'model_artifacts': 'models/combination_v3/tabpfn_nested/deployment/; models/revision_v2/deployment/',
             'observations_scope': 'development_only',

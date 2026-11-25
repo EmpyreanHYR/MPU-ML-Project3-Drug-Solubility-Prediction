@@ -2,7 +2,7 @@
 from pathlib import Path
 import sys
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
-import argparse,json,time,hashlib,platform
+import argparse,json,time,platform
 from datetime import datetime,timezone
 from importlib.metadata import version
 import numpy as np
@@ -123,7 +123,7 @@ def final_evaluation():
     shutil.copy2(model_path(OUT/'final_models'/f'{selected["exp_id"]}.joblib'),model_path(deployment/'model.joblib', create=True))
     cols=['Drug','Solvent','Drug SMILES','Solvent SMILES','Temperature','Solubility_log10','data_row','parent_group_id']
     dev[cols].to_csv(deployment/'training_support.csv',index=False)
-    dump(deployment/'metadata.json',{'model_name':selected['model_name'],'experiment_id':selected['exp_id'],'representation':selected['representation'],'feature_names':feature_names(selected['representation']),'source_sha256':hashlib.sha256((ROOT/'datasets/data_2026.csv').read_bytes()).hexdigest(),'model_sha256':hashlib.sha256(model_path(deployment/'model.joblib').read_bytes()).hexdigest(),'training_rows':len(dev),'temperature_range':[float(dev.Temperature.min()),float(dev.Temperature.max())],'metrics':next(r for r in final_records if r['exp_id']==selected['exp_id']),'fit_role':'development_only; final holdout not used for fitting','versions':{p:version(p) for p in ['numpy','scikit-learn','rdkit','torch','tabm','pytabkit','streamlit']}})
+    dump(deployment/'metadata.json',{'model_name':selected['model_name'],'experiment_id':selected['exp_id'],'representation':selected['representation'],'feature_names':feature_names(selected['representation']),'training_rows':len(dev),'temperature_range':[float(dev.Temperature.min()),float(dev.Temperature.max())],'metrics':next(r for r in final_records if r['exp_id']==selected['exp_id']),'fit_role':'development_only; final holdout not used for fitting','versions':{p:version(p) for p in ['numpy','scikit-learn','rdkit','torch','tabm','pytabkit','streamlit']}})
 
 if __name__=='__main__':
     parser=argparse.ArgumentParser();parser.add_argument('stage',choices=['baselines','improvements','freeze','final','collect']);parser.add_argument('--models',nargs='+',default=BASE);args=parser.parse_args()

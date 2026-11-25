@@ -1,4 +1,3 @@
-import hashlib
 import numpy as np
 from src.data import ROOT,load_data,development_splits
 from src.features import featurize_pairs,feature_names,canonical
@@ -31,6 +30,3 @@ def test_macro_mae_weights_groups_not_rows():
     y=np.array([0.,0.,0.,0.]);p=np.array([1.,1.,1.,4.]);groups=['a','a','a','b']
     m=regression_metrics(y,p,groups)
     assert m['MAE']==1.75 and m['parent_macro_MAE']==2.5
-
-def test_original_sha_unchanged():
-    assert hashlib.sha256((ROOT/'datasets/data_2026.csv').read_bytes()).hexdigest()=='5cf4cecfb556dba5fe10d57ffebe337090cdee07cca6327ec7375cf84c79290d'

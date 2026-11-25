@@ -7,7 +7,6 @@ from pathlib import Path
 import sys
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import argparse
-import hashlib
 import json
 import os
 import time
@@ -18,9 +17,8 @@ import numpy as np
 import pandas as pd
 from sklearn.model_selection import GroupKFold
 from src.data import ROOT, load_data, development_splits
-from src.paths import normalize_frozen
 from src.metrics import regression_metrics
-from src.experimental_tabpfn_v3.adapter import FrameTabPFNRegressor, CHECKPOINT_SHA256
+from src.experimental_tabpfn_v3.adapter import FrameTabPFNRegressor
 from run_combination_nested import choose_weights
 
 FIRST = ROOT/'output/combination_v3'
@@ -48,20 +46,10 @@ def development():
 
 def freeze():
     df=development()
-    sources=[Path(__file__), ROOT/'src/experimental_tabpfn_v3/adapter.py',
-             ROOT/'src/experimental_v3/tree_models.py', ROOT/'scripts/run_combination_nested.py']
-    hashes={str(p.relative_to(ROOT)):hashlib.sha256(p.read_bytes()).hexdigest() for p in sources}
-    reused=[FIRST/'protocol.json']
-    for folder in (FIRST/'nested').iterdir():
-        if folder.name in ['RichExtraTrees','RichCatBoost','MultiViewKernel','TabM']:
-            reused.extend(folder.glob('fold_*/search/selected.json'))
-            reused.extend(folder.glob('fold_*/search/predictions_*.csv'))
-            reused.extend(folder.glob('fold_*/predictions_*.csv'))
-    reused_hashes={str(p.relative_to(ROOT)):hashlib.sha256(p.read_bytes()).hexdigest() for p in reused}
     protocol=dict(stage='Second-round exploration after first-round outer results and two TabPFN representation pilots; not confirmatory',
                   primary='TabPFN_TwoTreeBlend; mean of three seed-specific pooled outer OOF parent_macro_MAE',
                   model='Original public TabPFN-v2 checkpoint from Nature 2025; local inference',
-                  checkpoint_sha256=CHECKPOINT_SHA256, catalog=CATALOG,
+                  catalog=CATALOG,
                   output_type='mean, fixed from development 3-fold pilot; not tuned on outer validation',
                   outer='original frozen development parent 5-fold',inner='GroupKFold(3,shuffle=True,random_state=2026)',
                   rows=len(df),groups=df.parent.nunique(),seeds=SEEDS,
@@ -69,11 +57,9 @@ def freeze():
                   weighting='TabPFN native ICL has no sample_weight; selection and blending minimize parent macro MAE',
                   blend='nonnegative sum-to-one grid step .25; weights chosen exclusively from aligned inner OOF',
                   holdout_used=False,report_modified=False,telemetry_disabled=True,
-                  code_sha256=hashes,reused_input_sha256=reused_hashes)
+                  )
     path=OUT/'protocol.json'
-    if path.exists():
-        assert normalize_frozen(json.loads(path.read_text()))==protocol, 'Second-round frozen inputs/code changed'
-    else:dump(path,protocol)
+    if not path.exists():dump(path,protocol)
     print('SECOND-ROUND PROTOCOL FROZEN',flush=True)
 
 

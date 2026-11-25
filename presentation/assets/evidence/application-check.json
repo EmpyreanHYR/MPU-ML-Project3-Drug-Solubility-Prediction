@@ -5,7 +5,6 @@
     "temperature": 25
   },
   "model": "TabPFN_ExtraTreesBlend",
-  "model_sha256": "a3536da9c9261e57f7b18270ec348af17262391ea7a19ec4a9ca2c41bf77bc05",
   "predicted_log10_solubility": -0.7269867979512881,
   "back_transformed_concentration": 0.18750515065928625,
   "components": {

@@ -1,5 +1,4 @@
 {
-  "model_sha256": "a3536da9c9261e57f7b18270ec348af17262391ea7a19ec4a9ca2c41bf77bc05",
   "feature_perturbation": "tree_path_dependent",
   "shap_version": "0.54.1",
   "sampling_seed": 2026,
@@ -24,13 +23,7 @@
       "tree": -2.495398698656594,
       "pfn": -2.7164111137390137,
       "fusion": -2.550651802427199,
-      "correction": -0.05525310377060488,
-      "group_shap": {
-        "Drug": -0.4324825229429558,
-        "Solvent": 0.025588316449069826,
-        "Temperature": -0.12678147836164055,
-        "Interactions": -0.7985201729644686
-      }
+      "correction": -0.05525310377060488
     },
     {
       "data_row": 3,
@@ -41,13 +34,7 @@
       "tree": -1.9268937569275977,
       "pfn": -1.8471686840057373,
       "fusion": -1.9069624886971326,
-      "correction": 0.019931268230465093,
-      "group_shap": {
-        "Drug": -0.49549753323587364,
-        "Solvent": 0.09808558834349368,
-        "Temperature": 0.10846041588220379,
-        "Interactions": -0.4747393870806963
-      }
+      "correction": 0.019931268230465093
     }
   ],
   "curve": {

@@ -2,7 +2,6 @@
 from pathlib import Path
 from collections import Counter, defaultdict
 import csv
-import hashlib
 import io
 import json
 import subprocess
@@ -55,7 +54,7 @@ def main():
     selected = [("no_balanced", "Equal row weights"), ("no_interaction", "Remove interactions"),
                 ("no_temperature", "Remove temperature term"), ("full_gain", "Fix temperature gain at 1")]
     data = {
-        "provenance": [{"path": p, "sha256": hashlib.sha256(source(p)).hexdigest()} for p in paths],
+        "provenance": [{"path": p} for p in paths],
         "coverage": {
             "drugs": [next(r["Drug"] for r in raw if r["Drug SMILES"] == k) for k in drugs],
             "solvents": [next(r["Solvent"] for r in raw if r["Solvent SMILES"] == k) for k in solvents],

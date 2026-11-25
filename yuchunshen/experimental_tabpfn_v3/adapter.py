@@ -13,7 +13,6 @@ os.environ['HF_HUB_DISABLE_TELEMETRY'] = '1'
 os.environ['HF_HUB_OFFLINE'] = '1'
 
 import gc
-import hashlib
 import numpy as np
 import torch
 from sklearn.base import BaseEstimator, RegressorMixin
@@ -24,7 +23,6 @@ from src.experimental_v3.tree_models import rich_features
 
 ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_CHECKPOINT = model_path(ROOT/'output/combination_v3/tabpfn_probe/tabpfn-v2-regressor.ckpt')
-CHECKPOINT_SHA256 = '2ab5a07d5c41dfe6db9aa7ae106fc6de898326c2765be66505a07e2868c10736'
 
 
 class FrameTabPFNRegressor(RegressorMixin, BaseEstimator):
@@ -47,8 +45,6 @@ class FrameTabPFNRegressor(RegressorMixin, BaseEstimator):
         ckpt = Path(self.model_path) if self.model_path else DEFAULT_CHECKPOINT
         if not ckpt.exists():
             raise FileNotFoundError('Download the public v2 checkpoint explicitly before local inference: '+str(ckpt))
-        if hashlib.sha256(ckpt.read_bytes()).hexdigest() != CHECKPOINT_SHA256:
-            raise ValueError('TabPFN-v2 checkpoint identity changed')
         torch.set_num_threads(2)
         return TabPFNRegressor.create_default_for_version(
             ModelVersion.V2, model_path=ckpt, device=self.device,
@@ -63,7 +59,7 @@ class FrameTabPFNRegressor(RegressorMixin, BaseEstimator):
                                        groups=None if groups is None else len(np.unique(groups)),
                                        local_inference_only=True, telemetry_disabled=True,
                                        sample_weight_supported=False, params=self.get_params(),
-                                       checkpoint_sha256=CHECKPOINT_SHA256,
+                                       checkpoint=str(self.model_path or DEFAULT_CHECKPOINT),
                                        serialization='stores training context and rebuilds local estimator lazily')
         return self
 

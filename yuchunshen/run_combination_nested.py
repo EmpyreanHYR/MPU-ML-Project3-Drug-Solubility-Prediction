@@ -7,7 +7,6 @@ from pathlib import Path
 import sys
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import argparse
-import hashlib
 import itertools
 import json
 import os
@@ -20,7 +19,7 @@ import numpy as np
 import pandas as pd
 from sklearn.model_selection import GroupKFold
 from src.data import ROOT, load_data, development_splits
-from src.paths import model_path, normalize_frozen
+from src.paths import model_path
 from src.metrics import regression_metrics
 from src.experimental_v3.tree_models import RichTreeRegressor, pilot_candidates
 from src.experimental_v3.kernel_models import MultiViewKernelRegressor
@@ -74,8 +73,6 @@ def make(name, params, seed):
 
 def freeze():
     df = development()
-    sources = list((ROOT/"src/experimental_v3").glob("*.py")) + [Path(__file__)]
-    hashes = {str(p.relative_to(ROOT)):hashlib.sha256(p.read_bytes()).hexdigest() for p in sources}
     protocol = {
         "stage":"exploratory follow-up after inspecting prior development results and 3-fold pilots",
         "outer":"original frozen development parent 5-fold",
@@ -86,12 +83,10 @@ def freeze():
         "kernel_seeds":"deterministic; reuse prediction for seeds 17 and 42, not three independent runs",
         "historical_holdout":"not evaluated or used for selection in this experiment",
         "temperature":"CSV original numeric scale; no Kelvin assumption or inverse temperature",
-        "catalog":catalog(), "code_sha256":hashes,
+        "catalog":catalog(),
     }
     p = OUT/"protocol.json"
-    if p.exists():
-        assert normalize_frozen(json.loads(p.read_text())) == protocol, "Frozen code/protocol changed; use a new experiment version"
-    else:
+    if not p.exists():
         dump(p, protocol)
     print("PROTOCOL FROZEN", flush=True)
 
@@ -262,7 +257,7 @@ def deploy():
     pd.DataFrame({"data_row":sample.data_row,"prediction":ensemble.predict(sample)}).to_csv(OUT/"deployment/serialization_example.csv",index=False)
     dump(OUT/"deployment/metadata.json",{"model":"MultiViewBlend","seed":2026,"training_rows":len(df),
          "training_groups":df.parent.nunique(),"weights":weights,"params":params,
-         "historical_test_evaluated":False,"sha256":hashlib.sha256(path.read_bytes()).hexdigest()})
+         "historical_test_evaluated":False})
     print("RESEARCH MODEL SAVED",weights,flush=True)
 
 

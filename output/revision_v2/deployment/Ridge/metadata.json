@@ -7,7 +7,6 @@
   "seed": 2026,
   "fit_seconds": 0.0006904589827172458,
   "representation": "descriptors",
-  "model_sha256": "edf38754bff4e5d4abe69c46ac4295759c94d0f13a2518dfa868697a643dbfb4",
   "historical_test": {
     "MAE": 1.0591375840397623,
     "RMSE": 1.300997038944096,

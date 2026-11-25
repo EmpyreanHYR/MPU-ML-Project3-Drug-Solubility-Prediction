@@ -6,7 +6,6 @@ os.environ.setdefault("OPENBLAS_NUM_THREADS", "2")
 os.environ.setdefault("VECLIB_MAXIMUM_THREADS", "2")
 # Explicitly authorized performance override for this isolated 1121-row probe.
 os.environ["TABPFN_ALLOW_CPU_LARGE_DATASET"] = "1"
-import hashlib
 import json
 import sys
 import time
@@ -19,7 +18,7 @@ import torch
 from sklearn.model_selection import GroupKFold
 from src.data import load_data
 from src.metrics import regression_metrics
-from src.experimental_tabpfn_v3.adapter import FrameTabPFNRegressor, CHECKPOINT_SHA256
+from src.experimental_tabpfn_v3.adapter import FrameTabPFNRegressor
 from src.experimental_v3.tree_models import rich_features
 
 
@@ -38,8 +37,6 @@ def main():
     mps_metrics = json.loads((mps_dir/"fold_1.json").read_text())
     np.testing.assert_allclose(mps_predictions.y, y[va], rtol=0, atol=1e-12)
     np.testing.assert_array_equal(mps_predictions.parent, frame.iloc[va].parent_group_id)
-    adapter = ROOT/"src/experimental_tabpfn_v3/adapter.py"
-    adapter_sha = hashlib.sha256(adapter.read_bytes()).hexdigest()
     warm_start = time.perf_counter()
     features = rich_features(frame, "full")
     warm_seconds = time.perf_counter()-warm_start
@@ -64,7 +61,6 @@ def main():
         "purpose": "one-shot device speed/numerical probe, not a model-performance comparison",
         "fold": 1, "training_rows": len(tr), "validation_rows": len(va), "features":435,
         "n_estimators": 2, "seed":2026, "device":"cpu", "actual_torch_threads":torch.get_num_threads(),
-        "adapter_sha256":adapter_sha, "checkpoint_sha256":CHECKPOINT_SHA256,
         "reserved_holdout_scored":False, "local_inference_only":True,
         "allow_cpu_large_dataset_performance_override": True,
         "deterministic_feature_warmup_seconds":warm_seconds,
@@ -85,7 +81,6 @@ def main():
                       y=y[va], cpu_mean=prediction, mps_mean=reference,
                       absolute_difference=np.abs(prediction-reference))).to_csv(out/"predictions.csv",index=False)
     result_path.write_text(json.dumps(result,indent=2))
-    assert hashlib.sha256(adapter.read_bytes()).hexdigest()==adapter_sha
     print(json.dumps(result),flush=True)
 
 

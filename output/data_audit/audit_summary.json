@@ -1,6 +1,5 @@
 {
   "scope": "All records; no sampling, truncation, row removal or corrections",
-  "source_sha256": "5cf4cecfb556dba5fe10d57ffebe337090cdee07cca6327ec7375cf84c79290d",
   "encoding_policy": "latin1 byte-preserving provisional mapping; source encoding unverified; model columns verified ASCII",
   "rows": 1904,
   "columns": [

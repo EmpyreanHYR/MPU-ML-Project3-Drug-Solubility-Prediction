@@ -182,7 +182,7 @@ uv run --frozen python hehaoyang/run.py launch_studio.py
 | `presentation/` | HTML 汇报（18 页英文主稿 + 2 页答疑备用页）、中英文讲稿与来源映射、图表与公式素材、演示视频、`launch.py` 启动器 |
 | `plotting/`、`tools/`、`configs/` | 探索性数据分析与报告绘图脚本、图表质量审查工具及实验配置 |
 | `tests/` | FastAPI 接口一致性、离线模型对齐、全溶剂筛选、诊断接口与互动学习中心自动化测试 |
-| `Question/`、`bibliography/`、`assets/` | 课程题目要求、文献数据库与核验脚本、报告与绘图所用内嵌字体 |
+| `Question/`、`bibliography/`、`assets/` | 课程题目要求、文献数据库与核验脚本、绘图所用的 Noto Sans SC 中文字体（含许可证与来源记录） |
 
 ## 致谢与许可
 

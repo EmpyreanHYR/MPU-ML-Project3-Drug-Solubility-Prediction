@@ -78,7 +78,7 @@ def main():
                             role=role,supported_claim=claim,boundary=boundary,
                             support_grade='method support' if role.endswith('方法') or role=='方法' else 'background or contextual support',
                             primary_abstract_or_full_text_url=abstract_url,
-                            metadata_file=str(raw.relative_to(ROOT)),metadata_sha256=hashlib.sha256(raw.read_bytes()).hexdigest(),
+                            metadata_file=str(raw.relative_to(ROOT)),metadata_bytes=raw.stat().st_size,
                             access_date='2026-11-17',metadata_verified=True,abstract_or_primary_text_checked=True))
     (ROOT/'references.bib').write_text('\n'.join(entries),encoding='utf-8')
     (ROOT/'source_ledger.json').write_text(json.dumps({'scope':'Classic methods plus 2021–2026 primary journal/conference papers; CSV is the only training dataset','records':records},ensure_ascii=False,indent=2)+'\n')

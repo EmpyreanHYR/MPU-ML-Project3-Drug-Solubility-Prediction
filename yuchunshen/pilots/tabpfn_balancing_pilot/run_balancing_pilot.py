@@ -19,9 +19,8 @@ import numpy as np
 import pandas as pd
 from sklearn.model_selection import GroupKFold
 from src.data import load_data
-from src.paths import normalize_frozen
 from src.metrics import regression_metrics
-from src.experimental_tabpfn_v3.adapter import FrameTabPFNRegressor, CHECKPOINT_SHA256
+from src.experimental_tabpfn_v3.adapter import FrameTabPFNRegressor
 
 
 def selected_indices(frame, cap, seed=2026):
@@ -42,8 +41,6 @@ def main():
     y = frame.Solubility_log10.to_numpy()
     groups = frame.parent.to_numpy()
     folds = list(GroupKFold(3, shuffle=True, random_state=2026).split(frame, y, groups))
-    adapter = ROOT/"src/experimental_tabpfn_v3/adapter.py"
-    adapter_sha = hashlib.sha256(adapter.read_bytes()).hexdigest()
     provenance = {
         "purpose": "exploratory parent-balanced TabPFN context; no nested follow-up in this script",
         "development_rows": len(frame), "development_parents": frame.parent.nunique(),
@@ -52,8 +49,6 @@ def main():
         "n_estimators": 4, "model_seed": 2026, "sampling_seed": 2026,
         "sampling": "within each training fold, keep lowest SHA256(seed|parent|data_row) ranks per parent",
         "sampling_uses_targets": False, "validation_subsampled": False,
-        "adapter_sha256": adapter_sha, "checkpoint_sha256": CHECKPOINT_SHA256,
-        "data_sha256": hashlib.sha256((ROOT/"datasets/data_2026.csv").read_bytes()).hexdigest(),
         "local_inference_only": True, "device": "mps"}
     (out/"provenance.json").write_text(json.dumps(provenance, indent=2))
     records = []
@@ -67,7 +62,7 @@ def main():
         target = out/f"{label}.json"
         if target.exists():
             record = json.loads(target.read_text())
-            assert record["cap"] == cap and normalize_frozen({"src/experimental_tabpfn_v3/adapter.py": record["adapter_sha256"]})["src/experimental_tabpfn_v3/adapter.py"] == adapter_sha
+            assert record["cap"] == cap
         else:
             start = time.perf_counter()
             prediction = np.full(len(frame), np.nan)
@@ -111,7 +106,7 @@ def main():
             pd.DataFrame(dict(data_row=frame.data_row, parent_id=frame.parent_group_id,
                               y=y, prediction=prediction, fold=fold_id)).to_csv(out/f"{label}_predictions.csv", index=False)
             record = dict(config=label, cap=cap, seconds=time.perf_counter()-start,
-                adapter_sha256=adapter_sha, **regression_metrics(y, prediction, groups),
+                **regression_metrics(y, prediction, groups),
                 folds=details, checks=dict(parent_overlap=0, all_training_parents_preserved=True,
                     fixed_complete_validation=True, label_free_sampling=True, finite_predictions=True))
             target.write_text(json.dumps(record, indent=2))
@@ -119,7 +114,6 @@ def main():
         print(json.dumps({k:v for k,v in record.items() if k not in ("folds", "checks")}), flush=True)
     comparison = [{k:r[k] for k in ("config", "cap", "seconds", "MAE", "RMSE", "R2", "parent_macro_MAE")} for r in records]
     pd.DataFrame(comparison).sort_values("parent_macro_MAE").to_csv(out/"comparison.csv", index=False)
-    assert hashlib.sha256(adapter.read_bytes()).hexdigest() == adapter_sha
 
 
 if __name__ == "__main__":

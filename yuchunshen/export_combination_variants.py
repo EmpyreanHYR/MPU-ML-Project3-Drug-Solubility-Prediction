@@ -3,7 +3,6 @@ from pathlib import Path
 import sys
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 sys.path.insert(0,str(Path(__file__).resolve().parent))
-import hashlib
 import json
 import joblib
 import numpy as np
@@ -40,7 +39,6 @@ def main():
         "seed":2026, "training_rows":len(df), "params":{name:selected[name] for name in families},
         "weights":weights,"inner_parent_macro_MAE":score,"historical_test_evaluated":False,
         "serialization_max_abs_difference":float(np.max(np.abs(first-second))),
-        "sha256":hashlib.sha256(path.read_bytes()).hexdigest(),
     })
     print("TWO TREE RESEARCH MODEL SAVED",weights)
 

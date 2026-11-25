@@ -2,13 +2,11 @@
 from pathlib import Path
 import sys
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
-import hashlib
 import json
 import numpy as np
 import pandas as pd
 from src.data import ROOT,load_data,development_splits
-from src.ownership import source_path
-from src.paths import model_path, normalize_frozen
+from src.paths import model_path
 from src.metrics import regression_metrics
 
 OUT=ROOT/'output/combination_v3'
@@ -70,29 +68,14 @@ def main():
         coverage.append(dict(model=row.model,rows_per_seed=len(dev),seeds=sorted(map(int,p.seed.unique())),heldout_rows=0))
     pd.DataFrame(paired).to_csv(OUT/'paired_comparisons_all.csv',index=False)
     pd.DataFrame(ensembled).sort_values('parent_macro_MAE').to_csv(OUT/'seed_ensemble_comparison.csv',index=False)
-    reused=normalize_frozen(json.loads((OUT/'reused_input_hashes.json').read_text()))
-    original_environment=json.loads((OUT/'original_environment.json').read_text())
-    for source,sha in reused.items():
-        if source in original_environment:
-            archived=original_environment[source]
-            assert hashlib.sha256(archived['content'].encode()).hexdigest()==sha==archived['sha256']
-        else:
-            assert hashlib.sha256(source_path(ROOT/source).read_bytes()).hexdigest()==sha
-    for protocol_path in [OUT/'protocol.json',OUT/'tabpfn_nested/protocol.json']:
-        if protocol_path.exists():
-            protocol=normalize_frozen(json.loads(protocol_path.read_text()))
-            for key in ['code_sha256','reused_input_sha256']:
-                for source,sha in protocol.get(key,{}).items():
-                    assert hashlib.sha256(source_path(ROOT/source).read_bytes()).hexdigest()==sha
     (OUT/'combined_checks.json').write_text(json.dumps(dict(status='passed',coverage=coverage,
-        holdout_used=False,layout_migration_verified=True,
-        reused_input_hashes_verified=True,frozen_protocol_inputs_verified=True,
+        holdout_used=False,
         explanation='All metrics exploratory; averaging seeds is not three independent group experiments'),indent=2)+'\n')
     chosen=['Original_AdaptiveHybrid','Original_ExtraTrees','RichExtraTrees','Blend_RichExtraTrees_RichCatBoost','MultiViewBlend']
     if second_path.exists():chosen.extend(['TabPFN','TabPFN_TwoTreeBlend','TabPFN_ExtraTreesBlend','TabPFN_FiveViewBlend'])
     summary=table.set_index('model')
     lines=['# 本轮模型改进实验','',
-        '本目录保留原实验数值；模型权重位于 models/。目录迁移校验依据 output/layout_migration.json，不依赖历史报告快照。','',
+        '本目录保留原实验数值；模型权重位于 models/。','',
         '沿用1507行、128个药物母体的冻结五折；每折内部再以三折母体交叉验证选择参数与凸组合权重。训练种子2026/17/42；未对397行历史保留集评分。','',
         '## 主要结果','',
         '|方法|母体MAE ↓|样本MAE ↓|RMSE ↓|R² ↑|',

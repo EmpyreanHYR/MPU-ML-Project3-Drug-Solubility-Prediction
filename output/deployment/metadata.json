@@ -27,8 +27,6 @@
     "solvent_FormalCharge",
     "Temperature"
   ],
-  "source_sha256": "5cf4cecfb556dba5fe10d57ffebe337090cdee07cca6327ec7375cf84c79290d",
-  "model_sha256": "2575df0f4ddb02a1b6152a6318d4acda1a2db4e6dc04028daf29e9e7805058a3",
   "training_rows": 1507,
   "temperature_range": [
     -59.5,

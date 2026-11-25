@@ -2,7 +2,6 @@
 from __future__ import annotations
 
 from pathlib import Path
-import hashlib
 import json
 import os
 import subprocess
@@ -86,9 +85,9 @@ def save_figure(fig, stem: str, source_paths, notes: dict, **alignment_options):
     provenance={
         "figure": stem, "backend": "Python/matplotlib", "width_mm": fig.get_figwidth()*25.4,
         "height_mm": fig.get_figheight()*25.4,
-        "font": {"name": CJK, "sha256": hashlib.sha256(FONT.read_bytes()).hexdigest()},
-        "sources": [{"path": str(Path(p).relative_to(ROOT)), "sha256": hashlib.sha256(Path(p).read_bytes()).hexdigest()} for p in source_paths],
-        "pdf_sha256": hashlib.sha256(pdf.read_bytes()).hexdigest(), "notes": notes,
+        "font": {"name": CJK, "file": str(FONT.relative_to(ROOT))},
+        "sources": [str(Path(p).relative_to(ROOT)) for p in source_paths],
+        "notes": notes,
         "text_audit_exit": text_result.returncode, "collision_audit_exit": collision_result.returncode,
         "manual_visual_review": "pending",
     }

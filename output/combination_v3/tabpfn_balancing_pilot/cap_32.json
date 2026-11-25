@@ -2,7 +2,6 @@
   "config": "cap_32",
   "cap": 32,
   "seconds": 14.332641792017967,
-  "adapter_sha256": "9413b4e65d84a6c79a20ece5cc8deb25c74bc83559f49aa32b271c067762a003",
   "MAE": 0.7098654004427319,
   "RMSE": 0.9504186710420135,
   "R2": 0.449372434420779,
@@ -35,7 +34,6 @@
           "representation": "small",
           "seed": 2026
         },
-        "checkpoint_sha256": "2ab5a07d5c41dfe6db9aa7ae106fc6de898326c2765be66505a07e2868c10736",
         "serialization": "stores training context and rebuilds local estimator lazily"
       }
     },
@@ -66,7 +64,6 @@
           "representation": "small",
           "seed": 2026
         },
-        "checkpoint_sha256": "2ab5a07d5c41dfe6db9aa7ae106fc6de898326c2765be66505a07e2868c10736",
         "serialization": "stores training context and rebuilds local estimator lazily"
       }
     },
@@ -97,7 +94,6 @@
           "representation": "small",
           "seed": 2026
         },
-        "checkpoint_sha256": "2ab5a07d5c41dfe6db9aa7ae106fc6de898326c2765be66505a07e2868c10736",
         "serialization": "stores training context and rebuilds local estimator lazily"
       }
     }

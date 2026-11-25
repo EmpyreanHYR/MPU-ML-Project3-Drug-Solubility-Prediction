@@ -17,7 +17,6 @@
       "support_grade": "method support",
       "primary_abstract_or_full_text_url": "https://stat.cmu.edu/technometrics/70-79/VOL-12-01/v1201055.pdf",
       "metadata_file": "raw/ridge1970.crossref.json",
-      "metadata_sha256": "f620bb7db34e3ab13f2ca8165ab3c2b01bced23e8193734cd5ab9e743d44e54b",
       "access_date": "2026-11-17",
       "metadata_verified": true,
       "abstract_or_primary_text_checked": true
@@ -37,7 +36,6 @@
       "support_grade": "method support",
       "primary_abstract_or_full_text_url": "https://www.stat.berkeley.edu/~breiman/randomforest2001.pdf",
       "metadata_file": "raw/randomforest2001.crossref.json",
-      "metadata_sha256": "34f498d32de6c807a6e72a99a3bbf8df8f6f6beb32935cf788d6abcc6761c4d4",
       "access_date": "2026-11-17",
       "metadata_verified": true,
       "abstract_or_primary_text_checked": true
@@ -59,7 +57,6 @@
       "support_grade": "method support",
       "primary_abstract_or_full_text_url": "https://link.springer.com/article/10.1007/s10994-006-6226-1",
       "metadata_file": "raw/extratrees2006.crossref.json",
-      "metadata_sha256": "5de9a503715bc23e87de44640d6a8cc3e768a5c0d8b9ed9e0ef9da155cd1ebef",
       "access_date": "2026-11-17",
       "metadata_verified": true,
       "abstract_or_primary_text_checked": true
@@ -79,7 +76,6 @@
       "support_grade": "method support",
       "primary_abstract_or_full_text_url": "https://projecteuclid.org/journals/annals-of-statistics/volume-29/issue-5/Greedy-function-approximation-A-gradient-boosting-machine/10.1214/aos/1013203451.full",
       "metadata_file": "raw/boosting2001.crossref.json",
-      "metadata_sha256": "2c4434d5cb55a4ebc44ec1246edcf3b7793e4a1b9b31dd22b7f7b406c68efccf",
       "access_date": "2026-11-17",
       "metadata_verified": true,
       "abstract_or_primary_text_checked": true
@@ -100,7 +96,6 @@
       "support_grade": "method support",
       "primary_abstract_or_full_text_url": "https://pubmed.ncbi.nlm.nih.gov/20426451/",
       "metadata_file": "raw/ecfp2010.crossref.json",
-      "metadata_sha256": "459dacbfb700cd67b5fd402c4900749e0d278d2bff83e5b9c50eba7d7ae521d1",
       "access_date": "2026-11-17",
       "metadata_verified": true,
       "abstract_or_primary_text_checked": true
@@ -123,7 +118,6 @@
       "support_grade": "background or contextual support",
       "primary_abstract_or_full_text_url": "https://www.nature.com/articles/s42256-022-00447-x",
       "metadata_file": "raw/molclr2022.crossref.json",
-      "metadata_sha256": "916de278c61cd4083412cf211406da7e36575d21c6ede0f839d4676d352aa2ba",
       "access_date": "2026-11-17",
       "metadata_verified": true,
       "abstract_or_primary_text_checked": true
@@ -148,7 +142,6 @@
       "support_grade": "background or contextual support",
       "primary_abstract_or_full_text_url": "https://www.nature.com/articles/s41597-024-03105-6",
       "metadata_file": "raw/solubility2024.crossref.json",
-      "metadata_sha256": "f4fa31b4ec3f29a4b685b5eea8d2378b0a3a06d0b4e27a4745296dcbbdb51e52",
       "access_date": "2026-11-17",
       "metadata_verified": true,
       "abstract_or_primary_text_checked": true
@@ -169,7 +162,6 @@
       "support_grade": "background or contextual support",
       "primary_abstract_or_full_text_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10499856/",
       "metadata_file": "raw/leakage2023.crossref.json",
-      "metadata_sha256": "aa3bb4fd8ce35118a2fa9582854e90e74426fb8ebef298bbcbcfc8a4016ac875",
       "access_date": "2026-11-17",
       "metadata_verified": true,
       "abstract_or_primary_text_checked": true
@@ -196,7 +188,6 @@
       "support_grade": "background or contextual support",
       "primary_abstract_or_full_text_url": "https://www.nature.com/articles/s41586-024-08328-6",
       "metadata_file": "raw/tabpfn2025.crossref.json",
-      "metadata_sha256": "25b4ca4bcef7d06fc01039df9ed96822ea3799384a92f6f15e7e225131c1556b",
       "access_date": "2026-11-17",
       "metadata_verified": true,
       "abstract_or_primary_text_checked": true
@@ -225,7 +216,6 @@
       "support_grade": "method support",
       "primary_abstract_or_full_text_url": "https://www.nature.com/articles/s42256-019-0138-9",
       "metadata_file": "raw/treeshap2020.crossref.json",
-      "metadata_sha256": "e56e38b8a4da33567f22539d2db48174f8a416c2efe8ad25c76fb33e12347811",
       "access_date": "2026-11-17",
       "metadata_verified": true,
       "abstract_or_primary_text_checked": true
@@ -251,7 +241,6 @@
       "support_grade": "background or contextual support",
       "primary_abstract_or_full_text_url": "https://ieeexplore.ieee.org/abstract/document/9363924",
       "metadata_file": "raw/causal2021.crossref.json",
-      "metadata_sha256": "de39baf0248197f8413435d46312d79e835da50837f652380a0f91caf6bf6056",
       "access_date": "2026-11-17",
       "metadata_verified": true,
       "abstract_or_primary_text_checked": true
@@ -272,7 +261,6 @@
       "support_grade": "background or contextual support",
       "primary_abstract_or_full_text_url": "https://pubs.acs.org/doi/10.1021/acs.jctc.4c00382",
       "metadata_file": "raw/molmerger2024.crossref.json",
-      "metadata_sha256": "901595bb7adbc0c1378e3f203ca39f0a1ab2cb688ca3da345ad3a60c102556c4",
       "access_date": "2026-11-17",
       "metadata_verified": true,
       "abstract_or_primary_text_checked": true
@@ -297,7 +285,6 @@
       "support_grade": "background or contextual support",
       "primary_abstract_or_full_text_url": "https://www.nature.com/articles/s41597-025-05559-8",
       "metadata_file": "raw/bigsoldb2025.crossref.json",
-      "metadata_sha256": "d6ef23f1510bc950fd8d7c199ece0f721266231ef1633cfce6ead10bb20ebea9",
       "access_date": "2026-11-17",
       "metadata_verified": true,
       "abstract_or_primary_text_checked": true
@@ -319,7 +306,6 @@
       "support_grade": "background or contextual support",
       "primary_abstract_or_full_text_url": "https://proceedings.iclr.cc/paper_files/paper/2025/hash/c1ba41c694834aeef91ae161711d4939-Abstract-Conference.html",
       "metadata_file": "raw/tabm2025.official.bib",
-      "metadata_sha256": "2cd544101af72677a5347e6cc06c70b849b8c649fae1c0289a48bae548a1dd7e",
       "access_date": "2026-11-17",
       "metadata_verified": true,
       "abstract_or_primary_text_checked": true
@@ -341,7 +327,6 @@
       "support_grade": "background or contextual support",
       "primary_abstract_or_full_text_url": "https://proceedings.neurips.cc/paper_files/paper/2024/hash/2ee1c87245956e3eaa71aaba5f5753eb-Abstract.html",
       "metadata_file": "raw/realmlp2024.official.bib",
-      "metadata_sha256": "acb748694a92c51c4a41693c3222a424d782bb0c672e4fd6e5e3d016a5a00e93",
       "access_date": "2026-11-17",
       "metadata_verified": true,
       "abstract_or_primary_text_checked": true
@@ -362,7 +347,6 @@
       "support_grade": "method support",
       "primary_abstract_or_full_text_url": "https://proceedings.neurips.cc/paper/2017/hash/8a20a8621978632d76c43dfd28b67767-Abstract.html",
       "metadata_file": "raw/shap2017.official.bib",
-      "metadata_sha256": "27ff4494c2979385ad874958bcfd08b66a713dcf3502349c9be4215b61d92df2",
       "access_date": "2026-11-17",
       "metadata_verified": true,
       "abstract_or_primary_text_checked": true
@@ -384,7 +368,6 @@
       "support_grade": "background or contextual support",
       "primary_abstract_or_full_text_url": "https://papers.nips.cc/paper_files/paper/2022/hash/0378c7692da36807bdec87ab043cdadc-Abstract.html",
       "metadata_file": "raw/trees2022.official.bib",
-      "metadata_sha256": "6c52f98af841d0493c6092e2a6068cf84e9775a80da62a1a9d3be11b3fa37837",
       "access_date": "2026-11-17",
       "metadata_verified": true,
       "abstract_or_primary_text_checked": true
@@ -407,7 +390,6 @@
       "support_grade": "background or contextual support",
       "primary_abstract_or_full_text_url": "https://proceedings.neurips.cc/paper_files/paper/2021/hash/9d86d83f925f2149e9edb0ac3b49229c-Abstract.html",
       "metadata_file": "raw/tabular2021.official.bib",
-      "metadata_sha256": "0e6217664e95ebbb3de9c44f1527da4f34083de560a1641adf1c44cf49ce6122",
       "access_date": "2026-11-17",
       "metadata_verified": true,
       "abstract_or_primary_text_checked": true
@@ -429,7 +411,6 @@
       "support_grade": "method support",
       "primary_abstract_or_full_text_url": "https://proceedings.mlr.press/v70/sundararajan17a.html",
       "metadata_file": "raw/integratedgradients2017.official.bib",
-      "metadata_sha256": "fd9cb3dd016ec8a229d6ef288d584a5af35829610e7ae0323e183c53a4024d1b",
       "access_date": "2026-11-17",
       "metadata_verified": true,
       "abstract_or_primary_text_checked": true
@@ -452,7 +433,6 @@
       "support_grade": "method support",
       "primary_abstract_or_full_text_url": "https://www.nature.com/articles/s41467-025-62717-7",
       "metadata_file": "raw/fastsolv2025.crossref.json",
-      "metadata_sha256": "bcd98ff34b91243b1a488f33c4bab9d56fd3e574d334ff34e530d7e06bc03053",
       "access_date": "2026-11-17",
       "metadata_verified": true,
       "abstract_or_primary_text_checked": true
@@ -473,7 +453,6 @@
       "support_grade": "method support",
       "primary_abstract_or_full_text_url": "https://doi.org/10.1111/rssb.12348",
       "metadata_file": "raw/sensitivity2020.crossref.json",
-      "metadata_sha256": "5970a5382f94d97dfd7408e1a21203b225b246f02ab2b387e0014ef35a5e4bd7",
       "access_date": "2026-11-17",
       "metadata_verified": true,
       "abstract_or_primary_text_checked": true
@@ -522,7 +501,6 @@
       "support_grade": "background or contextual support",
       "primary_abstract_or_full_text_url": "https://www.nature.com/articles/s41586-023-06221-2",
       "metadata_file": "raw/discovery2023.crossref.json",
-      "metadata_sha256": "97355650d5c4b3a68294d3a76352fc6711ca32d0a551366bebe8b9a2a1d15209",
       "access_date": "2026-11-17",
       "metadata_verified": true,
       "abstract_or_primary_text_checked": true
@@ -550,7 +528,6 @@
       "support_grade": "background or contextual support",
       "primary_abstract_or_full_text_url": "https://www.nature.com/articles/s42256-023-00759-6",
       "metadata_file": "raw/moleculestm2023.crossref.json",
-      "metadata_sha256": "8e1651516b3b067c1dcbaefefe0fb12acd2d2391027be4bfd19750e6fe27927d",
       "access_date": "2026-11-17",
       "metadata_verified": true,
       "abstract_or_primary_text_checked": true

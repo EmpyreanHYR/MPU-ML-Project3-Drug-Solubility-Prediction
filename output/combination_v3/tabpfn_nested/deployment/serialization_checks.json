@@ -1,0 +1,29 @@
+{
+  "TabPFN_TwoTreeBlend": {
+    "rows": 20,
+    "target_column_removed": true,
+    "maximum_absolute_difference": 4.440892098500626e-16,
+    "ensemble_rtol": 1e-06,
+    "ensemble_atol": 1e-06,
+    "tree_rtol": 1e-12,
+    "tree_atol": 1e-12,
+    "tree_maximum_absolute_differences": {
+      "RichExtraTrees": 4.440892098500626e-16,
+      "RichCatBoost": 0.0
+    },
+    "status": "PASS"
+  },
+  "TabPFN_ExtraTreesBlend": {
+    "rows": 20,
+    "target_column_removed": true,
+    "maximum_absolute_difference": 4.440892098500626e-16,
+    "ensemble_rtol": 1e-06,
+    "ensemble_atol": 1e-06,
+    "tree_rtol": 1e-12,
+    "tree_atol": 1e-12,
+    "tree_maximum_absolute_differences": {
+      "RichExtraTrees": 4.440892098500626e-16
+    },
+    "status": "PASS"
+  }
+}

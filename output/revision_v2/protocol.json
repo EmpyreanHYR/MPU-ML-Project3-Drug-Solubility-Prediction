@@ -23,6 +23,5 @@
     "InteractionConditional"
   ],
   "primary": "mean of three seed-specific parent_macro_MAE",
-  "historical_test": "397 previously inspected records; secondary evaluation",
-  "source_sha256": "5cf4cecfb556dba5fe10d57ffebe337090cdee07cca6327ec7375cf84c79290d"
+  "historical_test": "397 previously inspected records; secondary evaluation"
 }

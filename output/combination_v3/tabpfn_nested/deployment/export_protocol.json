@@ -37,10 +37,6 @@
   },
   "selection": "3-fold development parent GroupKFold, seed2026; nonnegative simplex step.25 parent macro MAE",
   "prediction": "mean",
-  "checkpoint_sha256": "2ab5a07d5c41dfe6db9aa7ae106fc6de898326c2765be66505a07e2868c10736",
-  "nested_protocol_sha256": "25a654c1376111a63d2209230d5eaecf95d701f1022f57abee99742b7343a9b6",
-  "source_sha256": "5cf4cecfb556dba5fe10d57ffebe337090cdee07cca6327ec7375cf84c79290d",
-  "export_code_sha256": "72a739c8a35b80d9da741d029d0a3fd711012a38b197978bf8849a4f33a99eef",
   "reused_full_development_inputs": {
     "artifacts/combination_v3/full_development_search/RichExtraTrees/selected.json": "b56802ccb16ab1cf30846f782cf16919078dc6cbd0a8df05fc98d3789c2fc631",
     "artifacts/combination_v3/full_development_search/RichExtraTrees/predictions_03.csv": "441316fb24a8eb203b1cf1864abfb1378d7023490dec42e8c313b2dfa45c3da2",

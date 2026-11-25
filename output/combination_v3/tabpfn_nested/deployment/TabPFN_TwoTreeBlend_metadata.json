@@ -39,11 +39,10 @@
     "RichCatBoost"
   ],
   "fit_seconds": {
-    "TabPFN": 0.16402224998455495,
-    "RichExtraTrees": 4.005543292034417,
-    "RichCatBoost": 1.5072891659801826
+    "TabPFN": 0.25804975000210106,
+    "RichExtraTrees": 3.619219584041275,
+    "RichCatBoost": 1.7658127920003608
   },
-  "model_sha256": "78528f12329d450a9d44c2f3c33df345eca50600dd785ac11e0de6f13f9e5636",
   "serialization_check": {
     "rows": 20,
     "target_column_removed": true,
@@ -59,54 +58,13 @@
     "status": "PASS"
   },
   "checkpoint": {
-    "path": "artifacts/combination_v3/tabpfn_probe/tabpfn-v2-regressor.ckpt",
-    "sha256": "2ab5a07d5c41dfe6db9aa7ae106fc6de898326c2765be66505a07e2868c10736",
+    "path": "models/combination_v3/tabpfn_probe/tabpfn-v2-regressor.ckpt",
     "embedded_in_joblib": false
   },
   "deployment": "research only; application and report are unchanged",
   "primary": true,
   "exploratory": true,
   "historical_holdout_evaluated": false,
-  "export_protocol_sha256": "89ded39da18697431414fa9568ccc5bb7322474ce483ef656bc4ce59814e3a85",
   "attribution": "Built with PriorLabs-TabPFN",
-  "license": "TabPFN-LICENSE.txt",
-  "resolved_component_params": {
-    "TabPFN": {
-      "device": "mps",
-      "model_path": null,
-      "n_estimators": 2,
-      "output_type": "mean",
-      "representation": "small",
-      "seed": 2026
-    },
-    "RichExtraTrees": {
-      "depth": null,
-      "family": "extra",
-      "iterations": 300,
-      "l2_leaf_reg": 5.0,
-      "learning_rate": 0.04,
-      "loss": "MAE",
-      "max_features": 0.7,
-      "min_samples_leaf": 2,
-      "representation": "interaction",
-      "seed": 2026,
-      "threads": 2,
-      "weight_power": 1.0
-    },
-    "RichCatBoost": {
-      "depth": 5,
-      "family": "catboost",
-      "iterations": 500,
-      "l2_leaf_reg": 5.0,
-      "learning_rate": 0.04,
-      "loss": "RMSE",
-      "max_features": 0.7,
-      "min_samples_leaf": 2,
-      "representation": "full",
-      "seed": 2026,
-      "threads": 2,
-      "weight_power": 0.5
-    }
-  },
-  "post_export_validation": "Artifact hashes, weights, complete training context and resolved constructor parameters checked from loaded joblib"
+  "license": "TabPFN-LICENSE.txt"
 }

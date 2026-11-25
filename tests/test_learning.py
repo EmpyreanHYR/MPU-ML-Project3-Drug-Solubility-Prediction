@@ -34,7 +34,7 @@ def test_insights_report_actual_partition_without_reserved_labels():
     assert len(body['models']) == 14
     solar = next(m for m in body['models'] if m['id'] == 'AdaptiveHybrid')
     assert solar['temperature_gain'] == 0
-    assert len(body['source']['sha256']) == 64
+    assert body['source']['file'] == 'datasets/data_2026.csv'
     assert 'predictions' not in body
     assert 'observations' not in body
 

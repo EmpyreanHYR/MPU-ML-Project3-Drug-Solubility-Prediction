@@ -29,6 +29,5 @@
   },
   "inner_parent_macro_MAE": 0.6675802495426733,
   "historical_test_evaluated": false,
-  "serialization_max_abs_difference": 2.220446049250313e-16,
-  "sha256": "51607539801c691d0e78473cb7ee7c5f96dae7371d333542170c664b6c3e9ac7"
+  "serialization_max_abs_difference": 2.220446049250313e-16
 }

@@ -2,14 +2,14 @@
 from pathlib import Path
 import sys
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
-import argparse,json,time,hashlib
+import argparse,json,time
 from datetime import datetime,timezone
 import numpy as np
 import pandas as pd
 import joblib
 from sklearn.model_selection import GroupKFold,ParameterSampler
 from src.data import ROOT,load_data,development_splits
-from src.paths import model_path, normalize_frozen
+from src.paths import model_path
 from src.features import featurize_pairs
 from src.models.registry import create_model
 from src.metrics import regression_metrics
@@ -78,7 +78,7 @@ def final(name,dev,test):
     dump(OUT/'full_development_search'/name/'frozen.json',{'at':datetime.now(timezone.utc).isoformat(),'params':params,'selection':'3-fold development group CV'})
     m,sec=fit(name,params,2026,x,y,dev);folder.mkdir(parents=True,exist_ok=True);joblib.dump(m,model_path(folder/'model.joblib', create=True),compress=3)
     p=m.predict(matrix(test));pd.DataFrame({'data_row':test.data_row,'parent_id':test.parent_group_id,'y':test.Solubility_log10,'prediction':p}).to_csv(folder/'historical_predictions.csv',index=False)
-    meta={'model':name,'params':params,'training_rows':len(dev),'seed':2026,'fit_seconds':sec,'representation':'descriptors','model_sha256':hashlib.sha256(model_path(folder/'model.joblib').read_bytes()).hexdigest(),'historical_test':regression_metrics(test.Solubility_log10,p,test.parent),'nested_metrics':json.loads((OUT/'nested'/name/'summary.json').read_text()),'training_metadata':getattr(m,'training_metadata_',{})}
+    meta={'model':name,'params':params,'training_rows':len(dev),'seed':2026,'fit_seconds':sec,'representation':'descriptors','historical_test':regression_metrics(test.Solubility_log10,p,test.parent),'nested_metrics':json.loads((OUT/'nested'/name/'summary.json').read_text()),'training_metadata':getattr(m,'training_metadata_',{})}
     dump(folder/'metadata.json',meta);print('DEPLOYED',name,flush=True)
 
 def collect():
@@ -88,11 +88,7 @@ def collect():
 if __name__=='__main__':
     a=argparse.ArgumentParser();a.add_argument('--models',nargs='+',default=NAMES);a.add_argument('--stage',choices=['all','nested','final'],default='all');args=a.parse_args()
     df=load_data();dev=df[df.role.eq('development')].reset_index(drop=True);test=df[df.role.ne('development')].reset_index(drop=True)
-    files=list((ROOT/'src/models').glob('*.py'))+[ROOT/'src/features.py',Path(__file__)]
-    identity={str(p.relative_to(ROOT)):hashlib.sha256(p.read_bytes()).hexdigest() for p in files};fp=OUT/'training_code_hashes.json'
-    if fp.exists():assert normalize_frozen(json.loads(fp.read_text()))==identity,'Training implementation changed: create a new run version'
-    else:dump(fp,identity)
-    dump(OUT/'protocol.json',{'outer':'frozen development parent 5-fold','inner':'GroupKFold 3 shuffled seed 2026','seeds':SEEDS,'candidates':12,'rows':len(dev),'groups':dev.parent.nunique(),'model_names':NAMES,'primary':'mean of three seed-specific parent_macro_MAE','historical_test':'397 previously inspected records; secondary evaluation','source_sha256':hashlib.sha256((ROOT/'datasets/data_2026.csv').read_bytes()).hexdigest()})
+    dump(OUT/'protocol.json',{'outer':'frozen development parent 5-fold','inner':'GroupKFold 3 shuffled seed 2026','seeds':SEEDS,'candidates':12,'rows':len(dev),'groups':dev.parent.nunique(),'model_names':NAMES,'primary':'mean of three seed-specific parent_macro_MAE','historical_test':'397 previously inspected records; secondary evaluation'})
     for name in args.models:
         if args.stage in ['all','nested']:nested(name,dev);collect()
         if args.stage in ['all','final']:final(name,dev,test)

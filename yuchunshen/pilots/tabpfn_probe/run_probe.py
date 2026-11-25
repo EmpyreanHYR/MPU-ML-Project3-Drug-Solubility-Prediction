@@ -17,7 +17,6 @@ os.environ.setdefault('VECLIB_MAXIMUM_THREADS', '2')
 
 import argparse
 import gc
-import hashlib
 import json
 import sys
 import time
@@ -56,10 +55,9 @@ def main():
     protocol = dict(stage='second-round exploratory branch after v3 results; not confirmatory',
                     model='TabPFN-v2 Nature 2025 original public regressor checkpoint',
                     params=params, rows=len(df), parents=df.parent.nunique(),
-                    source_sha256=hashlib.sha256((ROOT/'datasets/data_2026.csv').read_bytes()).hexdigest(),
-                    code_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
-                    checkpoint_sha256=hashlib.sha256(ckpt.read_bytes()).hexdigest(),
                     split='GroupKFold(3, shuffle=True, random_state=2026), development parents only',
+                    data_source='datasets/data_2026.csv', code_source=str(Path(__file__).relative_to(ROOT)),
+                    checkpoint_source=str(ckpt.relative_to(ROOT)),
                     holdout_used=False, telemetry_disabled=True, local_inference_only=True,
                     tabpfn_version=version('tabpfn'), torch_version=torch.__version__,
                     weighting='No sample weighting; native ICL implementation has no sample_weight argument',
