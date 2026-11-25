@@ -6,7 +6,7 @@ Estimated runtime 14:05 at 100 words per minute, including the full 1:59 video a
 
 Jiayun Song · 41 spoken words · 0:25
 
-Good afternoon. We predict solubility for drug parents held out during training. I will introduce the literature and our baseline. Chunshen will explain the physics-guided SOLAR-H model, Yaorong will explain the ExtraTrees and TabPFN blend, and Haoyang will demonstrate SOLAR Studio.
+Good afternoon. We predict solubility for drug parents held out during training. I will introduce the literature and our baseline. Chunsheng will explain the physics-guided SOLAR-H model, Yaorong will explain the ExtraTrees and TabPFN blend, and Haoyang will demonstrate SOLAR Studio.
 
 ## 02 Presentation roadmap
 
@@ -42,29 +42,29 @@ These plots show the observed data. The histogram uses only the development reco
 
 Jiayun Song · 59 spoken words · 0:36
 
-RDKit standardises parent identities for grouping. Five outer folds assess generalisation and three inner folds tune the models. Thirty-three parents remain reserved. The basic ExtraTrees model averages randomised tree predictions using twenty-three inputs, including temperature. It reaches a parent MAE of zero point seven four six nine on the development outer folds. Chunshen will now explain our physics-guided route.
+RDKit standardises parent identities for grouping. Five outer folds assess generalisation and three inner folds tune the models. Thirty-three parents remain reserved. The basic ExtraTrees model averages randomised tree predictions using twenty-three inputs, including temperature. It reaches a parent MAE of zero point seven four six nine on the development outer folds. Chunsheng will now explain our physics-guided route.
 
 ## 08 Method 1 · SOLAR-H
 
-Chunshen Yu · 12 spoken words · 0:08
+Chunsheng Yu · 12 spoken words · 0:08
 
-I am Chunshen Yu. I will explain how SOLAR-H models temperature response.
+I am Chunsheng Yu. I will explain how SOLAR-H models temperature response.
 
 ## 09 SOLAR-H separates structure and temperature
 
-Chunshen Yu · 73 spoken words · 0:44
+Chunsheng Yu · 73 spoken words · 0:44
 
 SOLAR-H uses a decomposition inspired by the van ’t Hoff relation. We centre observations within each drug and solvent pair to remove its fixed structural baseline. A weighted ridge regression estimates the temperature response. We subtract the damped temperature term from the target and fit an ExtraTrees model for the remaining structural baseline. Inner validation chooses the gain. The deployed version selects zero, so the explicit temperature term vanishes in that fitted model.
 
 ## 10 Full temperature gain increases SOLAR-H error
 
-Chunshen Yu · 58 spoken words · 0:35
+Chunsheng Yu · 58 spoken words · 0:35
 
 The ablation tests the importance of temperature shrinkage. Fixing the gain at one raises parent MAE from about zero point seven one six to zero point eight one five. Its paired interval stays above zero. The other ablation intervals cross zero. The clearest finding here is that forcing the full temperature response harms unseen-parent prediction in this experiment.
 
 ## 11 Pair controls reverse the temperature association
 
-Chunshen Yu · 73 spoken words · 0:44
+Chunsheng Yu · 73 spoken words · 0:44
 
 Using exactly the same observations, the pooled temperature slope is negative, but the within-pair slope is positive. Pair centring removes fixed differences between drug and solvent combinations. The parent-bootstrap interval for the within-pair slope stays positive. This illustrates how the sampling mix can reverse an overall association. Unmeasured factors that change with temperature may still affect the estimate, so the result remains a conditional association. Yaorong will now introduce our second modelling approach.
 

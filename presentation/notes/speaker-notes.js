@@ -1,7 +1,7 @@
 const SOLAR_NOTES = {
   "opening": {
     "time": "0:25 · Jiayun Song",
-    "body": "Good afternoon. We predict solubility for drug parents held out during training. I will introduce the literature and our baseline. Chunshen will explain the physics-guided SOLAR-H model, Yaorong will explain the ExtraTrees and TabPFN blend, and Haoyang will demonstrate SOLAR Studio."
+    "body": "Good afternoon. We predict solubility for drug parents held out during training. I will introduce the literature and our baseline. Chunsheng will explain the physics-guided SOLAR-H model, Yaorong will explain the ExtraTrees and TabPFN blend, and Haoyang will demonstrate SOLAR Studio."
   },
   "agenda": {
     "time": "0:09 · Jiayun Song",
@@ -25,22 +25,22 @@ const SOLAR_NOTES = {
   },
   "protocol": {
     "time": "0:36 · Jiayun Song",
-    "body": "RDKit standardises parent identities for grouping. Five outer folds assess generalisation and three inner folds tune the models. Thirty-three parents remain reserved. The basic ExtraTrees model averages randomised tree predictions using twenty-three inputs, including temperature. It reaches a parent MAE of zero point seven four six nine on the development outer folds. Chunshen will now explain our physics-guided route."
+    "body": "RDKit standardises parent identities for grouping. Five outer folds assess generalisation and three inner folds tune the models. Thirty-three parents remain reserved. The basic ExtraTrees model averages randomised tree predictions using twenty-three inputs, including temperature. It reaches a parent MAE of zero point seven four six nine on the development outer folds. Chunsheng will now explain our physics-guided route."
   },
   "unit-2": {
-    "time": "0:08 · Chunshen Yu",
-    "body": "I am Chunshen Yu. I will explain how SOLAR-H models temperature response."
+    "time": "0:08 · Chunsheng Yu",
+    "body": "I am Chunsheng Yu. I will explain how SOLAR-H models temperature response."
   },
   "solar": {
-    "time": "0:44 · Chunshen Yu",
+    "time": "0:44 · Chunsheng Yu",
     "body": "SOLAR-H uses a decomposition inspired by the van ’t Hoff relation. We centre observations within each drug and solvent pair to remove its fixed structural baseline. A weighted ridge regression estimates the temperature response. We subtract the damped temperature term from the target and fit an ExtraTrees model for the remaining structural baseline. Inner validation chooses the gain. The deployed version selects zero, so the explicit temperature term vanishes in that fitted model."
   },
   "solar-ablation": {
-    "time": "0:35 · Chunshen Yu",
+    "time": "0:35 · Chunsheng Yu",
     "body": "The ablation tests the importance of temperature shrinkage. Fixing the gain at one raises parent MAE from about zero point seven one six to zero point eight one five. Its paired interval stays above zero. The other ablation intervals cross zero. The clearest finding here is that forcing the full temperature response harms unseen-parent prediction in this experiment."
   },
   "temperature": {
-    "time": "0:44 · Chunshen Yu",
+    "time": "0:44 · Chunsheng Yu",
     "body": "Using exactly the same observations, the pooled temperature slope is negative, but the within-pair slope is positive. Pair centring removes fixed differences between drug and solvent combinations. The parent-bootstrap interval for the within-pair slope stays positive. This illustrates how the sampling mix can reverse an overall association. Unmeasured factors that change with temperature may still affect the estimate, so the result remains a conditional association. Yaorong will now introduce our second modelling approach."
   },
   "unit-3": {

@@ -9,10 +9,10 @@
 - **05 `data` · Jiayun Song** — V2 §3, pp. 6–8 · full CSV and frozen audit
 - **06 `distributions` · Jiayun Song** — V2 §3.2, pp. 6–7 · full CSV, development manifest, data audit
 - **07 `protocol` · Jiayun Song** — V2 §§3.5, 6.1–6.2 · grouped validation and baseline results
-- **08 `unit-2` · Chunshen Yu** — Presentation structure · four work units
-- **09 `solar` · Chunshen Yu** — V2 §§4.2–4.5, 7.2, pp. 10–12, 19 · deployment check
-- **10 `solar-ablation` · Chunshen Yu** — V2 Fig. 3, pp. 11–12 · saved diagnostics.csv (unrounded values)
-- **11 `temperature` · Chunshen Yu** — V2 §7.5, pp. 21–22 · same-sample temperature estimates
+- **08 `unit-2` · Chunsheng Yu** — Presentation structure · four work units
+- **09 `solar` · Chunsheng Yu** — V2 §§4.2–4.5, 7.2, pp. 10–12, 19 · deployment check
+- **10 `solar-ablation` · Chunsheng Yu** — V2 Fig. 3, pp. 11–12 · saved diagnostics.csv (unrounded values)
+- **11 `temperature` · Chunsheng Yu** — V2 §7.5, pp. 21–22 · same-sample temperature estimates
 - **12 `unit-3` · Yaorong Huang** — Presentation structure · four work units
 - **13 `fusion` · Yaorong Huang** — V2 §5, pp. 12–15 · fold-local features and inner-OOF weights
 - **14 `ablation` · Yaorong Huang** — V2 §§6.2–6.5, pp. 16–19 · unrounded paired and seed exports

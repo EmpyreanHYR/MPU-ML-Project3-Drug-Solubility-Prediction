@@ -26,7 +26,7 @@
     <p class="kicker">Unit 01 / Macau Polytechnic University · COMP6133</p>
     <h1>Drug Solubility Prediction<br><em>for Unseen Drug Parents</em></h1>
     <p class="subtitle">Physics-Guided Decomposition and<br>Heterogeneous Ensemble Learning</p>
-    <p class="cover-members">Yaorong Huang · Chunshen Yu · Jiayun Song · Haoyang He</p>
+    <p class="cover-members">Yaorong Huang · Chunsheng Yu · Jiayun Song · Haoyang He</p>
     <p class="cover-course">Final Major Group Project</p>
   </div>
   <aside class="cover-evidence">
@@ -46,7 +46,7 @@
             <span>Related work, data quality and evaluation on unseen drug parents</span></div>
           </a>
           <a href="#unit-2" data-jump="unit-2">
-            <b>02</b><div><h3>Method 1 · SOLAR-H</h3><p>Chunshen Yu · Slides 08–11</p>
+            <b>02</b><div><h3>Method 1 · SOLAR-H</h3><p>Chunsheng Yu · Slides 08–11</p>
             <span>Structure–temperature decomposition, gain selection and ablation</span></div>
           </a>
           <a href="#unit-3" data-jump="unit-3">
@@ -130,7 +130,7 @@
           <h2>Method 1 · SOLAR-H</h2><p class="lead">Structure–temperature decomposition, gain selection and ablation</p>
           <p class="unit-deliverable">How can we model temperature response and control extrapolation?</p>
         </div></div>
-        <span class="slide-speaker">Presenter · Chunshen Yu · P2619574</span>
+        <span class="slide-speaker">Presenter · Chunsheng Yu · P2619574</span>
       </section>
       <section class="slide" id="solar" data-unit="2" data-title="SOLAR-H separates structure and temperature" data-source="V2 §§4.2–4.5, 7.2, pp. 10–12, 19 · deployment check" data-report-page="10" hidden>
         <p class="eyebrow">Unit 02 / Physics-guided decomposition</p>
@@ -139,7 +139,7 @@
 <div class="split figure-text"><div class="visual-panel solar-derivation"><img class="equation eq-solar" src="assets/math/solar.svg" alt="Structure baseline plus a damped structure-dependent temperature term."><img class="equation eq-standardize" src="assets/math/standardize.svg" alt="Temperature scaled by the training median and IQR. z has 44 features, u has 45.">
 <ol class="steps"><li>Centre measurements within each drug–solvent pair.</li><li>Fit a weighted ridge temperature response.</li><li>Subtract the temperature term and fit the structure tree.</li></ol></div>
 <aside class="chart-copy"><h3>van ’t Hoff inspiration</h3><p>Model the thermal response as a separate term. Use <b>44</b> pair features and fit scaling on the training fold.</p><h3>Adaptive temperature gain</h3><p>Inner CV selects γ from <b>{0, 0.1, 0.3, 1.0}</b>.</p><div class="callout"><b>Deployed γ = 0</b><br>The deployment uses its structural baseline. Development parent MAE: <b>0.7164</b>.</div></aside></div>
-        <span class="slide-speaker">Presenter · Chunshen Yu · P2619574</span>
+        <span class="slide-speaker">Presenter · Chunsheng Yu · P2619574</span>
       </section>
       <section class="slide" id="solar-ablation" data-unit="2" data-title="Full temperature gain increases SOLAR-H error" data-source="V2 Fig. 3, pp. 11–12 · saved diagnostics.csv (unrounded values)" data-report-page="11" hidden>
         <p class="eyebrow">Unit 02 / SOLAR-H ablation</p>
@@ -148,7 +148,7 @@
 <p class="protocol-label">Development outer CV. Point estimates and paired 95% intervals relative to selected SOLAR-H.</p>
 <figure class="native-figure"><div id="solar-ablation-chart"></div><figcaption class="interaction-hint">All four ablations appear together. Positive differences indicate higher error.</figcaption></figure>
 <div class="data-footnote"><span>Selected SOLAR-H: <b>0.7164</b> parent MAE</span><span>Fixed gain 1: <b>0.8151</b> parent MAE</span><span>Gain-1 difference: <b>+0.0987</b></span></div>
-        <span class="slide-speaker">Presenter · Chunshen Yu · P2619574</span>
+        <span class="slide-speaker">Presenter · Chunsheng Yu · P2619574</span>
       </section>
       <section class="slide" id="temperature" data-unit="2" data-title="Pair controls reverse the temperature association" data-source="V2 §7.5, pp. 21–22 · same-sample temperature estimates" data-report-page="21" hidden>
         <p class="eyebrow">Unit 02 / Observed temperature response</p><h2>Pair controls reverse the temperature association</h2>
@@ -156,7 +156,7 @@
 <p class="protocol-label">Same 1,118 records, 157 multi-temperature pairs and 73 drug parents.</p>
 <figure class="native-figure"><div id="temperature-chart"></div><figcaption>Pooled estimate: clustered 95% CI. Within-pair estimate: parent-bootstrap 95% CI.</figcaption></figure>
 <div class="two temperature-notes"><p><b>−0.00746 to +0.01538:</b> centring within pairs removes fixed drug–solvent differences.</p><p><b>Conditional association:</b> time-varying unmeasured confounding remains possible.</p></div>
-        <span class="slide-speaker">Presenter · Chunshen Yu · P2619574</span>
+        <span class="slide-speaker">Presenter · Chunsheng Yu · P2619574</span>
       </section>
       <section class="slide unit-slide" id="unit-3" data-unit="3" data-title="Method 2 · ExtraTrees–TabPFN" data-source="Presentation structure · four work units" data-report-page="1" hidden>
         <p class="eyebrow">Unit 03 / 04</p>
