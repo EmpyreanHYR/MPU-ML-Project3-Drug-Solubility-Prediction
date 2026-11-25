@@ -17,7 +17,7 @@ import pandas as pd
 from run_tabpfn_combination_v3 import OUT, FIRST, development, freeze, tune, CATALOG
 from run_combination_nested import choose_weights, make
 from src.data import ROOT
-from src.paths import model_path
+from src.paths import model_path, normalize_frozen
 from src.experimental_tabpfn_v3.adapter import FrameTabPFNRegressor, CHECKPOINT_SHA256, DEFAULT_CHECKPOINT
 from src.experimental_v3.ensemble import FittedConvexEnsemble
 

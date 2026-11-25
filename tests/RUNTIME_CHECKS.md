@@ -10,7 +10,7 @@
 | 环境依赖 | `uv pip check --python .venv/bin/python`：115 个已安装包兼容 |
 | 代码语法 | 仓库 Python 文件解析、13 个 JavaScript 文件语法检查、6 个 Shell/command 文件语法检查通过 |
 | 个人代码入口 | 17 个训练、预测、导出及试验入口逐个在独立进程中导入成功；导出入口未执行全量重拟合 |
-| 应用实际启动 | 经 `hehaoran/run.py launch_studio.py --no-browser` 启动独立服务，HTTP 页面、静态资源、模型列表及目录接口正常 |
+| 应用实际启动 | 经 `hehaoyang/run.py launch_studio.py --no-browser` 启动独立服务，HTTP 页面、静态资源、模型列表及目录接口正常 |
 | 部署预测 | 14 个部署模型分别经实际 HTTP 接口完成预测；命令行 ExtraTrees–TabPFN 预测也成功 |
 | 模型小规模训练 | ExtraTrees、CatBoost、HistGradientBoosting、多视角核、归一化分子对模型、TabPFN、SOLAR-H 均完成拟合和预测 |
 | 模型保存与加载 | 六种原始 DataFrame 模型以及 ExtraTrees–TabPFN 融合模型，保存后重载预测一致 |

@@ -112,7 +112,7 @@ $$\widehat y_i = b(z_c) + \gamma \cdot \tau_i \cdot \left( u_c^\top \beta \right
 
 ```bash
 uv sync --frozen
-uv run --frozen python hehaoran/run.py launch_studio.py
+uv run --frozen python hehaoyang/run.py launch_studio.py
 ```
 
 启动后访问 <http://127.0.0.1:8502/>（macOS / Windows 用户也可直接双击根目录的 `启动Studio.command` 或 `启动Studio.bat`）。系统包含以下核心模块：
@@ -153,7 +153,7 @@ uv run --frozen python plotting/revision_figures.py                            #
 | [songjiayun/](songjiayun/README.md) | 基底模型、共同对照训练及常规基线 |
 | [huangyaorong/](huangyaorong/README.md) | SOLAR-H、自适应温度增益与相关消融对照 |
 | [yuchunshen/](yuchunshen/README.md) | ExtraTrees–TabPFN 对、候选融合、训练与导出 |
-| [hehaoran/](hehaoran/README.md) | 应用后端、前端静态资源与启动器 |
+| [hehaoyang/](hehaoyang/README.md) | 应用后端、前端静态资源与启动器 |
 
 所有模块共用根目录下的 `datasets/`、`src/` 与 `models/`，并通过各自的 `run.py` 统一入口运行：
 
@@ -161,7 +161,7 @@ uv run --frozen python plotting/revision_figures.py                            #
 uv run --frozen python songjiayun/run.py run_revision.py --help
 uv run --frozen python huangyaorong/run.py run_adaptive_revision.py
 uv run --frozen python yuchunshen/run.py run_tabpfn_combination_v3.py all
-uv run --frozen python hehaoran/run.py launch_studio.py
+uv run --frozen python hehaoyang/run.py launch_studio.py
 ```
 
 `run_revision.py` 是多模型共用的训练框架，`run_adaptive_revision.py` 在其上加入 SOLAR-H 及消融实现。训练结果写入 `output/`，模型权重写入 `models/`，公共加载器按模块名解析已保存的权重。
@@ -177,7 +177,7 @@ uv run --frozen python hehaoran/run.py launch_studio.py
 | `scripts/` | 公共复现入口、保留集评估、结果分析与仓库检查 |
 | `models/` | 全部部署与实验模型权重（`.joblib` / `.ckpt`）、第三方权重许可与 SHA-256 校验清单 `manifest.json` |
 | `output/` | 嵌套验证逐折/逐行预测、参数搜索记录、配对统计检验、因果与归因分析等 CSV/JSON 工件 |
-| `hehaoran/webapp/` | SOLAR Studio 后端与前端静态资源 |
+| `hehaoyang/webapp/` | SOLAR Studio 后端与前端静态资源 |
 | `Report_final/` | 最终提交报告（PDF / Word）与查重报告 |
 | `presentation/` | HTML 汇报（18 页英文主稿 + 2 页答疑备用页）、中英文讲稿与来源映射、图表与公式素材、演示视频、`launch.py` 启动器 |
 | `plotting/`、`tools/`、`configs/` | 探索性数据分析与报告绘图脚本、图表质量审查工具及实验配置 |

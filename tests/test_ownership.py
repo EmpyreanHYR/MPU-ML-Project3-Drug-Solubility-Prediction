@@ -20,7 +20,7 @@ def test_single_implementation_and_stable_source_reads():
 def test_personal_entrypoints_from_another_directory(tmp_path):
     for owner, script in [('songjiayun', 'run_revision.py'),
                           ('yuchunshen', 'run_combination_nested.py'),
-                          ('hehaoran', 'launch_studio.py')]:
+                          ('hehaoyang', 'launch_studio.py')]:
         result = subprocess.run(
             [sys.executable, str(ROOT / owner / 'run.py'), script, '--help'],
             cwd=tmp_path, capture_output=True, text=True, timeout=60)
@@ -29,8 +29,8 @@ def test_personal_entrypoints_from_another_directory(tmp_path):
 
 
 def test_application_assets_moved_with_owner():
-    from hehaoran.webapp.server import app, STATIC
-    assert STATIC == ROOT / 'hehaoran/webapp/static'
+    from hehaoyang.webapp.server import app, STATIC
+    assert STATIC == ROOT / 'hehaoyang/webapp/static'
     client = TestClient(app)
     for url in ['/', '/static/app.js', '/static/style.css']:
         assert client.get(url).status_code == 200
@@ -38,7 +38,7 @@ def test_application_assets_moved_with_owner():
 
 def test_presentation_uses_relocated_application_assets():
     from fastapi import FastAPI
-    from hehaoran.webapp.server import STATIC
+    from hehaoyang.webapp.server import STATIC
     from presentation.launch import mount_presentation
     application = FastAPI()
     mount_presentation(application, STATIC, 'cpu')

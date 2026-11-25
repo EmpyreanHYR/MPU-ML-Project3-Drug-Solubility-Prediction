@@ -7,7 +7,7 @@ import importlib.util
 ROOT = Path(__file__).resolve().parents[1]
 IMPLEMENTATIONS = {'scripts/export_combination_variants.py': 'yuchunshen/export_combination_variants.py',
  'scripts/export_tabpfn_combination_v3.py': 'yuchunshen/export_tabpfn_combination_v3.py',
- 'scripts/launch_studio.py': 'hehaoran/launch_studio.py',
+ 'scripts/launch_studio.py': 'hehaoyang/launch_studio.py',
  'scripts/pilots/pair_pilot/analyze_pair_pilot.py': 'yuchunshen/pilots/pair_pilot/analyze_pair_pilot.py',
  'scripts/pilots/pair_pilot/run_pair_pilot.py': 'yuchunshen/pilots/pair_pilot/run_pair_pilot.py',
  'scripts/pilots/tabpfn_balancing_pilot/run_balancing_pilot.py': 'yuchunshen/pilots/tabpfn_balancing_pilot/run_balancing_pilot.py',
@@ -40,7 +40,7 @@ IMPLEMENTATIONS = {'scripts/export_combination_variants.py': 'yuchunshen/export_
  'src/models/tabm_model.py': 'songjiayun/models/tabm_model.py',
  'src/models/temperature_mlp_model.py': 'huangyaorong/models/temperature_mlp_model.py',
  'src/revision_models/adaptive_hybrid_model.py': 'huangyaorong/revision_models/adaptive_hybrid_model.py',
- 'webapp/server.py': 'hehaoran/webapp/server.py'}
+ 'webapp/server.py': 'hehaoyang/webapp/server.py'}
 
 
 IMPLEMENTATIONS.update({'src/experimental_v3/__init__.py': 'yuchunshen/experimental_v3/__init__.py', 'src/experimental_pair_v3/__init__.py': 'yuchunshen/experimental_pair_v3/__init__.py', 'src/revision_models/__init__.py': 'huangyaorong/revision_models/__init__.py'})

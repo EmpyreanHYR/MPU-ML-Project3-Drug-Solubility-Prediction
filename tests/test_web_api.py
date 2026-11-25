@@ -1,7 +1,7 @@
 import numpy as np
 import pytest
 from fastapi.testclient import TestClient
-from hehaoran.webapp.server import app,models,get_model,lookup
+from hehaoyang.webapp.server import app,models,get_model,lookup
 from src.features import featurize_pairs
 client=TestClient(app)
 
@@ -50,7 +50,7 @@ def test_fusion_inference_and_report_metrics():
     import json
     import pandas as pd
     from src.data import ROOT
-    from hehaoran.webapp.server import MAIN_MODEL
+    from hehaoyang.webapp.server import MAIN_MODEL
     registry=client.get('/api/models').json()
     assert registry['default']==MAIN_MODEL
     assert registry['comparator']=='AdaptiveHybrid'

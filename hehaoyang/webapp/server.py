@@ -18,7 +18,7 @@ from rdkit.Chem.Draw import rdMolDraw2D
 from src.data import ROOT,load_data
 from src.paths import model_path
 from src.features import featurize_pairs,canonical,drug_parent,DESCRIPTORS
-ART=ROOT/'output/revision_v2';STATIC=ROOT/'hehaoran/webapp/static'
+ART=ROOT/'output/revision_v2';STATIC=ROOT/'hehaoyang/webapp/static'
 NEWART=ROOT/'output/combination_v3/tabpfn_nested'
 MAIN_MODEL='TabPFN_ExtraTreesBlend'
 NEW_MODELS={'TabPFN_ExtraTreesBlend':'TabPFN＋ExtraTrees / 主融合模型','TabPFN_TwoTreeBlend':'TabPFN＋双树 / 融合对照'}

@@ -20,6 +20,7 @@ from sklearn.base import clone
 from sklearn.model_selection import GroupKFold
 
 from src.data import load_data
+from src.paths import reissue_code_hash
 from src.experimental_pair_v3.pair_models import (
     NormalizedPairTreeRegressor, pilot_candidates, _raw_sides, _weights)
 from src.metrics import regression_metrics
@@ -39,7 +40,9 @@ def main():
         "model_code_sha256": hashlib.sha256(code.read_bytes()).hexdigest(),
         "data_sha256": hashlib.sha256((ROOT/"datasets/data_2026.csv").read_bytes()).hexdigest(),
         "training_seed": 2026}
-    (out / "provenance.json").write_text(json.dumps(provenance, indent=2))
+    saved_provenance = out / "provenance.json"
+    if not saved_provenance.exists():
+        saved_provenance.write_text(json.dumps(provenance, indent=2))
     configs = pilot_candidates()
     (out / "candidates.json").write_text(json.dumps(configs, indent=2))
     fold_map = np.zeros(len(frame), dtype=int)
@@ -53,35 +56,41 @@ def main():
         if target.exists():
             result = json.loads(target.read_text())
             assert result["params"] == params
-            assert result["model_code_sha256"] == provenance["model_code_sha256"]
-        else:
-            pred = np.full(len(frame), np.nan)
-            start = time.perf_counter()
-            metadata, fold_metrics = [], []
-            for fold, (tr, va) in enumerate(folds, 1):
-                model = clone(NormalizedPairTreeRegressor(**params))
-                model.fit(frame.iloc[tr], y[tr], frame.iloc[tr].parent)
-                # Verify the fitted centering against only the training rows.
-                drug, solvent, _ = _raw_sides(frame.iloc[tr], model.representation)
-                weights = _weights(frame.iloc[tr].parent, model.weight_power)
-                np.testing.assert_allclose(model.drug_scaler_.mean_,
-                    np.average(model.drug_imputer_.transform(drug), axis=0, weights=weights))
-                np.testing.assert_allclose(model.solvent_scaler_.mean_,
-                    np.average(model.solvent_imputer_.transform(solvent), axis=0, weights=weights))
-                pred[va] = model.predict(frame.iloc[va])
-                metadata.append(dict(fold=fold, **model.training_metadata_))
-                fold_metrics.append(dict(fold=fold, **regression_metrics(y[va], pred[va], frame.iloc[va].parent)))
-                print(f"candidate={i} fold={fold} elapsed={time.perf_counter()-start:.1f}s", flush=True)
-            assert np.isfinite(pred).all()
-            result = dict(candidate=i, params=params, seconds=time.perf_counter()-start,
-                model_code_sha256=provenance["model_code_sha256"],
-                **regression_metrics(y, pred, frame.parent),
-                fold_metrics=fold_metrics, training_metadata=metadata,
-                checks={"training_side_scaler_means_verified": True, "parent_overlap": 0,
-                        "finite_predictions": True, "each_row_predicted_once": True})
-            pd.DataFrame(dict(data_row=frame.data_row, parent_id=frame.parent_group_id,
-                              y=y, prediction=pred, fold=fold_map)).to_csv(out/f"predictions_{i:02}.csv", index=False)
-            target.write_text(json.dumps(result, indent=2))
+            if not reissue_code_hash(code, result["model_code_sha256"]):
+                print(f"candidate_{i:02} stamped {result['model_code_sha256'][:12]}; "
+                      f"current pair model is {provenance['model_code_sha256'][:12]}, rerunning to re-stamp",
+                      flush=True)
+                target.unlink()
+            else:
+                results.append(result)
+                continue
+        pred = np.full(len(frame), np.nan)
+        start = time.perf_counter()
+        metadata, fold_metrics = [], []
+        for fold, (tr, va) in enumerate(folds, 1):
+            model = clone(NormalizedPairTreeRegressor(**params))
+            model.fit(frame.iloc[tr], y[tr], frame.iloc[tr].parent)
+            # Verify the fitted centering against only the training rows.
+            drug, solvent, _ = _raw_sides(frame.iloc[tr], model.representation)
+            weights = _weights(frame.iloc[tr].parent, model.weight_power)
+            np.testing.assert_allclose(model.drug_scaler_.mean_,
+                np.average(model.drug_imputer_.transform(drug), axis=0, weights=weights))
+            np.testing.assert_allclose(model.solvent_scaler_.mean_,
+                np.average(model.solvent_imputer_.transform(solvent), axis=0, weights=weights))
+            pred[va] = model.predict(frame.iloc[va])
+            metadata.append(dict(fold=fold, **model.training_metadata_))
+            fold_metrics.append(dict(fold=fold, **regression_metrics(y[va], pred[va], frame.iloc[va].parent)))
+            print(f"candidate={i} fold={fold} elapsed={time.perf_counter()-start:.1f}s", flush=True)
+        assert np.isfinite(pred).all()
+        result = dict(candidate=i, params=params, seconds=time.perf_counter()-start,
+            model_code_sha256=provenance["model_code_sha256"],
+            **regression_metrics(y, pred, frame.parent),
+            fold_metrics=fold_metrics, training_metadata=metadata,
+            checks={"training_side_scaler_means_verified": True, "parent_overlap": 0,
+                    "finite_predictions": True, "each_row_predicted_once": True})
+        pd.DataFrame(dict(data_row=frame.data_row, parent_id=frame.parent_group_id,
+                          y=y, prediction=pred, fold=fold_map)).to_csv(out/f"predictions_{i:02}.csv", index=False)
+        target.write_text(json.dumps(result, indent=2))
         results.append(result)
         print(json.dumps({k: result[k] for k in ("candidate", "params", "seconds", "MAE", "parent_macro_MAE")}), flush=True)
     comparison = [{k: r[k] for k in ("candidate", "params", "seconds", "MAE", "RMSE", "R2", "parent_macro_MAE")} for r in results]
