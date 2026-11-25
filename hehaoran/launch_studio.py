@@ -7,6 +7,7 @@ import socket
 import subprocess
 import sys
 import threading
+import time
 import urllib.request
 import webbrowser
 
@@ -21,9 +22,26 @@ def studio_ready(url):
             health = json.load(response)
         with opener.open(url + 'openapi.json', timeout=2) as response:
             title = json.load(response).get('info', {}).get('title')
-        return health.get('status') == 'ok' and title in ('SOLAR Studio', 'Solubility Studio')
+        # The health endpoint alone also passes for a stale process whose page
+        # can no longer be served, so require the real landing page as well.
+        with opener.open(url, timeout=2) as response:
+            page = response.read(8192).decode('utf-8', 'replace')
+        return (health.get('status') == 'ok'
+                and title in ('SOLAR Studio', 'Solubility Studio')
+                and 'SOLAR Studio' in page)
     except (OSError, ValueError):
         return False
+
+
+def port_available(port):
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as probe:
+        probe.settimeout(1)
+        return probe.connect_ex(('127.0.0.1', port)) != 0
+
+
+def open_browser(url, disabled):
+    if not disabled and not webbrowser.open(url):
+        print(f'Open this URL manually: {url}', flush=True)
 
 
 def main():
@@ -39,20 +57,28 @@ def main():
         return 1
     url = f'http://127.0.0.1:{port}/'
     print(f'SOLAR Studio: {url}', flush=True)
-    try:
-        with socket.create_connection(('127.0.0.1', port), timeout=1):
-            occupied = True
-    except OSError:
-        occupied = False
-    if occupied:
-        if not studio_ready(url):
-            print(f'Port {port} is in use by another service, or Studio is still starting. '
-                  'Try again later or set PORT to another port.', flush=True)
+    if not port_available(port):
+        # A just-started instance answers health before its page is ready, so
+        # retry briefly instead of mistaking it for a stale process.
+        deadline = time.monotonic() + 5
+        ready = studio_ready(url)
+        while not ready and time.monotonic() < deadline:
+            time.sleep(0.5)
+            ready = studio_ready(url)
+        if ready:
+            print('Studio is already running; opening the existing service.', flush=True)
+            open_browser(url, args.no_browser)
+            return 0
+        print(f'Port {port} is used by another service or an outdated Studio process '
+              'that can no longer serve the page.', flush=True)
+        requested = port
+        port = next((candidate for candidate in range(requested + 1, requested + 21)
+                     if port_available(candidate)), None)
+        if port is None:
+            print(f'No free port between {requested} and {requested + 20}; set PORT to another value.', flush=True)
             return 1
-        print('Studio is already running; opening the existing service.', flush=True)
-        if not args.no_browser:
-            webbrowser.open(url)
-        return 0
+        url = f'http://127.0.0.1:{port}/'
+        print(f'Starting on {url} instead. Stop the old process to reuse port {requested}.', flush=True)
 
     print('Starting the server. Keep this window open; press Ctrl+C to stop.', flush=True)
     process = subprocess.Popen(
@@ -67,8 +93,7 @@ def main():
                 return
             if studio_ready(url):
                 print('Studio is ready.', flush=True)
-                if not args.no_browser and not webbrowser.open(url):
-                    print(f'Open this URL manually: {url}', flush=True)
+                open_browser(url, args.no_browser)
                 return
             if stopped.wait(1):
                 return
