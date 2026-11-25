@@ -4,6 +4,7 @@ from collections import deque
 from concurrent.futures import ThreadPoolExecutor
 from functools import lru_cache
 import asyncio,copy,hashlib,json,os,time
+from contextlib import asynccontextmanager
 from threading import RLock
 import numpy as np
 import pandas as pd
@@ -23,11 +24,14 @@ NEWART=ROOT/'output/combination_v3/tabpfn_nested'
 MAIN_MODEL='TabPFN_ExtraTreesBlend'
 NEW_MODELS={'TabPFN_ExtraTreesBlend':'TabPFN＋ExtraTrees / 主融合模型','TabPFN_TwoTreeBlend':'TabPFN＋双树 / 融合对照'}
 
-# Fine-grained per-model locks + dedicated worker thread pool (replaces global serializing lock)
+# Fine-grained per-model locks (replaces the global serializing lock).
+# Inference runs on the event loop's default executor, whose size is the one knob
+# that caps concurrency; binding it to SOLAR_WORKERS keeps the deployment setting
+# meaningful (uvicorn --workers multiplies it across processes).
+INFERENCE_WORKERS=max(1,int(os.environ.get('SOLAR_WORKERS','4')))
 INFERENCE_LOCK=RLock()
 _MODEL_LOCKS_GUARD=RLock()
 _MODEL_LOCKS:dict[str,RLock]={}
-INFERENCE_EXECUTOR=ThreadPoolExecutor(max_workers=int(os.environ.get('SOLAR_WORKERS','4')),thread_name_prefix='solar_infer')
 
 def get_model_lock(name:str)->RLock:
     with _MODEL_LOCKS_GUARD:
@@ -36,7 +40,17 @@ def get_model_lock(name:str)->RLock:
         return _MODEL_LOCKS[name]
 
 DISPLAY={'AdaptiveHybrid':'SOLAR-H / 溶曜混合模型','HybridConditional':'SOLAR-H0 / 固定增益对照','InteractionConditional':'SOLAR-N / 溶曜交互网络','PlainMLP':'MLP / 多层感知机','TemperatureMLP':'MLP + difference / 温度差分MLP','RandomForest':'Random forest / 随机森林','HistGradientBoosting':'HGB / 梯度提升','ExtraTrees':'ExtraTrees / 极端随机树','Ridge':'Ridge / 岭回归','Dummy':'Mean / 均值预测','TabM':'TabM','RealMLP':'RealMLP'}
-app=FastAPI(title='Solubility Studio',version='5.0')
+
+@asynccontextmanager
+async def lifespan(_app:FastAPI):
+    # Bind before serving: the default executor is otherwise sized by the interpreter.
+    asyncio.get_running_loop().set_default_executor(ThreadPoolExecutor(max_workers=INFERENCE_WORKERS,thread_name_prefix='solar_infer'))
+    # Warm before serving, so neither the first click nor a cold route pays the load.
+    await warm_default_model()
+    yield
+
+
+app=FastAPI(title='Solubility Studio',version='5.0',lifespan=lifespan)
 
 # Sliding-window IP Rate Limiter for inference endpoints
 RATE_LIMIT_PER_MIN=int(os.environ.get('SOLAR_RATE_LIMIT','240'))
@@ -159,6 +173,26 @@ def bundle(model_id,signature):
 def get_model(name):
     if name not in [r['id'] for r in _cached_registry()]:raise HTTPException(422,'Unknown model / 未找到模型')
     return bundle(name,artifact_paths(name)[0].stat().st_mtime_ns)
+
+async def warm_default_model():
+    # Loading the default bundle is a ~2 s cost, and the TabPFN branch pays another ~2 s
+    # building its transformer cache; both would otherwise land on the user's first click.
+    try:
+        await asyncio.to_thread(_warm_predict,MAIN_MODEL)
+    except HTTPException:
+        pass
+
+def _warm_predict(model_id):
+    _,catalogue=data()
+    drug=catalogue['Drug'][0];solvent=catalogue['Solvent'][0]
+    m,_=get_model(model_id)
+    x=pd.DataFrame({'Drug SMILES':[drug['smiles']],'Solvent SMILES':[solvent['smiles']],'Temperature':[25.0]})
+    if model_id in NEW_MODELS:
+        m.predict_components(x)
+    else:
+        m.predict(x)
+
+
 class Input(BaseModel):
     model_id:str
     drug_id:str
