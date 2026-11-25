@@ -1,75 +1,154 @@
 # 中文排练提示
 
-18页主稿＋2页答疑备用页。英文逐字稿见 [speaker-notes-en.md](speaker-notes-en.md)。完整视频1:59已计入15分钟总时长。每页只讲下列重点，不逐个念图上的全部数字。
+按每分钟 100 个英文词估计约 14:05，包含 1:59 完整视频和 45 秒交接、翻页时间。
 
-## 01 Research overview（0:30）
+- 宋佳耘负责文献调研与基线模型（第 3–7 页，约 3:00，含开场和目录）。
+- 余春申负责方法一 · SOLAR-H 机理模型（第 8–11 页，约 2:11）。
+- 黄耀荣负责方法二 · ExtraTrees–TabPFN 异构融合（第 12–18 页，约 4:02）。
+- 何昊阳负责应用 · SOLAR Studio（第 19–24 页，约 4:07，含视频）。
 
-介绍未见母体任务、两条路线与系统。
+## 01 Research overview / 研究概览
 
-## 02 Predicting solubility across conditions（0:36）
+宋佳耘 · 建议用时 **0:25**
 
-说明输入、对数输出和溶剂筛选用途。
+大家下午好。我们的项目预测训练时未见过的药物母体的溶解度。我先介绍文献和基线，随后由春申讲解物理启发的 SOLAR-H 模型，耀荣讲解 ExtraTrees 与 TabPFN 融合，昊阳演示 SOLAR Studio。
 
-## 03 Sparse coverage and uneven sampling shape the task（0:39）
+## 02 Presentation roadmap / 汇报目录
 
-只讲稀疏和长尾两个问题，不逐个读数字。
+宋佳耘 · 建议用时 **0:09**
 
-## 04 Temperature and solubility span broad ranges（0:32）
+我们先介绍基线，再分别讲解两条建模路线，最后展示应用。
 
-区分开发集直方图和全量散点，点到测量噪声。
+## 03 Literature and baselines / 文献调研与基线模型
 
-## 05 Drug parents stay isolated across folds（0:40）
+宋佳耘 · 建议用时 **0:06**
 
-解释母体隔离、外五内三和独立保留集。
+我先介绍相关文献和基线模型。
 
-## 06 Interactions, parent weighting and heterogeneous fusion（0:41）
+## 04 Predicting solubility across conditions / 相关文献与预测任务
 
-特征交互、母体等权、异质融合，各讲一句。
+宋佳耘 · 建议用时 **0:33**
 
-## 07 SOLAR-H separates structure and temperature（0:48）
+ESOL 用少量描述符估计水中溶解度。Vermeire 等人结合热力学与机器学习，覆盖不同溶剂和温度。在我们的任务中，输入是两种分子结构和温度，输出是摩尔溶解度的以十为底的对数，评价时留出训练未见的药物母体。
 
-讲去均值与阻尼，明确部署增益为零。
+## 05 Sparse coverage and uneven sampling shape the task / 稀疏覆盖与不均衡采样
 
-## 08 Full temperature gain increases SOLAR-H error（0:35）
+宋佳耘 · 建议用时 **0:39**
 
-只强调满增益损害预测，其它区间跨零。
+数据集共有 1,904 条记录，覆盖 49 种溶剂和 161 个标准化药物母体。图中的网格表明，超过 92% 的可能结构–溶剂组合尚无测量记录。采样也很不均衡：记录数最多的 30 个母体贡献了超过一半的记录，而 74 个母体各自只有 1 到 5 条记录。因此，我们采用母体等权的学习和评估方法。
 
-## 09 The blend leads the four reported metrics（0:48）
+## 06 Temperature and solubility span broad ranges / 温度与溶解度的宽范围分布
 
-雷达越外越好是相对归一化；主融合四项点估计最好。
+宋佳耘 · 建议用时 **0:32**
 
-## 10 Feature enhancement and fusion lower parent error（0:42）
+这些图展示了实测数据。直方图只使用开发集记录，散点图则使用全量数据。溶解度的跨度超过 8 个对数单位，也就是超过 8 个数量级。数据还包含相同名义条件下相互冲突的测量值。我们保留了这些测量记录，没有把数据集当作条件完全受控的理想实验数据。
 
-讲三个改进阶段和配对区间，不重复四项指标。
+## 07 Drug parents stay isolated across folds / 母体隔离评价与基线模型
 
-## 11 Blend gains persist across tested weights and seeds（0:38）
+宋佳耘 · 建议用时 **0:36**
 
-指认平缓中间区域与种子稳定，不逐点读数。
+我们用 RDKit 标准化母体标识来分组。外层五折评价泛化能力，内层三折选参数，另保留 33 个母体。基础 ExtraTrees 使用包括温度在内的 23 维输入，平均各随机树的预测；开发集外层验证的母体 MAE 为 0.7469。下面请春申介绍物理启发的建模路线。
 
-## 12 Drug structure and pair interactions dominate TreeSHAP（0:31）
+## 08 Method 1 · SOLAR-H / 方法一 · SOLAR-H 机理模型
 
-解释结构和交互归因，说明不是百分比或因果效应。
+余春申 · 建议用时 **0:08**
 
-## 13 TabPFN adjusts the tree prediction in both directions（0:28）
+我是余春申。我接下来介绍 SOLAR-H 怎样建模温度响应。
 
-简短指认两个方向的局部修正，提醒不是独立测试。
+## 09 SOLAR-H separates structure and temperature / SOLAR-H 的结构与温度分解
 
-## 14 Pair controls reverse the temperature association（0:39）
+余春申 · 建议用时 **0:44**
 
-同样本总体负、组内正，保留未测混杂边界。
+SOLAR-H 的分解方式受 van ’t Hoff 关系启发。我们在每个药物—溶剂组合内去均值，消去固定的结构基线，再用加权岭回归估计温度响应。从目标中扣除收缩后的温度项，再用 ExtraTrees 拟合剩余的结构基线。增益由内层验证选择。部署版本选择零，因此该拟合模型的显式温度项消失。
 
-## 15 Very low solubility remains the main weakness（0:40）
+## 10 Full temperature gain increases SOLAR-H error / 满温度增益会增大 SOLAR-H 误差
 
-此雷达越内越好；极难溶区高估，缺少固态信息。
+余春申 · 建议用时 **0:35**
 
-## 16 SOLAR Studio in action（2:29）
+这项消融检验了温度项收缩的重要性。将增益固定为 1 后，母体等权 MAE 从约 0.716 增加到约 0.815，其配对差值区间完全位于零以上。其他消融的区间则跨过零。因此，这里最明确的发现是：在本次实验中，强行保留满增益温度响应，会损害模型对未见母体的预测。
 
-英文引入后完整播放1:59视频，播放期间不再旁白。
+## 11 Pair controls reverse the temperature association / 控制组合差异后温度关联发生反转
 
-## 17 Saved API checks match offline predictions（0:35）
+余春申 · 建议用时 **0:44**
 
-快速区分数值一致性与预测精度，计时是特定设备记录。
+使用完全相同的观测记录时，总体温度斜率为负，而组合内斜率为正。组合内去均值消除了不同药物–溶剂组合之间的固定差异，组合内斜率的母体 Bootstrap 区间保持为正。这说明采样构成的差异能够反转总体关联的方向。不过，随温度变化的未测因素仍可能影响估计，因此，这个结果仍应解释为条件关联。 接下来请耀荣介绍第二种建模方法。
 
-## 18 Reliable evaluation, better predictions and a usable system（0:30）
+## 12 Method 2 · ExtraTrees–TabPFN / 方法二 · ExtraTrees–TabPFN 异构融合
 
-三点收束并致谢，不重讲全部结果。
+黄耀荣 · 建议用时 **0:09**
+
+我是黄耀荣。接下来我会说明如何改进并融合两个预测分支。
+
+## 13 Interactions, parent weighting and heterogeneous fusion / 交互特征、母体加权与异质融合
+
+黄耀荣 · 建议用时 **0:41**
+
+我们的预测模型结合了三个思路。首先，根据药物和溶剂描述符、温度、描述符乘积以及绝对差值，构建 869 个特征。这些交互特征直接描述药物与溶剂这一分子对。其次，使用记录数倒数作为权重，让每个母体在树模型训练中具有相同的总权重。最后，将 ExtraTrees 与 TabPFN 进行融合，利用内层折外预测确定凸组合权重。部署示例采用 75% 的 ExtraTrees 和 25% 的 TabPFN。
+
+## 14 Feature enhancement and fusion lower parent error / 特征增强与融合降低母体误差
+
+黄耀荣 · 建议用时 **0:42**
+
+这张趋势图在相同的外层验证条件下展示了主要改进阶段。丰富特征与母体加权将母体等权 MAE 从 0.7469 降低到 0.6831，融合又进一步降低了误差。融合模型相对基础树的配对差值区间位于零以下。不过，相对两个丰富特征单分支的区间会跨过零。因此，我们需要区分“点估计最优”和“相对每个对照模型都具有统计上确定的优势”。
+
+## 15 The blend leads the four reported metrics / 融合模型在四项报告指标上领先
+
+黄耀荣 · 建议用时 **0:48**
+
+这张雷达图把四项主要指标放在同一页比较。误差指标的坐标轴已经反转，因此每个方向上都是越靠外越好。分数使用报告中的 13 种方法进行归一化，1 表示这组结果中观测到的最优值，并不表示预测完全准确。融合模型的四项点估计均领先，其中母体等权 MAE 为 0.6668，R² 为 0.5234。与基础 ExtraTrees 相比，其母体预测误差降低了 10.73%。
+
+## 16 Blend gains persist across tested weights and seeds / 不同权重与随机种子下的融合收益
+
+黄耀荣 · 建议用时 **0:38**
+
+权重曲线展示了测试过的全部五个固定权重。中间的融合方案表现优于两个单分支端点，虚线代表自适应选权方法。在三个随机种子下，所选融合模型的结果变化很小。右侧各折所选择的权重也说明，部署权重并不是适用于所有情况的固定常数。我们不必逐个朗读数值，就能看出这一规律。
+
+## 17 Drug structure and pair interactions dominate TreeSHAP / 药物结构和交互特征主导 TreeSHAP 归因
+
+黄耀荣 · 建议用时 **0:31**
+
+TreeSHAP 解释的是部署模型中的树分支。药物描述符和显式交互特征具有最大的组归因值，说明同时描述药物本身及其与溶剂的相容性具有价值。这些数值的单位是对数溶解度，既不是百分比，也不代表因果效应。用于解释的样本覆盖了全部开发集母体。
+
+## 18 TabPFN adjusts the tree prediction in both directions / TabPFN 对树预测进行双向修正
+
+黄耀荣 · 建议用时 **0:33**
+
+这两个开发集案例展示了 TabPFN 如何调整树模型的预测。对于赤藓糖醇，修正方向向下；对于 Dane 盐，修正方向向上。两者遵循相同的加权平均公式。这些案例用于解释融合的计算方式，属于部署模型在拟合数据上的示例，不是对泛化能力的独立测试。 下面请昊阳演示模型怎样部署到系统。
+
+## 19 Application · SOLAR Studio / 应用 · SOLAR Studio
+
+何昊阳 · 建议用时 **0:09**
+
+我是何昊阳。接下来由我介绍模型部署与预测验证。
+
+## 20 SOLAR Studio in action / SOLAR Studio 系统演示
+
+何昊阳 · 建议用时 **2:25**，含完整 1:59 视频
+
+FastAPI 校验输入、加载模型，再把预测发回浏览器。视频展示单点预测、模型对比、溶剂筛选和批量 CSV。第一个例子预测洛伐他汀在 25 摄氏度丙酮中的溶解度。播放时暂停现场旁白。
+
+播放完整 1:59 录屏，播放期间暂停旁白。
+
+## 21 Saved API checks match offline predictions / 接口核验与离线预测一致
+
+何昊阳 · 建议用时 **0:35**
+
+保存的接口核验结果表明，API 与离线模型的预测一致，曲线和单点输出的差异也处于很小的数值容差范围内。图中的计时点对应记录所用 MPS 设备上的五次连续预热后请求，平均约 1.7 秒。这些结果描述的是该硬件与配置下的表现，不能保证每台电脑都达到相同速度。
+
+## 22 Very low solubility remains the main weakness / 极难溶条件下的误差边界
+
+何昊阳 · 建议用时 **0:28**
+
+我们也检查了预测在哪些条件下最不可靠。这张雷达图越靠近中心，误差越小。对极难溶区间的 23 条记录，融合平均高估约 2.25 个对数单位。输入缺少晶型与晶格能信息。
+
+## 23 Reliable evaluation, better predictions and a usable system / 可靠评估、更优预测与可用系统
+
+何昊阳 · 建议用时 **0:27**
+
+最后总结一下，母体隔离的评估使这项预测任务更有意义。丰富的交互特征、母体加权和异质融合改善了报告中的开发集结果。系统应用让这些预测可以实际使用，误差分析也明确了模型的适用边界。接下来，我们将优先补充固态信息，并开展条件受控的外部验证。
+
+## 24 Thank you / 致谢
+
+何昊阳 · 建议用时 **0:03**
+
+谢谢大家。

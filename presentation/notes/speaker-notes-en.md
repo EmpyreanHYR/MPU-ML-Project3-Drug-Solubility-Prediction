@@ -1,115 +1,149 @@
 # English presentation script
 
-18 main slides + 2 Q&A references. Main script: **1095 words**. Full video: **1:59**, already included in the estimates below.
-
-At 100 words/min: **13:41**, including 45 seconds for transitions. At 110 words/min: **12:41**. This leaves a buffer within the 15-minute limit. Rehearse against the actual video; do not read all chart labels or the backup pages.
+Estimated runtime 14:05 at 100 words per minute, including the full 1:59 video and 45 seconds for transitions.
 
 ## 01 Research overview
 
-50 spoken words. Budget 0:30.
+Jiayun Song · 41 spoken words · 0:25
 
-Good afternoon. Our project predicts drug solubility for drug parents that the model has never seen during training. We compare a physics-guided decomposition with an ExtraTrees and TabPFN ensemble, then connect the models to SOLAR Studio. We will focus on the data, the evaluation, the main results and the application.
+Good afternoon. We predict solubility for drug parents held out during training. I will introduce the literature and our baseline. Chunshen will explain the physics-guided SOLAR-H model, Yaorong will explain the ExtraTrees and TabPFN blend, and Haoyang will demonstrate SOLAR Studio.
 
-## 02 Predicting solubility across conditions
+## 02 Presentation roadmap
 
-60 spoken words. Budget 0:36.
+Jiayun Song · 15 spoken words · 0:09
 
-Our inputs are the drug structure, the solvent structure and temperature. The output is the base-ten logarithm of molar solubility. A difference of one log unit represents a tenfold concentration difference. This prediction can help prioritise solvent screening and crystallisation experiments. The key challenge is generalisation to a new drug parent, rather than predicting another measurement of a familiar drug.
+We will start with the baseline, compare two modelling approaches, and finish with the application.
 
-## 03 Sparse coverage and uneven sampling shape the task
+## 03 Literature and baselines
 
-65 spoken words. Budget 0:39.
+Jiayun Song · 9 spoken words · 0:06
+
+I will start with related work and the baseline.
+
+## 04 Predicting solubility across conditions
+
+Jiayun Song · 55 spoken words · 0:33
+
+ESOL uses a small set of descriptors to estimate aqueous solubility. Vermeire and colleagues combine thermodynamics with machine learning to cover different solvents and temperatures. In our task, the inputs are the two molecular structures and temperature. The output is log base ten molar solubility, and we evaluate on drug parents held out from training.
+
+## 05 Sparse coverage and uneven sampling shape the task
+
+Jiayun Song · 65 spoken words · 0:39
 
 The dataset contains nineteen hundred and four records, covering forty-nine solvents and one hundred and sixty-one standardised drug parents. The grid shows that more than ninety-two percent of the possible structure and solvent combinations are unmeasured. Sampling is also uneven: the top thirty parents contribute over half the records, while seventy-four parents have only one to five records each. This motivates parent-balanced learning and evaluation.
 
-## 04 Temperature and solubility span broad ranges
+## 06 Temperature and solubility span broad ranges
 
-53 spoken words. Budget 0:32.
+Jiayun Song · 53 spoken words · 0:32
 
 These plots show the observed data. The histogram uses only the development records, while the scatter plot uses the full dataset. Solubility spans more than eight log units. The records also include conflicting measurements under the same nominal conditions. We retain these measurements instead of treating the dataset as perfectly controlled experimental data.
 
-## 05 Drug parents stay isolated across folds
+## 07 Drug parents stay isolated across folds
 
-66 spoken words. Budget 0:40.
+Jiayun Song · 59 spoken words · 0:36
 
-We standardise parent identities with RDKit and keep every parent entirely within one split. The development set contains one hundred and twenty-eight parents. A separate group of thirty-three parents remains reserved. Within development, five outer folds estimate performance on unseen parents. Three inner folds select parameters and blend weights. Preprocessing uses training-fold data only. Our headline results are development out-of-fold results, averaged over three training seeds.
+RDKit standardises parent identities for grouping. Five outer folds assess generalisation and three inner folds tune the models. Thirty-three parents remain reserved. The basic ExtraTrees model averages randomised tree predictions using twenty-three inputs, including temperature. It reaches a parent MAE of zero point seven four six nine on the development outer folds. Chunshen will now explain our physics-guided route.
 
-## 06 Interactions, parent weighting and heterogeneous fusion
+## 08 Method 1 · SOLAR-H
 
-68 spoken words. Budget 0:41.
+Chunshen Yu · 12 spoken words · 0:08
 
-Our prediction model combines three ideas. First, we construct eight hundred and sixty-nine features from drug and solvent descriptors, temperature, descriptor products and absolute differences. These interactions directly describe the molecule pair. Second, inverse-count weights give each parent equal total influence in tree training. Third, we combine ExtraTrees with TabPFN. Inner out-of-fold predictions determine the convex weights. The deployed example uses seventy-five percent ExtraTrees and twenty-five percent TabPFN.
+I am Chunshen Yu. I will explain how SOLAR-H models temperature response.
 
-## 07 SOLAR-H separates structure and temperature
+## 09 SOLAR-H separates structure and temperature
 
-79 spoken words. Budget 0:48.
+Chunshen Yu · 73 spoken words · 0:44
 
-SOLAR-H follows a different route. It separates a structural baseline from a structure-dependent temperature term. Within each drug and solvent pair, centring removes the fixed structural component, allowing a weighted ridge model to estimate temperature response. A tree then learns the baseline. Inner validation chooses the temperature gain. The saved deployment selects a gain of zero, so its explicit temperature term vanishes. This is an adaptive response to uncertain extrapolation, rather than evidence that temperature has no physical effect.
+SOLAR-H uses a decomposition inspired by the van ’t Hoff relation. We centre observations within each drug and solvent pair to remove its fixed structural baseline. A weighted ridge regression estimates the temperature response. We subtract the damped temperature term from the target and fit an ExtraTrees model for the remaining structural baseline. Inner validation chooses the gain. The deployed version selects zero, so the explicit temperature term vanishes in that fitted model.
 
-## 08 Full temperature gain increases SOLAR-H error
+## 10 Full temperature gain increases SOLAR-H error
 
-58 spoken words. Budget 0:35.
+Chunshen Yu · 58 spoken words · 0:35
 
 The ablation tests the importance of temperature shrinkage. Fixing the gain at one raises parent MAE from about zero point seven one six to zero point eight one five. Its paired interval stays above zero. The other ablation intervals cross zero. The clearest finding here is that forcing the full temperature response harms unseen-parent prediction in this experiment.
 
-## 09 The blend leads the four reported metrics
+## 11 Pair controls reverse the temperature association
 
-79 spoken words. Budget 0:48.
+Chunshen Yu · 73 spoken words · 0:44
 
-The radar combines the four headline metrics on one page. Error axes are reversed, so farther out is better on every axis. Scores are normalised across the thirteen reported methods. One means the best observed result, not perfect prediction. The blend leads all four point estimates, with parent MAE of zero point six six six eight and R squared of zero point five two three four. Its parent error is ten point seven three percent lower than basic ExtraTrees.
+Using exactly the same observations, the pooled temperature slope is negative, but the within-pair slope is positive. Pair centring removes fixed differences between drug and solvent combinations. The parent-bootstrap interval for the within-pair slope stays positive. This illustrates how the sampling mix can reverse an overall association. Unmeasured factors that change with temperature may still affect the estimate, so the result remains a conditional association. Yaorong will now introduce our second modelling approach.
 
-## 10 Feature enhancement and fusion lower parent error
+## 12 Method 2 · ExtraTrees–TabPFN
 
-70 spoken words. Budget 0:42.
+Yaorong Huang · 15 spoken words · 0:09
+
+I am Yaorong Huang. I will explain how we improve and combine the two branches.
+
+## 13 Interactions, parent weighting and heterogeneous fusion
+
+Yaorong Huang · 68 spoken words · 0:41
+
+Our prediction model combines three ideas. First, we construct eight hundred and sixty-nine features from drug and solvent descriptors, temperature, descriptor products and absolute differences. These interactions directly describe the molecule pair. Second, inverse-count weights give each parent equal total influence in tree training. Third, we combine ExtraTrees with TabPFN. Inner out-of-fold predictions determine the convex weights. The deployed example uses seventy-five percent ExtraTrees and twenty-five percent TabPFN.
+
+## 14 Feature enhancement and fusion lower parent error
+
+Yaorong Huang · 70 spoken words · 0:42
 
 This progression isolates the main improvement stages under the same outer validation. Rich features and parent weighting reduce parent MAE from zero point seven four six nine to zero point six eight three one. Fusion reduces it further. The blend-versus-basic paired interval lies below zero. However, intervals against the rich single branches cross zero, so we should distinguish the best point estimate from a statistically certain advantage over every competitor.
 
-## 11 Blend gains persist across tested weights and seeds
+## 15 The blend leads the four reported metrics
 
-62 spoken words. Budget 0:38.
+Yaorong Huang · 79 spoken words · 0:48
+
+The radar combines the four headline metrics on one page. Error axes are reversed, so farther out is better on every axis. Scores are normalised across the thirteen reported methods. One means the best observed result, not perfect prediction. The blend leads all four point estimates, with parent MAE of zero point six six six eight and R squared of zero point five two three four. Its parent error is ten point seven three percent lower than basic ExtraTrees.
+
+## 16 Blend gains persist across tested weights and seeds
+
+Yaorong Huang · 62 spoken words · 0:38
 
 The weight curve shows all five tested fixed weights. Intermediate blends perform better than either single-branch endpoint. The dashed line represents the adaptive procedure. Across three seeds, the selected blend changes only slightly. The fold-specific weights on the right also show that the deployment weight is not a universal constant. We do not need to read every value to see this pattern.
 
-## 12 Drug structure and pair interactions dominate TreeSHAP
+## 17 Drug structure and pair interactions dominate TreeSHAP
 
-51 spoken words. Budget 0:31.
+Yaorong Huang · 51 spoken words · 0:31
 
 TreeSHAP explains the deployed tree branch. Drug descriptors and explicit interactions have the largest group attributions. This supports the usefulness of describing both the drug and its compatibility with the solvent. The values are in log-solubility units. They are neither percentages nor causal effects. The explanation sample covers all development parents.
 
-## 13 TabPFN adjusts the tree prediction in both directions
+## 18 TabPFN adjusts the tree prediction in both directions
 
-46 spoken words. Budget 0:28.
+Yaorong Huang · 55 spoken words · 0:33
 
-These two development examples illustrate how TabPFN changes the tree prediction. For erythritol, the correction moves downward. For the Dane salt, it moves upward. Both follow the same weighted-average formula. These examples explain the blend arithmetic on fitted deployment examples.
+These two development examples illustrate how TabPFN changes the tree prediction. For erythritol, the correction moves downward. For the Dane salt, it moves upward. Both follow the same weighted-average formula. These examples explain the blend arithmetic; they are fitted deployment examples, not independent tests of generalisation. Haoyang will now show how we deploy the model.
 
-## 14 Pair controls reverse the temperature association
+## 19 Application · SOLAR Studio
 
-65 spoken words. Budget 0:39.
+Haoyang He · 14 spoken words · 0:09
 
-Using exactly the same observations, the pooled temperature slope is negative, but the within-pair slope is positive. Pair centring removes fixed differences between drug and solvent combinations. The parent-bootstrap interval for the within-pair slope stays positive. This illustrates how the sampling mix can reverse an overall association. The Cinelli–Hazlett sensitivity bound is 0.54: an unmeasured confounder would need to explain 54% of the residual variance to erase the effect.
+I am Haoyang He. I will show how we deploy and check the predictions.
 
-## 15 Very low solubility remains the main weakness
+## 20 SOLAR Studio in action
 
-66 spoken words. Budget 0:40.
+Haoyang He · 43 spoken words · 2:25 including the full 1:59 video
 
-This radar uses raw row MAE, so its direction differs from the earlier performance radar: closer to the centre is better. Both models struggle most in the extremely low-solubility band. For the blend, average overprediction is two point two five log units across twenty-three records. The input features omit crystal form, packing and lattice energy. These missing solid-state factors are a priority for future work.
+FastAPI validates the inputs, loads the model and sends its predictions to the browser. The recording shows single prediction, model comparison, solvent screening and batch CSV. Its first example predicts lovastatin in acetone at twenty-five degrees. I will pause the narration during playback.
 
-## 16 SOLAR Studio in action
+**[Play the full recording from 0:00. Pause the narration during playback.]**
 
-50 spoken words. Budget 2:29 including the full 1:59 video.
+## 21 Saved API checks match offline predictions
 
-We now show the complete two-minute demonstration. The example predicts lovastatin in acetone at twenty-five degrees. The recorded output is zero point one eight seven five moles per litre. The video demonstrates point prediction, model comparison, solvent screening and batch input. I will pause the narration while it plays.
+Haoyang He · 57 spoken words · 0:35
 
-**[Play the full recording from 0:00. No narration during playback.]**
+The saved interface checks show agreement between API and offline predictions. Curve and single-point outputs also agree within a small numerical tolerance. The timing dots are five sequential warm requests on the recorded MPS device, averaging about one point seven seconds. They describe that hardware and setup; they do not guarantee the same speed on every computer.
 
-## 17 Saved API checks match offline predictions
+## 22 Very low solubility remains the main weakness
 
-57 spoken words. Budget 0:35.
+Haoyang He · 46 spoken words · 0:28
 
-The saved interface checks show agreement between API and offline predictions. Curve and single-point outputs also agree within a small numerical tolerance. The timing dots are five sequential warm requests on the recorded MPS device, averaging one point seven seconds.
+We also checked where predictions are least reliable. In this radar, closer to the centre is better. The blend overpredicts the lowest-solubility band by about two point two five log units on average across twenty-three records. Crystal form and lattice energy are missing from the inputs.
 
-## 18 Evaluation, results and system
+## 23 Reliable evaluation, better predictions and a usable system
 
-50 spoken words. Budget 0:30.
+Haoyang He · 44 spoken words · 0:27
 
-To conclude, parent-disjoint evaluation tests prediction on drugs the model has not seen. Rich interactions, parent weighting and heterogeneous fusion improve parent-disjoint development results. The application makes those predictions accessible, while the error analysis identifies clear limits. The next priorities are solid-state information and controlled external validation. Thank you. We welcome your questions.
+To conclude, parent-disjoint evaluation makes the prediction task meaningful. Rich interactions, parent weighting and heterogeneous fusion improve the reported development results. The application makes those predictions accessible, while the error analysis identifies clear limits. The next priorities are solid-state information and controlled external validation.
+
+## 24 Thank you
+
+Haoyang He · 4 spoken words · 0:03
+
+Thank you for listening.

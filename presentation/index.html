@@ -12,7 +12,7 @@
   <script src="js/chart-data.js" defer></script>
   <script src="js/benchmark.js" defer></script>
   <script src="js/charts.js" defer></script>
-  <script src="notes/speaker-notes.js" defer></script>
+  <script src="notes/speaker-notes.js?v=117b30b6e3" defer></script>
   <script src="js/presentation.js" defer></script>
 </head>
 <body>
@@ -46,11 +46,11 @@
             <span>Related work, data quality and evaluation on unseen drug parents</span></div>
           </a>
           <a href="#unit-2" data-jump="unit-2">
-            <b>02</b><div><h3>Method 1 · SOLAR-H</h3><p>Yaorong Huang · Slides 08–11</p>
+            <b>02</b><div><h3>Method 1 · SOLAR-H</h3><p>Chunshen Yu · Slides 08–11</p>
             <span>Structure–temperature decomposition, gain selection and ablation</span></div>
           </a>
           <a href="#unit-3" data-jump="unit-3">
-            <b>03</b><div><h3>Method 2 · ExtraTrees–TabPFN</h3><p>Chunshen Yu · Slides 12–18</p>
+            <b>03</b><div><h3>Method 2 · ExtraTrees–TabPFN</h3><p>Yaorong Huang · Slides 12–18</p>
             <span>Pair features, parent weighting, fusion and experimental evidence</span></div>
           </a>
           <a href="#unit-4" data-jump="unit-4">
@@ -130,7 +130,7 @@
           <h2>Method 1 · SOLAR-H</h2><p class="lead">Structure–temperature decomposition, gain selection and ablation</p>
           <p class="unit-deliverable">How can we model temperature response and control extrapolation?</p>
         </div></div>
-        <span class="slide-speaker">Presenter · Yaorong Huang</span>
+        <span class="slide-speaker">Presenter · Chunshen Yu</span>
       </section>
       <section class="slide" id="solar" data-unit="2" data-title="SOLAR-H separates structure and temperature" data-source="V2 §§4.2–4.5, 7.2, pp. 10–12, 19 · deployment check" data-report-page="10" hidden>
         <p class="eyebrow">Unit 02 / Physics-guided decomposition</p>
@@ -139,7 +139,7 @@
 <div class="split figure-text"><div class="visual-panel solar-derivation"><img class="equation eq-solar" src="assets/math/solar.svg" alt="Structure baseline plus a damped structure-dependent temperature term."><img class="equation eq-standardize" src="assets/math/standardize.svg" alt="Temperature scaled by the training median and IQR. z has 44 features, u has 45.">
 <ol class="steps"><li>Centre measurements within each drug–solvent pair.</li><li>Fit a weighted ridge temperature response.</li><li>Subtract the temperature term and fit the structure tree.</li></ol></div>
 <aside class="chart-copy"><h3>van ’t Hoff inspiration</h3><p>Model the thermal response as a separate term. Use <b>44</b> pair features and fit scaling on the training fold.</p><h3>Adaptive temperature gain</h3><p>Inner CV selects γ from <b>{0, 0.1, 0.3, 1.0}</b>.</p><div class="callout"><b>Deployed γ = 0</b><br>The deployment uses its structural baseline. Development parent MAE: <b>0.7164</b>.</div></aside></div>
-        <span class="slide-speaker">Presenter · Yaorong Huang</span>
+        <span class="slide-speaker">Presenter · Chunshen Yu</span>
       </section>
       <section class="slide" id="solar-ablation" data-unit="2" data-title="Full temperature gain increases SOLAR-H error" data-source="V2 Fig. 3, pp. 11–12 · saved diagnostics.csv (unrounded values)" data-report-page="11" hidden>
         <p class="eyebrow">Unit 02 / SOLAR-H ablation</p>
@@ -148,7 +148,7 @@
 <p class="protocol-label">Development outer CV. Point estimates and paired 95% intervals relative to selected SOLAR-H.</p>
 <figure class="native-figure"><div id="solar-ablation-chart"></div><figcaption class="interaction-hint">All four ablations appear together. Positive differences indicate higher error.</figcaption></figure>
 <div class="data-footnote"><span>Selected SOLAR-H: <b>0.7164</b> parent MAE</span><span>Fixed gain 1: <b>0.8151</b> parent MAE</span><span>Gain-1 difference: <b>+0.0987</b></span></div>
-        <span class="slide-speaker">Presenter · Yaorong Huang</span>
+        <span class="slide-speaker">Presenter · Chunshen Yu</span>
       </section>
       <section class="slide" id="temperature" data-unit="2" data-title="Pair controls reverse the temperature association" data-source="V2 §7.5, pp. 21–22 · same-sample temperature estimates" data-report-page="21" hidden>
         <p class="eyebrow">Unit 02 / Observed temperature response</p><h2>Pair controls reverse the temperature association</h2>
@@ -156,7 +156,7 @@
 <p class="protocol-label">Same 1,118 records, 157 multi-temperature pairs and 73 drug parents.</p>
 <figure class="native-figure"><div id="temperature-chart"></div><figcaption>Pooled estimate: clustered 95% CI. Within-pair estimate: parent-bootstrap 95% CI.</figcaption></figure>
 <div class="two temperature-notes"><p><b>−0.00746 to +0.01538:</b> centring within pairs removes fixed drug–solvent differences.</p><p><b>Conditional association:</b> time-varying unmeasured confounding remains possible.</p></div>
-        <span class="slide-speaker">Presenter · Yaorong Huang</span>
+        <span class="slide-speaker">Presenter · Chunshen Yu</span>
       </section>
       <section class="slide unit-slide" id="unit-3" data-unit="3" data-title="Method 2 · ExtraTrees–TabPFN" data-source="Presentation structure · four work units" data-report-page="1" hidden>
         <p class="eyebrow">Unit 03 / 04</p>
@@ -164,21 +164,21 @@
           <h2>Method 2 · ExtraTrees–TabPFN</h2><p class="lead">Pair features, parent weighting, fusion and experimental evidence</p>
           <p class="unit-deliverable">How does each change affect unseen-parent prediction?</p>
         </div></div>
-        <span class="slide-speaker">Presenter · Chunshen Yu</span>
+        <span class="slide-speaker">Presenter · Yaorong Huang</span>
       </section>
       <section class="slide" id="fusion" data-unit="3" data-title="Interactions, parent weighting and heterogeneous fusion" data-source="V2 §5, pp. 12–15 · fold-local features and inner-OOF weights" data-report-page="13" hidden>
         <p class="eyebrow">Unit 03 / Prediction model</p><h2>Interactions, parent weighting and heterogeneous fusion</h2>
 
 <div class="split figure-text"><div class="visual-panel formula-stack"><div><h3>Rich pair features</h3><img class="equation" src="assets/math/features.svg" alt="869 columns: drug, solvent, temperature, products and absolute differences."></div><div><h3>Parent-balanced training</h3><img class="equation" src="assets/math/weight.svg" alt="Inverse parent-count row weights."></div><div><h3>Convex blend</h3><img class="equation" src="assets/math/blend.svg" alt="Convex combination of ExtraTrees and TabPFN."></div></div>
 <div class="talk-points"><h3>Represent the molecule pair</h3><p>217 descriptors per molecule, temperature, products and differences: <b>869 inputs</b>.</p><h3>Balance the training influence</h3><p>Inverse-count weights give each parent the same total weight.</p><h3>Combine complementary learners</h3><p>Inner-fold predictions select the weights. The deployed blend uses <b>75% ExtraTrees + 25% TabPFN</b>.</p></div></div>
-        <span class="slide-speaker">Presenter · Chunshen Yu</span>
+        <span class="slide-speaker">Presenter · Yaorong Huang</span>
       </section>
       <section class="slide" id="ablation" data-unit="3" data-title="Feature enhancement and fusion lower parent error" data-source="V2 §§6.2–6.5, pp. 16–19 · unrounded paired and seed exports" data-report-page="17" hidden>
         <p class="eyebrow">Unit 03 / Improvement and evidence</p><h2>Feature enhancement and fusion lower parent error</h2>
 
 <div class="chart-layout"><figure class="native-figure"><div id="stage-line"></div><figcaption>Same development outer-CV protocol. Each point is a model stage, not a training iteration.</figcaption></figure>
 <aside class="chart-copy"><h3>Rich tree versus basic tree</h3><p><b>8.54%</b> lower parent MAE.</p><h3>Blend versus basic tree</h3><p>Paired difference: <b>−0.0801</b><br>95% CI: <b>[−0.1366, −0.0276]</b></p><p class="legend">Intervals against either rich single branch cross zero. Three-seed blend range: 0.6635–0.6690.</p></aside></div>
-        <span class="slide-speaker">Presenter · Chunshen Yu</span>
+        <span class="slide-speaker">Presenter · Yaorong Huang</span>
       </section>
       <section class="slide" id="performance" data-unit="3" data-title="The blend leads the four reported metrics" data-source="V2 §6.2, pp. 16–17 · complete benchmark table and paired results" data-report-page="16" hidden>
         <p class="eyebrow">Unit 03 / Model comparison</p><h2>The blend leads the four reported metrics</h2>
@@ -186,7 +186,7 @@
 <p class="protocol-label">Development nested CV. Five representative models shown; all 13 methods define the normalisation range.</p>
 <div class="chart-layout radar-layout"><figure class="native-figure"><div id="model-radar"></div><figcaption>Errors are reversed and all axes scaled to [0, 1]. Farther out is better. A score of 1 means the best observed result.</figcaption></figure>
 <aside class="chart-copy"><div class="hero-stat"><b>0.6668</b><span>Parent-weighted MAE</span></div><div class="stats three"><div><b>0.6510</b><span>Row MAE</span></div><div><b>0.8842</b><span>RMSE</span></div><div><b>0.5234</b><span>R²</span></div></div><p><b>10.73%</b> lower parent MAE than basic ExtraTrees.</p><p class="legend">The complete numerical table is in Backup A. Hover or focus a profile to inspect its raw metrics.</p></aside></div>
-        <span class="slide-speaker">Presenter · Chunshen Yu</span>
+        <span class="slide-speaker">Presenter · Yaorong Huang</span>
       </section>
       <section class="slide" id="sensitivity" data-unit="3" data-title="Blend gains persist across tested weights and seeds" data-source="V2 §6.5, pp. 18–19 · fixed-weight and seed exports" data-report-page="18" hidden>
         <p class="eyebrow">Unit 03 / Weight and seed sensitivity</p>
@@ -194,7 +194,7 @@
 
 <div class="chart-layout"><figure class="native-figure"><div id="weight-chart"></div><figcaption class="interaction-hint">All five fixed weights are shown. The dashed line is the inner-CV-selected adaptive result.</figcaption></figure>
 <aside class="chart-copy"><h3>Three training seeds</h3><div class="readouts" id="seed-readouts"></div><p>Range: <b>0.0056</b> parent MAE.</p><h3>Selected TabPFN weight by outer fold</h3><div class="fold-readouts" id="fold-readouts"></div><p class="legend">The deployed 0.25 weight is separate from these fold-specific choices.</p></aside></div>
-        <span class="slide-speaker">Presenter · Chunshen Yu</span>
+        <span class="slide-speaker">Presenter · Yaorong Huang</span>
       </section>
       <section class="slide" id="interpretation" data-unit="3" data-title="Drug structure and pair interactions dominate TreeSHAP" data-source="V2 §7.3 and Fig. 6A, pp. 19–20 · deployment_explanations.json" data-report-page="19" hidden>
         <p class="eyebrow">Unit 03 / Deployed tree attribution</p>
@@ -202,7 +202,7 @@
 
 <div class="chart-layout"><figure class="native-figure"><div id="shap-chart"></div><figcaption class="interaction-hint">Parent-equal mean absolute net attribution by feature group. Units: log₁₀ solubility.</figcaption></figure>
 <aside class="chart-copy"><h3>Explanation scope</h3><p><b>227</b> sampled records covering <b>128</b> development parents.</p><p><b>665</b> retained tree inputs after preprocessing.</p><h3>Dominant groups</h3><p>Drug structure and explicit pair interactions contribute most to the tree prediction.</p><p class="legend">These are tree-branch attributions. They do not measure causal effects or percentages.</p></aside></div>
-        <span class="slide-speaker">Presenter · Chunshen Yu</span>
+        <span class="slide-speaker">Presenter · Yaorong Huang</span>
       </section>
       <section class="slide" id="calibration" data-unit="3" data-title="TabPFN adjusts the tree prediction in both directions" data-source="V2 §7.3, pp. 20–21 · saved branch predictions and observed targets" data-report-page="20" hidden>
         <p class="eyebrow">Unit 03 / Local branch corrections</p>
@@ -212,7 +212,7 @@
 <div class="two calibration-grid"><article><h3>Erythritol at 13.2 °C</h3><figure class="native-figure"><div id="calibration-0"></div><figcaption class="interaction-hint">Observed and deployed predictions. This example is from the development data.</figcaption></figure><p class="correction">TabPFN correction: <b>−0.0553</b> log units</p></article>
 <article><h3>p-Hydroxyphenylglycine Dane salt at 70.2 °C</h3><figure class="native-figure"><div id="calibration-1"></div><figcaption class="interaction-hint">Observed and deployed predictions. This example is from the development data.</figcaption></figure><p class="correction">TabPFN correction: <b>+0.0199</b> log units</p></article></div>
 <p class="legend">Correction = 0.25 × (TabPFN − ExtraTrees). These fitted deployment examples illustrate the blend arithmetic.</p>
-        <span class="slide-speaker">Presenter · Chunshen Yu</span>
+        <span class="slide-speaker">Presenter · Yaorong Huang</span>
       </section>
       <section class="slide unit-slide" id="unit-4" data-unit="4" data-title="Application · SOLAR Studio" data-source="Presentation structure · four work units" data-report-page="1" hidden>
         <p class="eyebrow">Unit 04 / 04</p>

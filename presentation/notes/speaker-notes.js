@@ -1,7 +1,7 @@
 const SOLAR_NOTES = {
   "opening": {
     "time": "0:25 · Jiayun Song",
-    "body": "Good afternoon. We predict solubility for drug parents held out during training. I will introduce the literature and our baseline. Yaorong will explain the physics-guided SOLAR-H model, Chunshen will explain the ExtraTrees and TabPFN blend, and Haoyang will demonstrate SOLAR Studio."
+    "body": "Good afternoon. We predict solubility for drug parents held out during training. I will introduce the literature and our baseline. Chunshen will explain the physics-guided SOLAR-H model, Yaorong will explain the ExtraTrees and TabPFN blend, and Haoyang will demonstrate SOLAR Studio."
   },
   "agenda": {
     "time": "0:09 · Jiayun Song",
@@ -25,50 +25,50 @@ const SOLAR_NOTES = {
   },
   "protocol": {
     "time": "0:36 · Jiayun Song",
-    "body": "RDKit standardises parent identities for grouping. Five outer folds assess generalisation and three inner folds tune the models. Thirty-three parents remain reserved. The basic ExtraTrees model averages randomised tree predictions using twenty-three inputs, including temperature. It reaches a parent MAE of zero point seven four six nine on the development outer folds. Yaorong will now explain our physics-guided route."
+    "body": "RDKit standardises parent identities for grouping. Five outer folds assess generalisation and three inner folds tune the models. Thirty-three parents remain reserved. The basic ExtraTrees model averages randomised tree predictions using twenty-three inputs, including temperature. It reaches a parent MAE of zero point seven four six nine on the development outer folds. Chunshen will now explain our physics-guided route."
   },
   "unit-2": {
-    "time": "0:08 · Yaorong Huang",
-    "body": "I am Yaorong Huang. I will explain how SOLAR-H models temperature response."
+    "time": "0:08 · Chunshen Yu",
+    "body": "I am Chunshen Yu. I will explain how SOLAR-H models temperature response."
   },
   "solar": {
-    "time": "0:44 · Yaorong Huang",
+    "time": "0:44 · Chunshen Yu",
     "body": "SOLAR-H uses a decomposition inspired by the van ’t Hoff relation. We centre observations within each drug and solvent pair to remove its fixed structural baseline. A weighted ridge regression estimates the temperature response. We subtract the damped temperature term from the target and fit an ExtraTrees model for the remaining structural baseline. Inner validation chooses the gain. The deployed version selects zero, so the explicit temperature term vanishes in that fitted model."
   },
   "solar-ablation": {
-    "time": "0:35 · Yaorong Huang",
+    "time": "0:35 · Chunshen Yu",
     "body": "The ablation tests the importance of temperature shrinkage. Fixing the gain at one raises parent MAE from about zero point seven one six to zero point eight one five. Its paired interval stays above zero. The other ablation intervals cross zero. The clearest finding here is that forcing the full temperature response harms unseen-parent prediction in this experiment."
   },
   "temperature": {
-    "time": "0:44 · Yaorong Huang",
-    "body": "Using exactly the same observations, the pooled temperature slope is negative, but the within-pair slope is positive. Pair centring removes fixed differences between drug and solvent combinations. The parent-bootstrap interval for the within-pair slope stays positive. This illustrates how the sampling mix can reverse an overall association. Unmeasured factors that change with temperature may still affect the estimate, so the result remains a conditional association. Chunshen will now introduce our second modelling approach."
+    "time": "0:44 · Chunshen Yu",
+    "body": "Using exactly the same observations, the pooled temperature slope is negative, but the within-pair slope is positive. Pair centring removes fixed differences between drug and solvent combinations. The parent-bootstrap interval for the within-pair slope stays positive. This illustrates how the sampling mix can reverse an overall association. Unmeasured factors that change with temperature may still affect the estimate, so the result remains a conditional association. Yaorong will now introduce our second modelling approach."
   },
   "unit-3": {
-    "time": "0:09 · Chunshen Yu",
-    "body": "I am Chunshen Yu. I will explain how we improve and combine the two branches."
+    "time": "0:09 · Yaorong Huang",
+    "body": "I am Yaorong Huang. I will explain how we improve and combine the two branches."
   },
   "fusion": {
-    "time": "0:41 · Chunshen Yu",
+    "time": "0:41 · Yaorong Huang",
     "body": "Our prediction model combines three ideas. First, we construct eight hundred and sixty-nine features from drug and solvent descriptors, temperature, descriptor products and absolute differences. These interactions directly describe the molecule pair. Second, inverse-count weights give each parent equal total influence in tree training. Third, we combine ExtraTrees with TabPFN. Inner out-of-fold predictions determine the convex weights. The deployed example uses seventy-five percent ExtraTrees and twenty-five percent TabPFN."
   },
   "ablation": {
-    "time": "0:42 · Chunshen Yu",
+    "time": "0:42 · Yaorong Huang",
     "body": "This progression isolates the main improvement stages under the same outer validation. Rich features and parent weighting reduce parent MAE from zero point seven four six nine to zero point six eight three one. Fusion reduces it further. The blend-versus-basic paired interval lies below zero. However, intervals against the rich single branches cross zero, so we should distinguish the best point estimate from a statistically certain advantage over every competitor."
   },
   "performance": {
-    "time": "0:48 · Chunshen Yu",
+    "time": "0:48 · Yaorong Huang",
     "body": "The radar combines the four headline metrics on one page. Error axes are reversed, so farther out is better on every axis. Scores are normalised across the thirteen reported methods. One means the best observed result, not perfect prediction. The blend leads all four point estimates, with parent MAE of zero point six six six eight and R squared of zero point five two three four. Its parent error is ten point seven three percent lower than basic ExtraTrees."
   },
   "sensitivity": {
-    "time": "0:38 · Chunshen Yu",
+    "time": "0:38 · Yaorong Huang",
     "body": "The weight curve shows all five tested fixed weights. Intermediate blends perform better than either single-branch endpoint. The dashed line represents the adaptive procedure. Across three seeds, the selected blend changes only slightly. The fold-specific weights on the right also show that the deployment weight is not a universal constant. We do not need to read every value to see this pattern."
   },
   "interpretation": {
-    "time": "0:31 · Chunshen Yu",
+    "time": "0:31 · Yaorong Huang",
     "body": "TreeSHAP explains the deployed tree branch. Drug descriptors and explicit interactions have the largest group attributions. This supports the usefulness of describing both the drug and its compatibility with the solvent. The values are in log-solubility units. They are neither percentages nor causal effects. The explanation sample covers all development parents."
   },
   "calibration": {
-    "time": "0:33 · Chunshen Yu",
+    "time": "0:33 · Yaorong Huang",
     "body": "These two development examples illustrate how TabPFN changes the tree prediction. For erythritol, the correction moves downward. For the Dane salt, it moves upward. Both follow the same weighted-average formula. These examples explain the blend arithmetic; they are fitted deployment examples, not independent tests of generalisation. Haoyang will now show how we deploy the model."
   },
   "unit-4": {
