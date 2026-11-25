@@ -1,0 +1,43 @@
+[Script Info]
+Title: SOLAR_Studio_Demo_Bilingual
+ScriptType: v4.00+
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+PlayResX: 1920
+PlayResY: 1080
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: English,PingFang SC,40,&H00FFFFFF,&H00FFFFFF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,3,8,0,2,120,120,126,1
+Style: Chinese,PingFang SC,40,&H00FFE8D2,&H00FFE8D2,&H00000000,&H00000000,0,0,0,0,100,100,0,0,3,8,0,2,120,120,64,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.00,0:00:06.67,English,,0,0,0,,{\4c&H00000000&\4a&H80&\bord8\xbord26\ybord4\shad0}Welcome to SOLAR Studio, our interactive machine learning system for conditional drug solubility prediction.
+Dialogue: 0,0:00:00.00,0:00:06.67,Chinese,,0,0,0,,{\4c&H00000000&\4a&H80&\bord8\xbord26\ybord4\shad0}欢迎使用 SOLAR Studio 药物条件溶解度机器学习预测与可解释分析系统。
+Dialogue: 0,0:00:06.72,0:00:14.54,English,,0,0,0,,{\4c&H00000000&\4a&H80&\bord8\xbord26\ybord4\shad0}In Module 01 Point Prediction, select a model, drug, solvent, and temperature, then click Run Prediction.
+Dialogue: 0,0:00:06.72,0:00:14.54,Chinese,,0,0,0,,{\4c&H00000000&\4a&H80&\bord8\xbord26\ybord4\shad0}在 01 单点预测模块，配置模型、药物、溶剂与温度后，点击「运行预测」按钮执行计算。
+Dialogue: 0,0:00:14.59,0:00:24.69,English,,0,0,0,,{\4c&H00000000&\4a&H80&\bord8\xbord26\ybord4\shad0}The system decomposes predictions across the 75% ExtraTrees and 25% TabPFN branches and verifies applicability domain coverage.
+Dialogue: 0,0:00:14.59,0:00:24.69,Chinese,,0,0,0,,{\4c&H00000000&\4a&H80&\bord8\xbord26\ybord4\shad0}系统直观拆解 75% ExtraTrees 与 25% TabPFN 分支贡献，并核验开发集实测点适用域支撑。
+Dialogue: 0,0:00:24.74,0:00:32.55,English,,0,0,0,,{\4c&H00000000&\4a&H80&\bord8\xbord26\ybord4\shad0}When parameters change, the system waits for your explicit Run click, and immediately alerts you to Out-of-Distribution temperatures.
+Dialogue: 0,0:00:24.74,0:00:32.55,Chinese,,0,0,0,,{\4c&H00000000&\4a&H80&\bord8\xbord26\ybord4\shad0}修改参数时系统不会盲目自动重算，并对超出训练集范围的温度实时触发 OOD 分布外红色预警。
+Dialogue: 0,0:00:32.60,0:00:39.95,English,,0,0,0,,{\4c&H00000000&\4a&H80&\bord8\xbord26\ybord4\shad0}Clicking the RDKit button opens the two-dimensional chemical structure and Lipinski physicochemical descriptor profile.
+Dialogue: 0,0:00:32.60,0:00:39.95,Chinese,,0,0,0,,{\4c&H00000000&\4a&H80&\bord8\xbord26\ybord4\shad0}点击 RDKit 按钮即可弹出分子二维化学结构与 Lipinski 理化描述符档案。
+Dialogue: 0,0:00:40.00,0:00:50.35,English,,0,0,0,,{\4c&H00000000&\4a&H80&\bord8\xbord26\ybord4\shad0}In Module 02 Model Comparison, the interactive five-axis evaluation radar compares models across accuracy, R-squared, stability, and speed.
+Dialogue: 0,0:00:40.00,0:00:50.35,Chinese,,0,0,0,,{\4c&H00000000&\4a&H80&\bord8\xbord26\ybord4\shad0}在 02 模型对比模块，五维综合评价雷达图支持任选模型，从跨母体精度、R²、稳定性与速度多维对比。
+Dialogue: 0,0:00:50.40,0:00:59.07,English,,0,0,0,,{\4c&H00000000&\4a&H80&\bord8\xbord26\ybord4\shad0}Across 128 unseen drug parents in nested cross-validation, the fusion model outperforms SOLAR-H on 77 parents.
+Dialogue: 0,0:00:50.40,0:00:59.07,Chinese,,0,0,0,,{\4c&H00000000&\4a&H80&\bord8\xbord26\ybord4\shad0}在 128 个未见药物母体的 5×3 嵌套交叉验证中，主融合模型在 77 个母体上显著优于 SOLAR-H 基线。
+Dialogue: 0,0:00:59.12,0:01:06.66,English,,0,0,0,,{\4c&H00000000&\4a&H80&\bord8\xbord26\ybord4\shad0}The 61-point temperature response tab plots continuous solubility trajectories and model difference curves side by side.
+Dialogue: 0,0:00:59.12,0:01:06.66,Chinese,,0,0,0,,{\4c&H00000000&\4a&H80&\bord8\xbord26\ybord4\shad0}61 点连续变温响应面板并排展示双模型温度响应轨迹与预测差值曲线。
+Dialogue: 0,0:01:06.71,0:01:15.24,English,,0,0,0,,{\4c&H00000000&\4a&H80&\bord8\xbord26\ybord4\shad0}In Module 03 Solvent Screening, switching tabs or inputs never triggers unwanted calculation; it waits until you click Run Screening.
+Dialogue: 0,0:01:06.71,0:01:15.24,Chinese,,0,0,0,,{\4c&H00000000&\4a&H80&\bord8\xbord26\ybord4\shad0}在 03 溶剂筛选模块，切换内容或标签不会自动计算，始终等待用户点击左侧「运行筛选与曲线」按钮。
+Dialogue: 0,0:01:15.29,0:01:25.21,English,,0,0,0,,{\4c&H00000000&\4a&H80&\bord8\xbord26\ybord4\shad0}Clicking Run Screening ranks all 49 solvents, displaying Top-5 recommended solvent cards, cLogP correlation, and distribution histograms.
+Dialogue: 0,0:01:15.29,0:01:25.21,Chinese,,0,0,0,,{\4c&H00000000&\4a&H80&\bord8\xbord26\ybord4\shad0}点击运行后一键完成 49 种工业溶剂排序，直观展示 Top-5 推荐溶剂卡片、cLogP 散点图与分布直方图。
+Dialogue: 0,0:01:25.26,0:01:32.31,English,,0,0,0,,{\4c&H00000000&\4a&H80&\bord8\xbord26\ybord4\shad0}Switching to Multi-Solvent Curves and clicking Run compares temperature sensitivity across up to six selected solvents.
+Dialogue: 0,0:01:25.26,0:01:32.31,Chinese,,0,0,0,,{\4c&H00000000&\4a&H80&\bord8\xbord26\ybord4\shad0}切换至多溶剂变温响应曲线并点击运行，即可对比多达 6 种溶剂的连续温度敏感性。
+Dialogue: 0,0:01:32.36,0:01:43.01,English,,0,0,0,,{\4c&H00000000&\4a&H80&\bord8\xbord26\ybord4\shad0}Module 04 Ablation and Evidence presents the improvement chain from 0.7469 down to 0.6668 with paired bootstrap confidence intervals.
+Dialogue: 0,0:01:32.36,0:01:43.01,Chinese,,0,0,0,,{\4c&H00000000&\4a&H80&\bord8\xbord26\ybord4\shad0}04 实验证据模块展示从 0.7469 到 0.6668 的模型改进消融链、配对自助法置信区间与融合权重敏感性。
+Dialogue: 0,0:01:43.06,0:01:49.56,English,,0,0,0,,{\4c&H00000000&\4a&H80&\bord8\xbord26\ybord4\shad0}The Mechanism tab reveals TreeSHAP feature attributions and within-pair fixed-effects temperature slope reversal.
+Dialogue: 0,0:01:43.06,0:01:49.56,Chinese,,0,0,0,,{\4c&H00000000&\4a&H80&\bord8\xbord26\ybord4\shad0}机理归因面板揭示 TreeSHAP 特征重要性，以及消除辛普森悖论的组内固定效应温度正斜率 (+0.01538)。
+Dialogue: 0,0:01:49.61,0:01:58.98,English,,0,0,0,,{\4c&H00000000&\4a&H80&\bord8\xbord26\ybord4\shad0}Finally, Module 05 supports high-throughput batch CSV inference for up to 100 rows with error isolation and one-click CSV export.
+Dialogue: 0,0:01:49.61,0:01:58.98,Chinese,,0,0,0,,{\4c&H00000000&\4a&H80&\bord8\xbord26\ybord4\shad0}最后，05 批量推断模块支持最多 100 行 CSV 高通量预测、异常行独立容错隔离与一键导出。感谢观看！

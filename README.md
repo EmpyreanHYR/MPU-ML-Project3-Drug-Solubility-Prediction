@@ -86,6 +86,17 @@ $$\widehat y_i = b(z_c) + \gamma \cdot \tau_i \cdot \left( u_c^\top \beta \right
 - **视频文件（1080p MP4, 119s）**：[SOLAR_Studio_Demo_Bilingual.mp4](SOLAR_Studio_Demo_Bilingual.mp4)
 - **中英双语字幕文件（SRT）**：[SOLAR_Studio_Demo_Bilingual.srt](SOLAR_Studio_Demo_Bilingual.srt)
 
+字幕可选四种形态，按播放器支持能力挑选（同一个脚本 `python3 tools/build_subtitles.py --write` 从纯文本 SRT 重新生成全部衍生文件）：
+
+| 文件 | 底版效果 | 适用播放器 |
+| :--- | :--- | :--- |
+| `SOLAR_Studio_Demo_Bilingual.srt` | 无底版（纯文本） | 任何播放器，作为兼容兜底 |
+| `SOLAR_Studio_Demo_Bilingual_boxed.srt` | 每行自带黑色底块 | mpv、VLC（libass）等支持 SRT 内联覆盖标签的播放器 |
+| `SOLAR_Studio_Demo_Bilingual_boxed.ass` | 半透明黑底块 + 细描边 | VLC、mpv、IINA、PotPlayer（ASS 完整样式） |
+| `SOLAR_Studio_Demo_Bilingual_boxed.mp4` | 底版已直接烧进画面 | QuickTime、微信、浏览器 `<video>`、PPT 等不支持样式的场景 |
+
+> IINA / QuickTime 需在「字幕 → 打开外部字幕」中选择带底版的 SRT/ASS；若播放器忽略覆盖标签仍显示无底版，改用 `_boxed.ass` 或 `_boxed.mp4`。
+
 | 场景 | 对应模块 | 关键功能与演示要点 |
 | :--- | :--- | :--- |
 | **Scene 01–03** | `01 Point Prediction` | 单点对数溶解度预测、`0.75 ExtraTrees + 0.25 TabPFN` 异质融合分支拆解、开发集实测点适用域支撑 |

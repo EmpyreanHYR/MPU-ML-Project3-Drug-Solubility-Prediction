@@ -8,9 +8,10 @@ ROOT = Path(__file__).resolve().parents[1]
 DIRECTORIES = {'.github', 'assets', 'bibliography', 'configs', 'Contribution', 'datasets',
                'models', 'output', 'plotting', 'presentation', 'Question', 'Report_final',
                'scripts', 'src', 'tests', 'tools',
-               'songjiayun', 'huangyaorong', 'yuchunshen', 'hehaoran'}
+               'songjiayun', 'huangyaorong', 'yuchunshen', 'hehaoran', 'hehaoyang'}
 ROOT_FILES = {'.gitignore', '.python-version', 'README.md', 'pyproject.toml', 'uv.lock',
               'SOLAR_Studio_Demo_Bilingual.mp4', 'SOLAR_Studio_Demo_Bilingual.srt',
+              'SOLAR_Studio_Demo_Bilingual_boxed.srt', 'SOLAR_Studio_Demo_Bilingual_boxed.ass',
               '启动Studio.bat', '启动Studio.command', 'Dockerfile'}
 WEIGHTS = {'.joblib', '.ckpt', '.pt', '.pth', '.safetensors'}
 

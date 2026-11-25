@@ -1,0 +1,69 @@
+1
+00:00:00,000 --> 00:00:06,676
+{\an2\bord0\shad0\1a&H00&\3c&H00000000&\4c&H00000000&}Welcome to SOLAR Studio, our interactive machine learning system for conditional drug solubility prediction.
+{\an2\bord0\shad0\1a&H00&\3c&H00000000&\4c&H00000000&}欢迎使用 SOLAR Studio 药物条件溶解度机器学习预测与可解释分析系统。
+
+2
+00:00:06,726 --> 00:00:14,546
+{\an2\bord0\shad0\1a&H00&\3c&H00000000&\4c&H00000000&}In Module 01 Point Prediction, select a model, drug, solvent, and temperature, then click Run Prediction.
+{\an2\bord0\shad0\1a&H00&\3c&H00000000&\4c&H00000000&}在 01 单点预测模块，配置模型、药物、溶剂与温度后，点击「运行预测」按钮执行计算。
+
+3
+00:00:14,596 --> 00:00:24,695
+{\an2\bord0\shad0\1a&H00&\3c&H00000000&\4c&H00000000&}The system decomposes predictions across the 75% ExtraTrees and 25% TabPFN branches and verifies applicability domain coverage.
+{\an2\bord0\shad0\1a&H00&\3c&H00000000&\4c&H00000000&}系统直观拆解 75% ExtraTrees 与 25% TabPFN 分支贡献，并核验开发集实测点适用域支撑。
+
+4
+00:00:24,745 --> 00:00:32,559
+{\an2\bord0\shad0\1a&H00&\3c&H00000000&\4c&H00000000&}When parameters change, the system waits for your explicit Run click, and immediately alerts you to Out-of-Distribution temperatures.
+{\an2\bord0\shad0\1a&H00&\3c&H00000000&\4c&H00000000&}修改参数时系统不会盲目自动重算，并对超出训练集范围的温度实时触发 OOD 分布外红色预警。
+
+5
+00:00:32,609 --> 00:00:39,954
+{\an2\bord0\shad0\1a&H00&\3c&H00000000&\4c&H00000000&}Clicking the RDKit button opens the two-dimensional chemical structure and Lipinski physicochemical descriptor profile.
+{\an2\bord0\shad0\1a&H00&\3c&H00000000&\4c&H00000000&}点击 RDKit 按钮即可弹出分子二维化学结构与 Lipinski 理化描述符档案。
+
+6
+00:00:40,004 --> 00:00:50,355
+{\an2\bord0\shad0\1a&H00&\3c&H00000000&\4c&H00000000&}In Module 02 Model Comparison, the interactive five-axis evaluation radar compares models across accuracy, R-squared, stability, and speed.
+{\an2\bord0\shad0\1a&H00&\3c&H00000000&\4c&H00000000&}在 02 模型对比模块，五维综合评价雷达图支持任选模型，从跨母体精度、R²、稳定性与速度多维对比。
+
+7
+00:00:50,405 --> 00:00:59,073
+{\an2\bord0\shad0\1a&H00&\3c&H00000000&\4c&H00000000&}Across 128 unseen drug parents in nested cross-validation, the fusion model outperforms SOLAR-H on 77 parents.
+{\an2\bord0\shad0\1a&H00&\3c&H00000000&\4c&H00000000&}在 128 个未见药物母体的 5×3 嵌套交叉验证中，主融合模型在 77 个母体上显著优于 SOLAR-H 基线。
+
+8
+00:00:59,123 --> 00:01:06,668
+{\an2\bord0\shad0\1a&H00&\3c&H00000000&\4c&H00000000&}The 61-point temperature response tab plots continuous solubility trajectories and model difference curves side by side.
+{\an2\bord0\shad0\1a&H00&\3c&H00000000&\4c&H00000000&}61 点连续变温响应面板并排展示双模型温度响应轨迹与预测差值曲线。
+
+9
+00:01:06,718 --> 00:01:15,246
+{\an2\bord0\shad0\1a&H00&\3c&H00000000&\4c&H00000000&}In Module 03 Solvent Screening, switching tabs or inputs never triggers unwanted calculation; it waits until you click Run Screening.
+{\an2\bord0\shad0\1a&H00&\3c&H00000000&\4c&H00000000&}在 03 溶剂筛选模块，切换内容或标签不会自动计算，始终等待用户点击左侧「运行筛选与曲线」按钮。
+
+10
+00:01:15,296 --> 00:01:25,219
+{\an2\bord0\shad0\1a&H00&\3c&H00000000&\4c&H00000000&}Clicking Run Screening ranks all 49 solvents, displaying Top-5 recommended solvent cards, cLogP correlation, and distribution histograms.
+{\an2\bord0\shad0\1a&H00&\3c&H00000000&\4c&H00000000&}点击运行后一键完成 49 种工业溶剂排序，直观展示 Top-5 推荐溶剂卡片、cLogP 散点图与分布直方图。
+
+11
+00:01:25,269 --> 00:01:32,317
+{\an2\bord0\shad0\1a&H00&\3c&H00000000&\4c&H00000000&}Switching to Multi-Solvent Curves and clicking Run compares temperature sensitivity across up to six selected solvents.
+{\an2\bord0\shad0\1a&H00&\3c&H00000000&\4c&H00000000&}切换至多溶剂变温响应曲线并点击运行，即可对比多达 6 种溶剂的连续温度敏感性。
+
+12
+00:01:32,367 --> 00:01:43,016
+{\an2\bord0\shad0\1a&H00&\3c&H00000000&\4c&H00000000&}Module 04 Ablation and Evidence presents the improvement chain from 0.7469 down to 0.6668 with paired bootstrap confidence intervals.
+{\an2\bord0\shad0\1a&H00&\3c&H00000000&\4c&H00000000&}04 实验证据模块展示从 0.7469 到 0.6668 的模型改进消融链、配对自助法置信区间与融合权重敏感性。
+
+13
+00:01:43,066 --> 00:01:49,566
+{\an2\bord0\shad0\1a&H00&\3c&H00000000&\4c&H00000000&}The Mechanism tab reveals TreeSHAP feature attributions and within-pair fixed-effects temperature slope reversal.
+{\an2\bord0\shad0\1a&H00&\3c&H00000000&\4c&H00000000&}机理归因面板揭示 TreeSHAP 特征重要性，以及消除辛普森悖论的组内固定效应温度正斜率 (+0.01538)。
+
+14
+00:01:49,616 --> 00:01:58,985
+{\an2\bord0\shad0\1a&H00&\3c&H00000000&\4c&H00000000&}Finally, Module 05 supports high-throughput batch CSV inference for up to 100 rows with error isolation and one-click CSV export.
+{\an2\bord0\shad0\1a&H00&\3c&H00000000&\4c&H00000000&}最后，05 批量推断模块支持最多 100 行 CSV 高通量预测、异常行独立容错隔离与一键导出。感谢观看！
