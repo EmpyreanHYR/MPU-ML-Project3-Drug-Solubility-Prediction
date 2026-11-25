@@ -29,7 +29,7 @@ def check():
         if path.suffix in WEIGHTS:
             assert path.parts[0] == 'models', f'Weight outside models/: {path}'
         if path.parts[0] == 'output':
-            assert path.suffix in {'.csv', '.json'} or path.name == 'README.md', path
+            assert path.suffix in {'.csv', '.json', '.txt'} or path.name == 'README.md', path
     manifest = json.loads((ROOT/'models/manifest.json').read_text())
     weights = {str(p) for p in files if p.suffix in WEIGHTS}
     assert weights == {entry['path'] for entry in manifest['files']}, 'Update models/manifest.json for added/removed weights'
