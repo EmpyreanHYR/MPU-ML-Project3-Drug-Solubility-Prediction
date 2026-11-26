@@ -19,7 +19,7 @@ def test_single_implementation_and_stable_source_reads():
 
 def test_personal_entrypoints_from_another_directory(tmp_path):
     for owner, script in [('songjiayun', 'run_revision.py'),
-                          ('yuchunshen', 'run_combination_nested.py'),
+                          ('huangyaorong', 'run_combination_nested.py'),
                           ('hehaoyang', 'launch_studio.py')]:
         result = subprocess.run(
             [sys.executable, str(ROOT / owner / 'run.py'), script, '--help'],

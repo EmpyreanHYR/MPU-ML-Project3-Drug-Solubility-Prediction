@@ -7,7 +7,7 @@ ROOT = Path(__file__).resolve().parents[1]
 DIRECTORIES = {'.github', 'assets', 'bibliography', 'configs', 'Contribution', 'datasets',
                'models', 'output', 'plotting', 'presentation', 'Question', 'Report_final',
                'scripts', 'src', 'tests', 'tools',
-               'songjiayun', 'huangyaorong', 'yuchunshen', 'hehaoyang', 'hehaoyang'}
+               'songjiayun', 'yuchunshen', 'huangyaorong', 'hehaoyang', 'hehaoyang'}
 ROOT_FILES = {'.gitignore', '.python-version', 'README.md', 'pyproject.toml', 'uv.lock',
               'SOLAR_Studio_Demo_Bilingual.mp4', 'SOLAR_Studio_Demo_Bilingual.srt',
               'SOLAR_Studio_Demo_Bilingual_boxed.srt', 'SOLAR_Studio_Demo_Bilingual_boxed.ass',

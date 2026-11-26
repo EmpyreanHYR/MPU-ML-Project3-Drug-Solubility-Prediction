@@ -135,7 +135,7 @@ uv run --frozen pytest -q tests/test_web_api.py tests/test_learning.py
 
 ```bash
 uv run --frozen python songjiayun/run.py run_revision.py                      # 12 个对照模型
-uv run --frozen python huangyaorong/run.py run_adaptive_revision.py            # SOLAR-H 自适应分解模型
+uv run --frozen python yuchunshen/run.py run_adaptive_revision.py            # SOLAR-H 自适应分解模型
 bash scripts/reproduce.sh                                                      # 丰富特征与第一轮融合实验
 bash scripts/reproduce_tabpfn.sh                                               # TabPFN v2 与异质融合实验
 PYTHONPATH=. uv run --frozen python songjiayun/run.py run_baselines.py         # 常规回归基线 (RF / Ridge / RbfSVR)
@@ -151,16 +151,16 @@ uv run --frozen python plotting/revision_figures.py                            #
 | 目录 | 内容 |
 |---|---|
 | [songjiayun/](songjiayun/README.md) | 基底模型、共同对照训练及常规基线 |
-| [huangyaorong/](huangyaorong/README.md) | SOLAR-H、自适应温度增益与相关消融对照 |
-| [yuchunshen/](yuchunshen/README.md) | ExtraTrees–TabPFN 对、候选融合、训练与导出 |
+| [yuchunshen/](yuchunshen/README.md) | SOLAR-H、自适应温度增益与相关消融对照 |
+| [huangyaorong/](huangyaorong/README.md) | ExtraTrees–TabPFN 对、候选融合、训练与导出 |
 | [hehaoyang/](hehaoyang/README.md) | 应用后端、前端静态资源与启动器 |
 
 所有模块共用根目录下的 `datasets/`、`src/` 与 `models/`，并通过各自的 `run.py` 统一入口运行：
 
 ```bash
 uv run --frozen python songjiayun/run.py run_revision.py --help
-uv run --frozen python huangyaorong/run.py run_adaptive_revision.py
-uv run --frozen python yuchunshen/run.py run_tabpfn_combination_v3.py all
+uv run --frozen python yuchunshen/run.py run_adaptive_revision.py
+uv run --frozen python huangyaorong/run.py run_tabpfn_combination_v3.py all
 uv run --frozen python hehaoyang/run.py launch_studio.py
 ```
 

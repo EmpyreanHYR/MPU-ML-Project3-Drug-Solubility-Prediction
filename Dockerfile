@@ -34,8 +34,8 @@ COPY models ./models
 COPY output ./output
 COPY src ./src
 COPY songjiayun ./songjiayun
-COPY huangyaorong ./huangyaorong
 COPY yuchunshen ./yuchunshen
+COPY huangyaorong ./huangyaorong
 COPY hehaoyang ./hehaoyang
 
 
